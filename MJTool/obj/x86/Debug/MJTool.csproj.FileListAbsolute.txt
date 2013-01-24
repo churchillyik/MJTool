@@ -1,7 +1,0 @@
-E:\MJTool\MJTool\bin\Debug\MJTool.exe
-E:\MJTool\MJTool\bin\Debug\MJTool.pdb
-E:\MJTool\MJTool\obj\x86\Debug\ResolveAssemblyReference.cache
-E:\MJTool\MJTool\obj\x86\Debug\MJTool.MainForm.resources
-E:\MJTool\MJTool\obj\x86\Debug\MJTool.csproj.GenerateResource.Cache
-E:\MJTool\MJTool\obj\x86\Debug\MJTool.exe
-E:\MJTool\MJTool\obj\x86\Debug\MJTool.pdb

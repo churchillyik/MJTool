@@ -71,7 +71,7 @@ namespace MJTool
 			pubkey = m.Groups[4].Value;
 			rsakv = m.Groups[5].Value;
 			
-			Random r = new Random(UnixTimeStamp(DateTime.Now));
+			Random r = new Random();
 			data.Clear();
 			data.Add("entry", "weibo");
 			data.Add("gateway", "1");
@@ -86,7 +86,7 @@ namespace MJTool
 			data.Add("nonce", nonce);
 			data.Add("pwencode", "rsa2");
 			data.Add("rsakv", rsakv);
-			data.Add(sp, PswRSAEncode(strPassword, pubkey));
+			data.Add("sp", PswRSAEncode(strPassword, pubkey));
 			data.Add("encoding", "UTF-8");
 			data.Add("prelt", r.Next(100, 150).ToString());
 			data.Add("url", "http://ajaxlogin.php?framelogin=1&callback=parent.sinaSSOController.feedBackUrlCallBack");
@@ -111,7 +111,7 @@ namespace MJTool
 	        return wa;
 		}
 		
-		public static string PswRSAEncode(strPassword, pubkey)
+		public static string PswRSAEncode(string strPassword, string pubkey)
 		{
 			return strPassword;
 		}
