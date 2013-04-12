@@ -17,6 +17,7 @@ namespace MJTool
 {
 	partial class QueryManager
 	{
+		public static int nOriginID = 1407;
 		public string strUserName;
 		public string strPassword;
 		public bool CheckIfLogined(string strQueryResult)
@@ -27,7 +28,7 @@ namespace MJTool
 		public string QueryLoginPage()
 		{
 			this.QrySta = QueryStatus.NotLogined;
-			return PageQuery("game.weibo.com", "mengjiangwushuang/?origin=1407", null);
+			return PageQuery("game.weibo.com", "mengjiangwushuang/?origin=" + nOriginID, null);
 		}
 		
 		public void Login()
@@ -39,10 +40,11 @@ namespace MJTool
 			 * entry=weiyouxi&param=r%3D2337087298&url=http%3A%2F%2Fgame.weibo.com%2Fmengjiangwushuang%2F%3Forigin%3D1407"
 			 *  class="btn-login">登录微博</a>
 			 * */
-			Match m = Regex.Match(result, "<div class=\"box\">\\s*?<a\\s*?href=\"http://weibo\\.com/(.*?)\"\\s*?class=\"btn-login\">登录微博</a>", RegexOptions.Singleline);
+			Match m = Regex.Match(result, "<div class=\"box\">\\s*?<a\\s*?href=\"http://weibo\\.com/(.*?)\"\\s*?class=\"btn-login\">登录微博</a>"
+			                      , RegexOptions.Singleline);
 			if (!m.Success)
 			{
-				DebugLog("无法解析[mengjiangwushuang/?origin=1407]");
+				DebugLog("无法解析[mengjiangwushuang/?origin=" + nOriginID + "]");
 			}
 			string strLoginURL = m.Groups[1].Value;
 			result = PageQuery("weibo.com", strLoginURL, null);
@@ -57,7 +59,7 @@ namespace MJTool
 			string strSvrTimeURL = "sso/prelogin.php?"
 				+ CreateQueryString(data);
 			result = PageQuery("login.sina.com.cn", strSvrTimeURL, null);
-			
+			DebugLog(result);
 			string strSvrTime, pcid, nonce, pubkey, rsakv;
 			m = Regex.Match(result, "\"servertime\":(.*?),\"pcid\":\"(.*?)\",\"nonce\":\"(.*?)\"," +
 			                "\"pubkey\":\"(.*?)\",\"rsakv\":\"(.*?)\"", RegexOptions.Singleline);
@@ -106,9 +108,9 @@ namespace MJTool
 		public static string base64_decode(string str)
 		{
 			byte[] sa = Convert.FromBase64String(str);
-	        Encoding Ansi = Encoding.GetEncoding("GB2312");
-	        string wa = Ansi.GetString(sa);
-	        return wa;
+			Encoding Ansi = Encoding.GetEncoding("GB2312");
+			string wa = Ansi.GetString(sa);
+			return wa;
 		}
 		
 		public static string PswRSAEncode(string strPassword, string pubkey)
@@ -122,7 +124,9 @@ namespace MJTool
 			foreach(KeyValuePair<string, string> x in Data)
 			{
 				if(sb.Length != 0)
+				{
 					sb.Append("&");
+				}
 
 				sb.Append(HttpUtility.UrlEncode(x.Key));
 				sb.Append("=");

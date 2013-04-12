@@ -7,7 +7,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>MJTool</RootNamespace>
     <AssemblyName>MJTool</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BigInteger.cs" />
     <Compile Include="FetchPage.cs" />
     <Compile Include="HtmlUtility.cs" />
     <Compile Include="Login.cs" />
@@ -63,5 +64,8 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
 </Project>

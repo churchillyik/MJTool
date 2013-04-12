@@ -67,7 +67,7 @@ namespace MJTool
 			{
 				this.QrySta = QueryStatus.NotLogined;
 			}
-						
+			
 			return result;
 		}
 

@@ -24,32 +24,33 @@ namespace MJTool
 		}
 		
 		public void DebugLog(string log)
-        {
-            LogArgs arg = new LogArgs();
-            arg.strLog = log;
-            arg.uiType = UIUpdateTypes.LogAppending;
-            OnUIUpdate(this, arg);
-        }
+		{
+			LogArgs arg = new LogArgs();
+			arg.strLog = log;
+			arg.uiType = UIUpdateTypes.LogAppending;
+			OnUIUpdate(this, arg);
+		}
 		
 		public void ClearLog()
 		{
 			UIUpdateArgs arg = new UIUpdateArgs();
 			arg.uiType = UIUpdateTypes.LogClear;
 			OnUIUpdate(this, arg);
-		} 
+		}
 		
 		void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {			
-        	Exception ex = e.ExceptionObject as Exception;
+		{
+			Exception ex = e.ExceptionObject as Exception;
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine(DateTime.Now.ToString());
 			sb.AppendLine(ex.Message);
 			sb.AppendLine(ex.StackTrace);
+			
 			FileStream fs = new FileStream("Crash.log", FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter(fs, Encoding.Unicode);
 			sw.Write(sb.ToString());
 			sw.Close();
-        }
+		}
 	}
 	
 	public enum UIUpdateTypes
@@ -58,14 +59,14 @@ namespace MJTool
 		LogAppending,
 		LogClear,
 	};
-    
-    public class UIUpdateArgs : EventArgs
-    {
-    	public UIUpdateTypes uiType;
-    };
-    
-    public class LogArgs : UIUpdateArgs
-    {
-        public string strLog;
-    };
+	
+	public class UIUpdateArgs : EventArgs
+	{
+		public UIUpdateTypes uiType;
+	};
+	
+	public class LogArgs : UIUpdateArgs
+	{
+		public string strLog;
+	};
 }

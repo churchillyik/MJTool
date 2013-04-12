@@ -43,12 +43,18 @@ namespace MJTool
 		{
 			request = (HttpWebRequest)WebRequest.Create(Uri);
 			if (pxy != null)
+			{
 				request.Proxy = pxy;
+			}
 			if (cookies == null)
+			{
 				cookies = new CookieContainer();
+			}
 			request.CookieContainer = cookies;
 			if (strLastQueryPageURI != null)
+			{
 				request.Referer = strLastQueryPageURI;
+			}
 			strLastQueryPageURI = Uri;
 			request.Timeout = 30000;
 			request.UserAgent = "Mozilla/5.0 (Windows NT 5.1; rv:13.0) Gecko/20100101 Firefox/13.0.1";
@@ -67,7 +73,7 @@ namespace MJTool
 			{
 				string BaseAddress = string.Format("http://{0}/", strSvrURL);
 				CreateRequest(BaseAddress + Uri);
-				if(Data == null)
+				if (Data == null)
 				{
 					return HttpGet();
 				}
@@ -97,8 +103,10 @@ namespace MJTool
 			StringBuilder sb = new StringBuilder();
 			foreach(KeyValuePair<string, string> x in Data)
 			{
-				if(sb.Length != 0)
+				if (sb.Length != 0)
+				{
 					sb.Append("&");
+				}
 
 				// Got to support some weired form data, like arrays
 				if (x.Key == "!!!RawData!!!")
@@ -115,14 +123,14 @@ namespace MJTool
 			request.ContentType = "application/x-www-form-urlencoded";
 			
 			ASCIIEncoding encoding = new ASCIIEncoding ();
-    		byte[] qry_bytes = encoding.GetBytes(QueryString);
-    		request.ContentLength = qry_bytes.Length;
-    		
+			byte[] qry_bytes = encoding.GetBytes(QueryString);
+			request.ContentLength = qry_bytes.Length;
+			
 			Stream newStream = request.GetRequestStream();
 			newStream.Write(qry_bytes, 0, qry_bytes.Length);
 			newStream.Close();
 			
-			return FetchResponse(); 
+			return FetchResponse();
 		}
 		
 		private string FetchResponse()
@@ -141,8 +149,8 @@ namespace MJTool
 				using(Stream streamReceive = response.GetResponseStream())
 				{
 					using(GZipStream zipStream = new GZipStream(streamReceive, CompressionMode.Decompress))
-				        using (StreamReader sr = new StreamReader(zipStream, Encoding.UTF8))
-				            result = sr.ReadToEnd();
+						using (StreamReader sr = new StreamReader(zipStream, Encoding.UTF8))
+							result = sr.ReadToEnd();
 				}
 			}
 			else
