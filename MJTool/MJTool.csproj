@@ -49,7 +49,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BigInteger.cs" />
     <Compile Include="FetchPage.cs" />
     <Compile Include="HtmlUtility.cs" />
     <Compile Include="Login.cs" />
@@ -61,11 +60,17 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryManager.cs" />
+    <Compile Include="SpAlg\BigInteger.cs" />
+    <Compile Include="SpAlg\Classic.cs" />
+    <Compile Include="SpAlg\Montgomery.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SpAlg" />
   </ItemGroup>
 </Project>
