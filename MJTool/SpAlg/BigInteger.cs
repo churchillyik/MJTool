@@ -240,9 +240,12 @@ namespace MJTool
 		}
 		
 		// (protected) copy this to r
-		public void copyTo(out BigInteger r)
+		public void copyTo(BigInteger r)
 		{
-			r = new BigInteger();
+			if (r == null)
+			{
+				r = new BigInteger();
+			}
 			r.datas = new int[this.t];
 			for (int i = this.t - 1; i >= 0; --i)
 			{
@@ -354,7 +357,7 @@ namespace MJTool
 			this.clamp();
 			if (mi)
 			{
-				//ZERO.subTo(this, out this);
+				ZERO.subTo(this, this);
 			}
 		}
 		
@@ -448,8 +451,8 @@ namespace MJTool
 		// (public) -this
 		public BigInteger negate()
 		{
-			BigInteger r = new BigInteger();
-			ZERO.subTo(this, out r);
+			BigInteger r = null;
+			ZERO.subTo(this, r);
 			return r;
 		}
 		
@@ -528,11 +531,14 @@ namespace MJTool
 		}
 		
 		// (protected) r = this << n*DB
-		public void dlShiftTo(int n, out BigInteger r)
+		public void dlShiftTo(int n, BigInteger r)
 		{
-			int i;
-			r = new BigInteger();
+			if (r == null)
+			{
+				r = new BigInteger();
+			}
 			r.datas = new int[this.t + n];
+			int i;
 			for (i = this.t - 1; i >= 0; --i)
 			{
 				r.datas[i + n] = this.datas[i];
@@ -546,9 +552,12 @@ namespace MJTool
 		}
 		
 		// (protected) r = this >> n*DB
-		public void drShiftTo(int n, out BigInteger r)
+		public void drShiftTo(int n, BigInteger r)
 		{
-			r = new BigInteger();
+			if (r == null)
+			{
+				r = new BigInteger();
+			}
 			for (int i = n; i < this.t; ++i)
 			{
 				r.datas[i - n] = this.datas[i];
@@ -558,9 +567,12 @@ namespace MJTool
 		}
 		
 		// (protected) r = this << n
-		public void lShiftTo(int n, out BigInteger r)
+		public void lShiftTo(int n, BigInteger r)
 		{
-			r = new BigInteger();
+			if (r == null)
+			{
+				r = new BigInteger();
+			}
 			
 			int bs = n % this.DB;
 			int cbs = this.DB - bs;
@@ -584,9 +596,12 @@ namespace MJTool
 		}
 		
 		// (protected) r = this >> n
-		public void rShiftTo(int n, out BigInteger r)
+		public void rShiftTo(int n, BigInteger r)
 		{
-			r = new BigInteger();
+			if (r == null)
+			{
+				r = new BigInteger();
+			}
 			r.s = this.s;
 			int ds = n / this.DB;
 			if (ds >= this.t)
@@ -612,9 +627,16 @@ namespace MJTool
 		}
 		
 		// (protected) r = this - a
-		public void subTo(BigInteger a, out BigInteger r)
+		public void subTo(BigInteger a, BigInteger r)
 		{
-			r = new BigInteger();
+			if (a == null)
+			{
+				return;
+			}
+			if (r == null)
+			{
+				r = new BigInteger();
+			}
 			
 			int i = 0, c = 0, m = Math.Min(a.t, this.t);
 			while (i < m)
@@ -660,9 +682,16 @@ namespace MJTool
 
 		// (protected) r = this * a, r != this,a (HAC 14.12)
 		// "this" should be the larger one if appropriate.
-		public void multiplyTo(BigInteger a, out BigInteger r)
+		public void multiplyTo(BigInteger a, BigInteger r)
 		{
-			r = new BigInteger();
+			if (a == null)
+			{
+				return;
+			}
+			if (r == null)
+			{
+				r = new BigInteger();
+			}
 			BigInteger x = this.abs(), y = a.abs();
 			int i = x.t;
 			r.t = i + y.t;
@@ -678,14 +707,17 @@ namespace MJTool
 			r.clamp();
 			if (this.s != a.s)
 			{
-				ZERO.subTo(r, out r);
+				ZERO.subTo(r, r);
 			}
 		}
 
 		// (protected) r = this^2, r != this (HAC 14.16)
-		public void squareTo(out BigInteger r)
+		public void squareTo(BigInteger r)
 		{
-			r = new BigInteger();
+			if (r == null)
+			{
+				r = new BigInteger();
+			}
 			BigInteger x = this.abs();
 			int i = r.t = 2 * x.t;
 			while (--i >= 0)
@@ -712,10 +744,20 @@ namespace MJTool
 
 		// (protected) divide this by m, quotient and remainder to q, r (HAC 14.20)
 		// r != q, this != m. q or r may be null.
-		public void divRemTo(BigInteger m, out BigInteger q, out BigInteger r)
+		public void divRemTo(BigInteger m, BigInteger q, BigInteger r)
 		{
-			q = new BigInteger();
-			r = new BigInteger();
+			if (m == null)
+			{
+				return;
+			}
+			if (q == null)
+			{
+				q = new BigInteger();
+			}
+			if (r == null)
+			{
+				r = new BigInteger();
+			}
 			
 			BigInteger pm = m.abs();
 			if (pm.t <= 0)
@@ -731,7 +773,7 @@ namespace MJTool
 				}
 				if (r != null)
 				{
-					this.copyTo(out r);
+					this.copyTo(r);
 				}
 				return;
 			}
@@ -741,13 +783,13 @@ namespace MJTool
 			int nsh = this.DB - nbits(pm.datas[pm.t - 1]); // normalize modulus
 			if (nsh > 0)
 			{
-				pm.lShiftTo(nsh, out y);
-				pt.lShiftTo(nsh, out r);
+				pm.lShiftTo(nsh, y);
+				pt.lShiftTo(nsh, r);
 			}
 			else
 			{
-				pm.copyTo(out y);
-				pt.copyTo(out r);
+				pm.copyTo(y);
+				pt.copyTo(r);
 			}
 			int ys = y.t;
 			int y0 = y.datas[ys - 1];
@@ -759,14 +801,14 @@ namespace MJTool
 			int d1 = this.FV / yt, d2 = (1 << this.F1) / yt, e = 1 << this.F2;
 			int i = r.t, j = i - ys;
 			BigInteger t = (q == null) ? new BigInteger() : q;
-			y.dlShiftTo(j, out t);
+			y.dlShiftTo(j, t);
 			if (r.compareTo(t) >= 0)
 			{
 				r.datas[r.t++] = 1;
-				r.subTo(t, out r);
+				r.subTo(t, r);
 			}
-			ONE.dlShiftTo(ys, out t);
-			t.subTo(y, out y); // "negative" y so we can replace sub with am later
+			ONE.dlShiftTo(ys, t);
+			t.subTo(y, y); // "negative" y so we can replace sub with am later
 			while (y.t < ys)
 			{
 				y.datas[y.t++] = 0;
@@ -779,31 +821,31 @@ namespace MJTool
 				if ((r.datas[i] += y.am(0, qd, r.datas, j, 0, ys)) < qd)
 				{
 					// Try it out
-					y.dlShiftTo(j, out t);
-					r.subTo(t, out r);
+					y.dlShiftTo(j, t);
+					r.subTo(t, r);
 					while (r.datas[i] < --qd)
 					{
-						r.subTo(t, out r);
+						r.subTo(t, r);
 					}
 				}
 			}
 			if (q != null)
 			{
-				r.drShiftTo(ys, out q);
+				r.drShiftTo(ys, q);
 				if (ts != ms)
 				{
-					ZERO.subTo(q, out q);
+					ZERO.subTo(q, q);
 				}
 			}
 			r.t = ys;
 			r.clamp();
 			if (nsh > 0)
 			{
-				r.rShiftTo(nsh, out r); // Denormalize remainder
+				r.rShiftTo(nsh, r); // Denormalize remainder
 			}
 			if (ts < 0)
 			{
-				ZERO.subTo(r, out r);
+				ZERO.subTo(r, r);
 			}
 		}
 
@@ -811,11 +853,10 @@ namespace MJTool
 		public BigInteger mod(BigInteger a)
 		{
 			BigInteger r = new BigInteger();
-			BigInteger q;
-			this.abs().divRemTo(a, out q, out r);
+			this.abs().divRemTo(a, null, r);
 			if (this.s < 0 && r.compareTo(ZERO) > 0)
 			{
-				a.subTo(r, out r);
+				a.subTo(r, r);
 			}
 			return r;
 		}
@@ -851,6 +892,85 @@ namespace MJTool
 			y = (y * (2 - x * y % this.DV)) % this.DV; // y == 1/x mod 2^dbits
 			// we really want the negative inverse, and -DV < y < DV
 			return (y > 0) ? this.DV - y : -y;
+		}
+		
+		// (protected) true iff this is even
+		public bool isEven()
+		{
+			return ((this.t > 0) ? (this.datas[0] & 1) : this.s) == 0;
+		}
+
+		// (protected) this^e, e < 2^32, doing sqr and mul with "r" (HAC 14.79)
+		public BigInteger exp(int e, Classic z)
+		{
+			if (e > 0x7fffffff || e < 1)
+			{
+				return BigInteger.ONE;
+			}
+			BigInteger r = new BigInteger(), r2 = new BigInteger();
+			BigInteger g = z.convert(this);
+			int i = nbits(e) - 1;
+			g.copyTo(r);
+			while (--i >= 0)
+			{
+				z.sqrTo(r, r2);
+				if ((e & (1 << i)) > 0)
+				{
+					z.mulTo(r2, g, r);
+				}
+				else
+				{
+					BigInteger t = r;
+					r = r2;
+					r2 = t;
+				}
+			}
+			return z.revert(r);
+		}
+		
+		// (protected) this^e, e < 2^32, doing sqr and mul with "r" (HAC 14.79)
+		public BigInteger exp(int e, Montgomery z)
+		{
+			if (e > 0x7fffffff || e < 1)
+			{
+				return BigInteger.ONE;
+			}
+			BigInteger r = new BigInteger(), r2 = new BigInteger();
+			BigInteger g = z.convert(this);
+			int i = nbits(e) - 1;
+			g.copyTo(r);
+			while (--i >= 0)
+			{
+				z.sqrTo(r, r2);
+				if ((e & (1 << i)) > 0)
+				{
+					z.mulTo(r2, g, r);
+				}
+				else
+				{
+					BigInteger t = r;
+					r = r2;
+					r2 = t;
+				}
+			}
+			return z.revert(r);
+		}
+
+		// (public) this^e % m, 0 <= e < 2^32
+		public BigInteger modPowInt(int e, BigInteger m)
+		{
+			BigInteger r = null;
+			if (e < 256 || m.isEven())
+			{
+				Classic z = new Classic(m);
+				r = this.exp(e, z);
+			}
+			else
+			{
+				Montgomery z = new Montgomery(m);
+				r = this.exp(e, z);
+			}
+			return r;
 		}
 		
 		private void fromNumber(long a, int b, int c)

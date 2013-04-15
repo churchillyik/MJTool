@@ -8,7 +8,7 @@
  */
 using System;
 
-namespace MJTool.SpAlg
+namespace MJTool
 {
 	/// <summary>
 	/// Montgomery reduction
@@ -23,6 +23,10 @@ namespace MJTool.SpAlg
 		private int mt2;
 		public Montgomery(BigInteger m)
 		{
+			if (m == null)
+			{
+				return;
+			}
 			this.m = m;
 			this.mp = m.invDigit();
 			this.mpl = this.mp & 0x7fff;
@@ -34,12 +38,16 @@ namespace MJTool.SpAlg
 		// xR mod m
 		public BigInteger convert(BigInteger x)
 		{
-			BigInteger q, r;
-			x.abs().dlShiftTo(this.m.t, out r);
-			r.divRemTo(this.m, out q, out r);
+			if (x == null)
+			{
+				return null;
+			}
+			BigInteger r = null;
+			x.abs().dlShiftTo(this.m.t, r);
+			r.divRemTo(this.m, null, r);
 			if (x.s < 0 && r.compareTo(BigInteger.ZERO) > 0)
 			{
-				this.m.subTo(r, out r);
+				this.m.subTo(r, r);
 			}
 			return r;
 		}
@@ -47,16 +55,19 @@ namespace MJTool.SpAlg
 		// x/R mod m
 		public BigInteger revert(BigInteger x)
 		{
-			BigInteger r;
-			x.copyTo(out r);
-			this.reduce(out r);
+			BigInteger r = null;
+			x.copyTo(r);
+			this.reduce(r);
 			return r;
 		}
 
 		// x = x/R mod m (HAC 14.32)
-		public void reduce(out BigInteger x)
+		public void reduce(BigInteger x)
 		{
-			x  = new BigInteger();
+			if (x == null)
+			{
+				return;
+			}
 			while (x.t <= this.mt2)
 			{
 				// pad x so am has enough room later
@@ -79,25 +90,33 @@ namespace MJTool.SpAlg
 				}
 			}
 			x.clamp();
-			x.drShiftTo(this.m.t, out x);
+			x.drShiftTo(this.m.t, x);
 			if (x.compareTo(this.m) >= 0)
 			{
-				x.subTo(this.m, out x);
+				x.subTo(this.m, x);
 			}
 		}
 
 		// r = "x^2/R mod m"; x != r
-		public void sqrTo(BigInteger x, out BigInteger r)
+		public void sqrTo(BigInteger x, BigInteger r)
 		{
-			x.squareTo(out r);
-			this.reduce(out r);
+			if (m == null)
+			{
+				return;
+			}
+			x.squareTo(r);
+			this.reduce(r);
 		}
 
 		// r = "xy/R mod m"; x,y != r
-		public void mulTo(BigInteger x, BigInteger y, out BigInteger r)
+		public void mulTo(BigInteger x, BigInteger y, BigInteger r)
 		{
-			x.multiplyTo(y, out r);
-			this.reduce(out r);
+			if (m == null)
+			{
+				return;
+			}
+			x.multiplyTo(y, r);
+			this.reduce(r);
 		}
 	}
 }

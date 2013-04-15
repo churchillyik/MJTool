@@ -8,7 +8,7 @@
  */
 using System;
 
-namespace MJTool.SpAlg
+namespace MJTool
 {
 	/// <summary>
 	/// // Modular reduction using "classic" algorithm
@@ -38,22 +38,32 @@ namespace MJTool.SpAlg
 			return x;
 		}
 
-		public void reduce(out BigInteger x)
+		public void reduce(BigInteger x)
 		{
-			x = new BigInteger();
-			BigInteger q;
-			x.divRemTo(this.m, out q, out x);
+			if (x == null)
+			{
+				return;
+			}
+			x.divRemTo(this.m, null, x);
 		}
 
-		public void mulTo(BigInteger x, BigInteger y, out BigInteger r)
+		public void mulTo(BigInteger x, BigInteger y, BigInteger r)
 		{
-			x.multiplyTo(y, out r);
-			this.reduce(out r);
+			if (x == null)
+			{
+				return;
+			}
+			x.multiplyTo(y, r);
+			this.reduce(r);
 		}
-		public void sqrTo(BigInteger x, out BigInteger r)
+		public void sqrTo(BigInteger x, BigInteger r)
 		{
-			x.squareTo(out r);
-			this.reduce(out r);
+			if (x == null)
+			{
+				return;
+			}
+			x.squareTo(r);
+			this.reduce(r);
 		}
 	}
 }
