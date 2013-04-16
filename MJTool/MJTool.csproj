@@ -9,7 +9,8 @@
     <AssemblyName>MJTool</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -60,9 +61,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryManager.cs" />
+    <Compile Include="SpAlg\Arcfour.cs" />
     <Compile Include="SpAlg\BigInteger.cs" />
     <Compile Include="SpAlg\Classic.cs" />
     <Compile Include="SpAlg\Montgomery.cs" />
+    <Compile Include="SpAlg\SecureRandom.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

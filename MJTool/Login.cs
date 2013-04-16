@@ -135,7 +135,7 @@ namespace MJTool
 			return sb.ToString();
 		}
 		
-		private long UnixTimeStamp(DateTime time)
+		public static long UnixTimeStamp(DateTime time)
 		{
 			return Convert.ToInt64(time.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds);
 		}
