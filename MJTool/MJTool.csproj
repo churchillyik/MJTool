@@ -65,6 +65,7 @@
     <Compile Include="SpAlg\BigInteger.cs" />
     <Compile Include="SpAlg\Classic.cs" />
     <Compile Include="SpAlg\Montgomery.cs" />
+    <Compile Include="SpAlg\RSAKey.cs" />
     <Compile Include="SpAlg\SecureRandom.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

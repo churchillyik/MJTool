@@ -18,8 +18,8 @@ namespace MJTool
 	/// </summary>
 	public class SecureRandom
 	{
-		private Arcfour rng_state;
-		private int[] rng_pool;
+		private Arcfour rng_state = null;
+		private int[] rng_pool = null;
 		private int rng_pptr;
 		
 		// Pool size must be a multiple of 4 and greater than 32.
@@ -27,6 +27,7 @@ namespace MJTool
 		public static int rng_psize = 256;
 		public SecureRandom()
 		{
+			init_pool();
 		}
 		
 		// Mix in a 32-bit integer into the pool
@@ -48,11 +49,11 @@ namespace MJTool
 			rng_seed_int(QueryManager.UnixTimeStamp(DateTime.Now));
 		}
 		
-		public static void init_pool()
+		private void init_pool()
 		{
 			if (rng_pool == null)
 			{
-				rng_pool = new int[rng_psize];
+				rng_pool = new int[2 * rng_psize];
 				rng_pptr = 0;
 				int t;
 				/*

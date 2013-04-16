@@ -43,14 +43,12 @@ namespace MJTool
 		public BigInteger()
 		{
 			init_BI_RC();
-			SecureRandom.init_pool();
 		}
 		
 		// return bigint initialized to value
 		public BigInteger(int i)
 		{
 			init_BI_RC();
-			SecureRandom.init_pool();
 			this.fromInt(i);
 		}
 		
@@ -58,21 +56,18 @@ namespace MJTool
 		public BigInteger(long a, int b, int c)
 		{
 			init_BI_RC();
-			SecureRandom.init_pool();
 			this.fromNumber(a, b, c);
 		}
 		
 		public BigInteger(string a)
 		{
 			init_BI_RC();
-			SecureRandom.init_pool();
 			this.fromString(a, 256);
 		}
 		
 		public BigInteger(string a, int b)
 		{
 			init_BI_RC();
-			SecureRandom.init_pool();
 			this.fromString(a, b);
 		}
 		
