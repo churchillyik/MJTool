@@ -38,31 +38,33 @@ namespace MJTool
 		void MainFormLoad(object sender, EventArgs e)
 		{
 			sInsMgr.OnUIUpdate += new EventHandler<UIUpdateArgs>(CallBack_UIUpdate);
+			BigInteger.init_BI_RC();
+			SecureRandom.init_pool();
 		}
 		
 		void CallBack_UIUpdate(object sender, UIUpdateArgs e)
-        {
-            try
-            {
-            	if (e.uiType == UIUpdateTypes.LogAppending)
-            	{
-            		LogArgs e_log = e as LogArgs;
-                	Invoke(new dlgWriteLog(WriteLog)
-            		       , new object[] { e_log.strLog });
-            	}
-        		else if (e.uiType == UIUpdateTypes.LogClear)
-        		{
-        			Invoke(new dlgClearLog(ClearLog));
-        		}
-            }
-            catch (Exception)
-            { }
-        }
+		{
+			try
+			{
+				if (e.uiType == UIUpdateTypes.LogAppending)
+				{
+					LogArgs e_log = e as LogArgs;
+					Invoke(new dlgWriteLog(WriteLog)
+					       , new object[] { e_log.strLog });
+				}
+				else if (e.uiType == UIUpdateTypes.LogClear)
+				{
+					Invoke(new dlgClearLog(ClearLog));
+				}
+			}
+			catch (Exception)
+			{ }
+		}
 		
 		private void WriteLog(string log)
-        {
+		{
 			this.tbLog.AppendText("[" + DateTime.Now.ToString() + "] " + log + "\r\n");
-        }
+		}
 		
 		private void ClearLog()
 		{

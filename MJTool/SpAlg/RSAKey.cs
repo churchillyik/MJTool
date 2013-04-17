@@ -35,7 +35,8 @@ namespace MJTool
 		// convert a (hex) string to a bignum object
 		public BigInteger parseBigInt(string str, int r)
 		{
-			return new BigInteger(str, r);
+			BigInteger bint = new BigInteger(str, r);
+			return bint;
 		}
 
 		private string linebrk(string s, int n)

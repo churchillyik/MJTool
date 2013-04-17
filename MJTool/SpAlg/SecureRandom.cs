@@ -19,8 +19,8 @@ namespace MJTool
 	public class SecureRandom
 	{
 		private Arcfour rng_state = null;
-		private int[] rng_pool = null;
-		private int rng_pptr;
+		private static int[] rng_pool = null;
+		private static int rng_pptr;
 		
 		// Pool size must be a multiple of 4 and greater than 32.
 		// An array of bytes the size of the pool will be passed to init()
@@ -31,7 +31,7 @@ namespace MJTool
 		}
 		
 		// Mix in a 32-bit integer into the pool
-		private void rng_seed_int(long x)
+		private static void rng_seed_int(long x)
 		{
 			rng_pool[rng_pptr++] ^= Convert.ToInt32(x & (long)255);
 			rng_pool[rng_pptr++] ^= Convert.ToInt32((x >> 8) & (long)255);
@@ -44,12 +44,12 @@ namespace MJTool
 		}
 		
 		// Mix in the current time (w/milliseconds) into the pool
-		private void rng_seed_time()
+		private static void rng_seed_time()
 		{
 			rng_seed_int(QueryManager.UnixTimeStamp(DateTime.Now));
 		}
 		
-		private void init_pool()
+		public static void init_pool()
 		{
 			if (rng_pool == null)
 			{
@@ -72,6 +72,7 @@ namespace MJTool
 					// Math.random()
 					Random r = new Random();
 					t = Convert.ToInt32(Math.Floor(r.NextDouble() * 65536));
+					//rng_pool[rng_pptr++] = t >>> 8;
 					rng_pool[rng_pptr++] = t >> 8;
 					rng_pool[rng_pptr++] = t & 255;
 				}

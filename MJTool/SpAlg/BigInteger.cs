@@ -32,7 +32,7 @@ namespace MJTool
 
 		private static ExplorerMod gMod = ExplorerMod.MOZILLA;
 		
-		public int[] datas;
+		public int[] datas = null;
 		public int t;
 		public int s;
 		
@@ -42,32 +42,27 @@ namespace MJTool
 		// return new, unset BigInteger
 		public BigInteger()
 		{
-			init_BI_RC();
 		}
 		
 		// return bigint initialized to value
-		public BigInteger(int i)
+		public BigInteger(int nInteger)
 		{
-			init_BI_RC();
-			this.fromInt(i);
+			this.fromInt(nInteger);
 		}
 		
 		// (public) Constructor
 		public BigInteger(long a, int b, int c)
 		{
-			init_BI_RC();
 			this.fromNumber(a, b, c);
 		}
 		
 		public BigInteger(string a)
 		{
-			init_BI_RC();
 			this.fromString(a, 256);
 		}
 		
 		public BigInteger(string a, int b)
 		{
-			init_BI_RC();
 			this.fromString(a, b);
 		}
 		
@@ -105,6 +100,7 @@ namespace MJTool
 				int m = xh * l + h * xl;
 				l = xl * l + ((m & 0x7fff) << 15) + w[j] + (c & 0x3fffffff);
 				c = (l >> 30) + (m >> 15) + xh * h + (c >> 30);
+				//c = (l >>> 30) + (m >>> 15) + xh * h + (c >>> 30);
 				w[j++] = l & 0x3fffffff;
 			}
 			return c;
@@ -199,7 +195,7 @@ namespace MJTool
 		
 		private static string BI_RM = "0123456789abcdefghijklmnopqrstuvwxyz";
 		private static Dictionary<char, int> BI_RC = new Dictionary<char, int>();
-		private void init_BI_RC()
+		public static void init_BI_RC()
 		{
 			int vv;
 			char rr = '0';
@@ -260,6 +256,7 @@ namespace MJTool
 		{
 			this.t = 1;
 			this.s = (x < 0) ? -1 : 0;
+			this.datas = new int[1];
 			if (x > 0)
 			{
 				this.datas[0] = x;
@@ -314,6 +311,7 @@ namespace MJTool
 			bool mi = false;
 			int sh = 0;
 			
+			this.datas = new int[i];
 			while (--i >= 0)
 			{
 				int x = (k == 8) ? Convert.ToInt32(data_str[i]) & 0xff : this.intAt(data_str, i);
@@ -491,6 +489,7 @@ namespace MJTool
 		{
 			int r = 1;
 			int t;
+			//if ((t = x >>> 16) != 0)
 			if ((t = x >> 16) != 0)
 			{
 				x = t;

@@ -33,13 +33,21 @@ namespace MJTool
 		
 		public void Login()
 		{
-			string result = QueryLoginPage();
+			RSAKey rsa = new RSAKey();
+			string encode_key = "EB2A38568661887FA180BDDB5CABD5F21C7BFD59C090CB2D245A87AC253062882729293E5506350508E7F9AA3BB77F4333231490F915F6D63C55FE2F08A49B353F444AD3993CACC02DB784ABBB8E42A9B1BBFFFB38BE18D78E87A0E41B9B8F73A928EE0CCEE1F6739884B9777E4FE9E88A1BBE495927AC4A799B3181D6442443";
+			string key_plus = "10001";
+			rsa.setPublic(encode_key, key_plus);
+			string password = "";
+			password = rsa.encrypt(password);
+			DebugLog(password);
+			//string result = QueryLoginPage();
 			/*
 			 * <div class=\"box\">
 			 * href="http://weibo.com/login.php?
 			 * entry=weiyouxi&param=r%3D2337087298&url=http%3A%2F%2Fgame.weibo.com%2Fmengjiangwushuang%2F%3Forigin%3D1407"
 			 *  class="btn-login">登录微博</a>
 			 * */
+			/*
 			Match m = Regex.Match(result, "<div class=\"box\">\\s*?<a\\s*?href=\"http://weibo\\.com/(.*?)\"\\s*?class=\"btn-login\">登录微博</a>"
 			                      , RegexOptions.Singleline);
 			if (!m.Success)
@@ -95,6 +103,7 @@ namespace MJTool
 			data.Add("returntype", "META");
 			
 			result = PageQuery("login.sina.com.cn", "sso/login.php?client=ssologin.js(v1.4.2)", data);
+			 */
 		}
 		
 		public static string sKey = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
