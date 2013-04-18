@@ -42,7 +42,7 @@ namespace MJTool
 			{
 				return null;
 			}
-			BigInteger r = null;
+			BigInteger r = new BigInteger();
 			x.abs().dlShiftTo(this.m.t, r);
 			r.divRemTo(this.m, null, r);
 			if (x.s < 0 && r.compareTo(BigInteger.ZERO) > 0)
@@ -55,7 +55,7 @@ namespace MJTool
 		// x/R mod m
 		public BigInteger revert(BigInteger x)
 		{
-			BigInteger r = null;
+			BigInteger r = new BigInteger();
 			x.copyTo(r);
 			this.reduce(r);
 			return r;

@@ -8,6 +8,7 @@
  */
 using System;
 using System.Globalization;
+using System.Text;
 
 namespace MJTool
 {
@@ -73,7 +74,8 @@ namespace MJTool
 				//alert("Message too long for RSA");
 				return null;
 			}
-			int[] ba = new int[256];
+
+			int[] ba = new int[n];
 			int i = s.Length - 1;
 			while (i >= 0 && n > 0)
 			{
@@ -97,7 +99,7 @@ namespace MJTool
 			}
 			ba[--n] = 0;
 			SecureRandom rng = new SecureRandom();
-			int[] x = new int[256];
+			int[] x = new int[1];
 			while (n > 2)
 			{
 				// random non-zero pad
@@ -110,8 +112,14 @@ namespace MJTool
 			}
 			ba[--n] = 2;
 			ba[--n] = 0;
-			//return new BigInteger(ba);
-			return new BigInteger(ba[0]);
+			
+			StringBuilder sb = new StringBuilder();
+			for (i = 0; i < ba.Length; i++)
+			{
+				sb.Append(Convert.ToChar(ba[i]));
+			}
+			
+			return new BigInteger(sb.ToString());
 		}
 		
 		// Set the public key fields N and e from hex strings
@@ -137,6 +145,7 @@ namespace MJTool
 		// Return the PKCS#1 RSA encryption of "text" as an even-length hex string
 		public string encrypt(string text)
 		{
+			int bl = this.n.bitLength();
 			BigInteger m = pkcs1pad2(text, (this.n.bitLength() + 7) >> 3);
 			if (m == null)
 			{

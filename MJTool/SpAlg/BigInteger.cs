@@ -24,7 +24,7 @@ namespace MJTool
 	public class BigInteger
 	{
 		// Bits per digit
-		private int dbits;
+		private int dbits = (j_lm && (gMod == ExplorerMod.IE)) ? 30 : ((j_lm && (gMod != ExplorerMod.MOZILLA)) ? 26 : 28);
 		
 		private static long canary = 0xdeadbeefcafe;
 		private static bool j_lm = ((canary & 0xffffff) == 0xefcafe);
@@ -128,18 +128,15 @@ namespace MJTool
 			if (j_lm && (gMod == ExplorerMod.IE))
 			{
 				c = this.am2(i, x, w, j, c, n);
-				dbits = 30;
 			}
 			else if (j_lm && (gMod != ExplorerMod.MOZILLA))
 			{
 				c = this.am1(i, x, w, j, c, n);
-				dbits = 26;
 			}
 			else
 			{
 				// Mozilla/Netscape seems to prefer am3
 				c = this.am3(i, x, w, j, c, n);
-				dbits = 28;
 			}
 			
 			return c;
@@ -449,7 +446,7 @@ namespace MJTool
 		// (public) -this
 		public BigInteger negate()
 		{
-			BigInteger r = null;
+			BigInteger r = new BigInteger();
 			ZERO.subTo(this, r);
 			return r;
 		}
@@ -579,6 +576,7 @@ namespace MJTool
 			int ds = n / this.DB;
 			int c = (this.s << bs) & this.DM;
 			int i;
+			r.datas = new int[this.t + ds + 1];
 			for (i = this.t - 1; i >= 0; --i)
 			{
 				r.datas[i + ds + 1] = (this.datas[i] >> cbs) | c;
@@ -888,7 +886,7 @@ namespace MJTool
 			// 2^16
 			// last step - calculate inverse mod DV directly;
 			// assumes 16 < DB <= 32 and assumes ability to handle 48-bit ints
-			y = (y * (2 - x * y % this.DV)) % this.DV; // y == 1/x mod 2^dbits
+			y = Convert.ToInt32(((long)y * (2 - Convert.ToInt32((long)x * y % this.DV))) % this.DV); // y == 1/x mod 2^dbits
 			// we really want the negative inverse, and -DV < y < DV
 			return (y > 0) ? this.DV - y : -y;
 		}
@@ -958,7 +956,7 @@ namespace MJTool
 		// (public) this^e % m, 0 <= e < 2^32
 		public BigInteger modPowInt(int e, BigInteger m)
 		{
-			BigInteger r = null;
+			BigInteger r = new BigInteger();
 			if (e < 256 || m.isEven())
 			{
 				Classic z = new Classic(m);
