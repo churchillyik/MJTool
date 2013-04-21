@@ -1,12 +1,4 @@
-﻿/*
- * Created by SharpDevelop.
- * User: Administrator
- * Date: 2012-9-2
- * Time: 13:00
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace MJTool
