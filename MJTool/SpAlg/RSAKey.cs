@@ -138,7 +138,7 @@ namespace MJTool
 		public string encrypt(string text)
 		{
 			int bl = this.n.bitLength();
-			BigInteger m = pkcs1pad2(text, (this.n.bitLength() + 7) >> 3);
+			BigInteger m = pkcs1pad2(text, (bl + 7) >> 3);
 			if (m == null)
 			{
 				return null;

@@ -161,6 +161,7 @@ namespace MJTool
 			this.tbLog.Location = new System.Drawing.Point(3, 3);
 			this.tbLog.Multiline = true;
 			this.tbLog.Name = "tbLog";
+			this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
 			this.tbLog.Size = new System.Drawing.Size(653, 328);
 			this.tbLog.TabIndex = 0;
 			// 

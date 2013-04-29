@@ -92,7 +92,7 @@ namespace MJTool
 		// r = "x^2/R mod m"; x != r
 		public void sqrTo(BigInteger x, BigInteger r)
 		{
-			if (m == null)
+			if (x == null)
 			{
 				return;
 			}
@@ -103,7 +103,7 @@ namespace MJTool
 		// r = "xy/R mod m"; x,y != r
 		public void mulTo(BigInteger x, BigInteger y, BigInteger r)
 		{
-			if (m == null)
+			if (x == null)
 			{
 				return;
 			}

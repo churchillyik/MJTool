@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace MJTool
 {
@@ -19,7 +20,6 @@ namespace MJTool
 		public static int rng_psize = 256;
 		public SecureRandom()
 		{
-			init_pool();
 		}
 		
 		// Mix in a 32-bit integer into the pool
@@ -38,41 +38,46 @@ namespace MJTool
 		// Mix in the current time (w/milliseconds) into the pool
 		private static void rng_seed_time()
 		{
-			rng_seed_int(QueryManager.UnixTimeStamp(DateTime.Now));
+			//return rng_seed_int(QueryManager.UnixTimeStamp(DateTime.Now));
+			//1367108171078
+			//1367079447476
+			rng_seed_int(1367108171078);
 		}
 		
 		public static void init_pool()
 		{
-			if (rng_pool == null)
+			if (rng_pool != null)
 			{
-				rng_pool = new int[2 * rng_psize];
-				rng_pptr = 0;
-				int t;
-				/*
-				if (navigator.appName == "Netscape" && navigator.appVersion < "5"
-				    && window.crypto
-				    && typeof (window.crypto.random) === 'function') {
-					// Extract entropy (256 bits) from NS4 RNG if available
-					var z = window.crypto.random(32);
-					for (t = 0; t < z.length; ++t)
-						rng_pool[rng_pptr++] = z.charCodeAt(t) & 255;
-				}
-				 */
-				while (rng_pptr < rng_psize)
-				{
-					// extract some randomness from
-					// Math.random()
-					Random r = new Random();
-					t = Convert.ToInt32(Math.Floor(r.NextDouble() * 65536));
-					//rng_pool[rng_pptr++] = t >>> 8;
-					rng_pool[rng_pptr++] = t >> 8;
-					rng_pool[rng_pptr++] = t & 255;
-				}
-				rng_pptr = 0;
-				rng_seed_time();
-				// rng_seed_int(window.screenX);
-				// rng_seed_int(window.screenY);
+				return;
 			}
+			rng_pool = new int[rng_psize];
+			rng_pptr = 0;
+			int t;
+			/*
+			if (navigator.appName == "Netscape" && navigator.appVersion < "5"
+			    && window.crypto
+			    && typeof (window.crypto.random) === 'function') {
+				// Extract entropy (256 bits) from NS4 RNG if available
+				var z = window.crypto.random(32);
+				for (t = 0; t < z.length; ++t)
+					rng_pool[rng_pptr++] = z.charCodeAt(t) & 255;
+			}
+			 */
+			while (rng_pptr < rng_psize)
+			{
+				// extract some randomness from
+				// Math.random()
+				Random r = new Random();
+				//t = Convert.ToInt32(Math.Floor(r.NextDouble() * 65536));
+				t = Convert.ToInt32(Math.Floor(0.6 * 65536));
+				//rng_pool[rng_pptr++] = t >>> 8;
+				rng_pool[rng_pptr++] = t >> 8;
+				rng_pool[rng_pptr++] = t & 255;
+			}
+			rng_pptr = 0;
+			rng_seed_time();
+			// rng_seed_int(window.screenX);
+			// rng_seed_int(window.screenY);
 		}
 		
 		private int rng_get_byte()

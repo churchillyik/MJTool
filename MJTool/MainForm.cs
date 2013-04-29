@@ -30,8 +30,6 @@ namespace MJTool
 		void MainFormLoad(object sender, EventArgs e)
 		{
 			sInsMgr.OnUIUpdate += new EventHandler<UIUpdateArgs>(CallBack_UIUpdate);
-			BigInteger.init_BI_RC();
-			SecureRandom.init_pool();
 		}
 		
 		void CallBack_UIUpdate(object sender, UIUpdateArgs e)

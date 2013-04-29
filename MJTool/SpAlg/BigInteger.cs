@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace MJTool
 {
@@ -158,11 +159,11 @@ namespace MJTool
 			}
 		}
 		
-		public int FV
+		public long FV
 		{
 			get
 			{
-				return 2 ^ BI_FP;
+				return Convert.ToInt64(Math.Pow((double)2, (double)BI_FP));
 			}
 		}
 		
@@ -186,6 +187,8 @@ namespace MJTool
 		private static Dictionary<char, int> BI_RC = new Dictionary<char, int>();
 		public static void init_BI_RC()
 		{
+			BI_RC.Clear();
+
 			int vv;
 			char rr = '0';
 			for (vv = 0; vv <= 9; ++vv)
@@ -514,8 +517,8 @@ namespace MJTool
 			{
 				return 0;
 			}
-			return this.DB * (this.t - 1)
-				+ nbits(this.datas[this.t - 1] ^ (this.s & this.DM));
+			int x = this.datas[this.t - 1] ^ (this.s & this.DM);
+			return this.DB * (this.t - 1) + nbits(x);
 		}
 		
 		// (protected) r = this << n*DB
@@ -524,8 +527,9 @@ namespace MJTool
 			if (r == null)
 			{
 				r = new BigInteger();
+				r.datas = new int[this.t + n];
 			}
-			r.datas = new int[this.t + n];
+			
 			int i;
 			for (i = this.t - 1; i >= 0; --i)
 			{
@@ -545,6 +549,10 @@ namespace MJTool
 			if (r == null)
 			{
 				r = new BigInteger();
+				if (this.t > n)
+				{
+					r.datas = new int[this.t - n];
+				}
 			}
 			for (int i = n; i < this.t; ++i)
 			{
@@ -787,7 +795,7 @@ namespace MJTool
 				return;
 			}
 			int yt = y0 * (1 << this.F1) + ((ys > 1) ? y.datas[ys - 2] >> this.F2 : 0);
-			int d1 = this.FV / yt, d2 = (1 << this.F1) / yt, e = 1 << this.F2;
+			int d1 = Convert.ToInt32(this.FV / yt), d2 = (1 << this.F1) / yt, e = 1 << this.F2;
 			int i = r.t, j = i - ys;
 			BigInteger t = (q == null) ? new BigInteger() : q;
 			y.dlShiftTo(j, t);
