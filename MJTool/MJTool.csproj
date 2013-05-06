@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{EA475A04-7FD1-4E5F-AC82-2AA87E7DEA17}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -7,7 +7,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>MJTool</RootNamespace>
     <AssemblyName>MJTool</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -33,6 +33,9 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
+    <Reference Include="FluorineFx">
+      <HintPath>C:\Program Files\FluorineFx\Bin\net\3.5\FluorineFx.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -50,17 +53,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FetchPage.cs" />
-    <Compile Include="HtmlUtility.cs" />
-    <Compile Include="Login.cs" />
     <Compile Include="MainForm.cs" />
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MyWebClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryManager.cs" />
+    <Compile Include="Query\Login.cs" />
+    <Compile Include="Query\MyWebClient.cs" />
+    <Compile Include="Query\UserCommand.cs" />
+    <Compile Include="Query\Util\FetchPage.cs" />
+    <Compile Include="Query\Util\HtmlUtility.cs" />
+    <Compile Include="Query\Util\QueryManager.cs" />
     <Compile Include="SpAlg\Arcfour.cs" />
     <Compile Include="SpAlg\BigInteger.cs" />
     <Compile Include="SpAlg\Classic.cs" />
@@ -75,6 +79,8 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Query\Util" />
     <Folder Include="SpAlg" />
+    <Folder Include="Query" />
   </ItemGroup>
 </Project>

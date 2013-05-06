@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MJTool
 {
@@ -18,7 +19,7 @@ namespace MJTool
 		}
 		
 		// Initialize arcfour context from key, an array of ints, each from [0..255]
-		public void init(int[] key)
+		public void init(List<int> key)
 		{
 			int i, j, t;
 			this.S = new int[256];
@@ -29,7 +30,7 @@ namespace MJTool
 			j = 0;
 			for (i = 0; i < 256; ++i)
 			{
-				j = (j + this.S[i] + key[i % key.Length]) & 255;
+				j = (j + this.S[i] + key[i % key.Count]) & 255;
 				t = this.S[i];
 				this.S[i] = this.S[j];
 				this.S[j] = t;

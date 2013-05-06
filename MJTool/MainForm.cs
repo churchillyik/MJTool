@@ -51,9 +51,16 @@ namespace MJTool
 			{ }
 		}
 		
+		private int nLogCnt = 0;
 		private void WriteLog(string log)
 		{
+			if (nLogCnt >= 100)
+			{
+				this.tbLog.Text = "";
+				nLogCnt = 0;
+			}
 			this.tbLog.AppendText("[" + DateTime.Now.ToString() + "] " + log + "\r\n");
+			nLogCnt++;
 		}
 		
 		private void ClearLog()
@@ -63,9 +70,7 @@ namespace MJTool
 		
 		void BtLoginClick(object sender, EventArgs e)
 		{
-			sInsMgr.strUserName = this.tbAccount.Text;
-			sInsMgr.strPassword = this.tbPassword.Text;
-			sInsMgr.Login();
+			sInsMgr.Login(this.tbAccount.Text, this.tbPassword.Text);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace MJTool
 {
@@ -12,7 +13,7 @@ namespace MJTool
 	public class SecureRandom
 	{
 		private Arcfour rng_state = null;
-		private static int[] rng_pool = null;
+		private static List<int> rng_pool = new List<int>();
 		private static int rng_pptr;
 		
 		// Pool size must be a multiple of 4 and greater than 32.
@@ -38,19 +39,14 @@ namespace MJTool
 		// Mix in the current time (w/milliseconds) into the pool
 		private static void rng_seed_time()
 		{
-			//return rng_seed_int(QueryManager.UnixTimeStamp(DateTime.Now));
+			rng_seed_int(QueryManager.UnixTimeStamp(DateTime.Now));
 			//1367108171078
-			//1367079447476
-			rng_seed_int(1367108171078);
+			//rng_seed_int(1367108171078);
 		}
 		
 		public static void init_pool()
 		{
-			if (rng_pool != null)
-			{
-				return;
-			}
-			rng_pool = new int[rng_psize];
+			rng_pool.Clear();
 			rng_pptr = 0;
 			int t;
 			/*
@@ -68,11 +64,12 @@ namespace MJTool
 				// extract some randomness from
 				// Math.random()
 				Random r = new Random();
-				//t = Convert.ToInt32(Math.Floor(r.NextDouble() * 65536));
-				t = Convert.ToInt32(Math.Floor(0.6 * 65536));
+				t = Convert.ToInt32(Math.Floor(r.NextDouble() * 65536));
+				//t = Convert.ToInt32(Math.Floor(0.6 * 65536));
 				//rng_pool[rng_pptr++] = t >>> 8;
-				rng_pool[rng_pptr++] = t >> 8;
-				rng_pool[rng_pptr++] = t & 255;
+				rng_pool.Add(t >> 8);
+				rng_pool.Add(t & 255);
+				rng_pptr += 2;
 			}
 			rng_pptr = 0;
 			rng_seed_time();
@@ -87,7 +84,7 @@ namespace MJTool
 				rng_seed_time();
 				rng_state = new Arcfour();
 				rng_state.init(rng_pool);
-				for (rng_pptr = 0; rng_pptr < rng_pool.Length; ++rng_pptr)
+				for (rng_pptr = 0; rng_pptr < rng_pool.Count; ++rng_pptr)
 				{
 					rng_pool[rng_pptr] = 0;
 				}

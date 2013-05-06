@@ -25,12 +25,25 @@ namespace MJTool
 
 		private static ExplorerMod gMod = ExplorerMod.MOZILLA;
 		
-		public int[] datas = null;
+		public List<int> datas = new List<int>();
 		public int t;
 		public int s;
 		
-		public static BigInteger ZERO = new BigInteger(0);
-		public static BigInteger ONE = new BigInteger(1);
+		public static BigInteger ZERO
+		{
+			get
+			{
+				return new BigInteger(0);
+			}
+		}
+		
+		public static BigInteger ONE
+		{
+			get
+			{
+				return new BigInteger(1);
+			}
+		}
 		
 		// return new, unset BigInteger
 		public BigInteger()
@@ -67,7 +80,7 @@ namespace MJTool
 		// am1: use a single mult and divide to get the high bits,
 		// max digit bits should be 26 because
 		// max internal value = 2*dvalue^2-2*dvalue (< 2^53)
-		private int am1(int i, int x, int[] w, int j, int c, int n)
+		private int am1(int i, int x, List<int> w, int j, int c, int n)
 		{
 			int v;
 			while (--n >= 0)
@@ -82,7 +95,7 @@ namespace MJTool
 		// am2 avoids a big mult-and-extract completely.
 		// Max digit bits should be <= 30 because we do bitwise ops
 		// on values up to 2*hdvalue^2-hdvalue-1 (< 2^31)
-		private int am2(int i, int x, int[] w, int j, int c, int n)
+		private int am2(int i, int x, List<int> w, int j, int c, int n)
 		{
 			int xl = x & 0x7fff;
 			int xh = x >> 15;
@@ -101,11 +114,12 @@ namespace MJTool
 		
 		// Alternately, set max digit bits to 28 since some
 		// browsers slow down when dealing with 32-bit numbers.
-		private int am3(int i, int x, int[] w, int j, int c, int n)
+		private int am3(int i, int x, List<int> w, int j, int c, int n)
 		{
 			int xl = x & 0x3fff;
 			int xh = x >> 14;
-			while (--n >= 0) {
+			while (--n >= 0)
+			{
 				int l = datas[i] & 0x3fff;
 				int h = datas[i++] >> 14;
 				int m = xh * l + h * xl;
@@ -116,7 +130,7 @@ namespace MJTool
 			return c;
 		}
 		
-		public int am(int i, int x, int[] w, int j, int c, int n)
+		public int am(int i, int x, List<int> w, int j, int c, int n)
 		{
 			if (j_lm && (gMod == ExplorerMod.IE))
 			{
@@ -234,10 +248,10 @@ namespace MJTool
 			{
 				r = new BigInteger();
 			}
-			r.datas = new int[this.t];
-			for (int i = this.t - 1; i >= 0; --i)
+
+			for (int i = 0; i < this.t; i++)
 			{
-				r.datas[i] = this.datas[i];
+				r.SetData(i, this.datas[i]);
 			}
 			r.t = this.t;
 			r.s = this.s;
@@ -248,14 +262,14 @@ namespace MJTool
 		{
 			this.t = 1;
 			this.s = (x < 0) ? -1 : 0;
-			this.datas = new int[1];
+
 			if (x > 0)
 			{
-				this.datas[0] = x;
+				this.SetData(0, x);
 			}
 			else if (x < -1)
 			{
-				this.datas[0] = x + DV;
+				this.SetData(0, x + DV);
 			}
 			else
 			{
@@ -303,7 +317,6 @@ namespace MJTool
 			bool mi = false;
 			int sh = 0;
 			
-			this.datas = new int[i];
 			while (--i >= 0)
 			{
 				int x = (k == 8) ? Convert.ToInt32(data_str[i]) & 0xff : this.intAt(data_str, i);
@@ -318,12 +331,12 @@ namespace MJTool
 				mi = false;
 				if (sh == 0)
 				{
-					this.datas[this.t++] = x;
+					this.SetData(this.t++, x);
 				}
 				else if (sh + k > this.DB)
 				{
 					this.datas[this.t - 1] |= (x & ((1 << (this.DB - sh)) - 1)) << sh;
-					this.datas[this.t++] = (x >> (this.DB - sh));
+					this.SetData(this.t++, x >> (this.DB - sh));
 				}
 				else
 				{
@@ -455,6 +468,10 @@ namespace MJTool
 		// (public) return + if this > a, - if this < a, 0 if equal
 		public int compareTo(BigInteger a)
 		{
+			if (a == null)
+			{
+				return 1;
+			}
 			int r = this.s - a.s;
 			if (r != 0)
 			{
@@ -527,17 +544,16 @@ namespace MJTool
 			if (r == null)
 			{
 				r = new BigInteger();
-				r.datas = new int[this.t + n];
 			}
 			
 			int i;
 			for (i = this.t - 1; i >= 0; --i)
 			{
-				r.datas[i + n] = this.datas[i];
+				r.SetData(i + n, this.datas[i]);
 			}
 			for (i = n - 1; i >= 0; --i)
 			{
-				r.datas[i] = 0;
+				r.SetData(i, 0);
 			}
 			r.t = this.t + n;
 			r.s = this.s;
@@ -549,14 +565,10 @@ namespace MJTool
 			if (r == null)
 			{
 				r = new BigInteger();
-				if (this.t > n)
-				{
-					r.datas = new int[this.t - n];
-				}
 			}
 			for (int i = n; i < this.t; ++i)
 			{
-				r.datas[i - n] = this.datas[i];
+				r.SetData(i - n, this.datas[i]);
 			}
 			r.t = Math.Max(this.t - n, 0);
 			r.s = this.s;
@@ -576,17 +588,16 @@ namespace MJTool
 			int ds = n / this.DB;
 			int c = (this.s << bs) & this.DM;
 			int i;
-			r.datas = new int[this.t + ds + 1];
 			for (i = this.t - 1; i >= 0; --i)
 			{
-				r.datas[i + ds + 1] = (this.datas[i] >> cbs) | c;
+				r.SetData(i + ds + 1, (this.datas[i] >> cbs) | c);
 				c = (this.datas[i] & bm) << bs;
 			}
 			for (i = ds - 1; i >= 0; --i)
 			{
-				r.datas[i] = 0;
+				r.SetData(i, 0);
 			}
-			r.datas[ds] = c;
+			r.SetData(ds, c);
 			r.t = this.t + ds + 1;
 			r.s = this.s;
 			r.clamp();
@@ -609,11 +620,11 @@ namespace MJTool
 			int bs = n % this.DB;
 			int cbs = this.DB - bs;
 			int bm = (1 << bs) - 1;
-			r.datas[0] = this.datas[ds] >> bs;
+			r.SetData(0, this.datas[ds] >> bs);
 			for (int i = ds + 1; i < this.t; ++i)
 			{
 				r.datas[i - ds - 1] |= (this.datas[i] & bm) << cbs;
-				r.datas[i - ds] = this.datas[i] >> bs;
+				r.SetData(i - ds, this.datas[i] >> bs);
 			}
 			if (bs > 0)
 			{
@@ -634,12 +645,12 @@ namespace MJTool
 			{
 				r = new BigInteger();
 			}
-			
+
 			int i = 0, c = 0, m = Math.Min(a.t, this.t);
 			while (i < m)
 			{
 				c += this.datas[i] - a.datas[i];
-				r.datas[i++] = c & this.DM;
+				r.SetData(i++, c & this.DM);
 				c >>= this.DB;
 			}
 			if (a.t < this.t)
@@ -648,7 +659,7 @@ namespace MJTool
 				while (i < this.t)
 				{
 					c += this.datas[i];
-					r.datas[i++] = c & this.DM;
+					r.SetData(i++, c & this.DM);
 					c >>= this.DB;
 				}
 				c += this.s;
@@ -659,7 +670,7 @@ namespace MJTool
 				while (i < a.t)
 				{
 					c -= a.datas[i];
-					r.datas[i++] = c & this.DM;
+					r.SetData(i++, c & this.DM);
 					c >>= this.DB;
 				}
 				c -= a.s;
@@ -667,11 +678,11 @@ namespace MJTool
 			r.s = (c < 0) ? -1 : 0;
 			if (c < -1)
 			{
-				r.datas[i++] = this.DV + c;
+				r.SetData(i++, this.DV + c);
 			}
 			else if (c > 0)
 			{
-				r.datas[i++] = c;
+				r.SetData(i++, c);
 			}
 			r.t = i;
 			r.clamp();
@@ -694,7 +705,7 @@ namespace MJTool
 			r.t = i + y.t;
 			while (--i >= 0)
 			{
-				r.datas[i] = 0;
+				r.SetData(i, 0);
 			}
 			for (i = 0; i < y.t; ++i)
 			{
@@ -719,7 +730,7 @@ namespace MJTool
 			int i = r.t = 2 * x.t;
 			while (--i >= 0)
 			{
-				r.datas[i] = 0;
+				r.SetData(i, 0);
 			}
 			for (i = 0; i < x.t - 1; ++i)
 			{
@@ -794,28 +805,31 @@ namespace MJTool
 			{
 				return;
 			}
-			int yt = y0 * (1 << this.F1) + ((ys > 1) ? y.datas[ys - 2] >> this.F2 : 0);
-			int d1 = Convert.ToInt32(this.FV / yt), d2 = (1 << this.F1) / yt, e = 1 << this.F2;
+			long yt = (long)y0 * (1 << this.F1) + ((ys > 1) ? y.datas[ys - 2] >> this.F2 : 0);
+			double d1 = (double)this.FV / yt;
+			double d2 = (double)((long)1 << this.F1) / yt;
+			int e = 1 << this.F2;
 			int i = r.t, j = i - ys;
 			BigInteger t = (q == null) ? new BigInteger() : q;
 			y.dlShiftTo(j, t);
 			if (r.compareTo(t) >= 0)
 			{
-				r.datas[r.t++] = 1;
+				r.SetData(r.t++, 1);
 				r.subTo(t, r);
 			}
 			ONE.dlShiftTo(ys, t);
 			t.subTo(y, y); // "negative" y so we can replace sub with am later
 			while (y.t < ys)
 			{
-				y.datas[y.t++] = 0;
+				y.SetData(y.t++, 0);
 			}
 			while (--j >= 0)
 			{
 				// Estimate quotient digit
 				int qd = (r.datas[--i] == y0) ? this.DM
-					: r.datas[i] * d1 + (r.datas[i - 1] + e) * d2;
-				if ((r.datas[i] += y.am(0, qd, r.datas, j, 0, ys)) < qd)
+					: Convert.ToInt32(Math.Floor((double)r.datas[i] * d1 + (double)(r.datas[i - 1] + e) * d2));
+				int tmp = y.am(0, qd, r.datas, j, 0, ys);
+				if ((r.datas[i] += tmp) < qd)
 				{
 					// Try it out
 					y.dlShiftTo(j, t);
@@ -902,7 +916,7 @@ namespace MJTool
 		{
 			if (e > 0x7fffffff || e < 1)
 			{
-				return BigInteger.ONE;
+				return ONE;
 			}
 			BigInteger r = new BigInteger(), r2 = new BigInteger();
 			BigInteger g = z.convert(this);
@@ -930,7 +944,7 @@ namespace MJTool
 		{
 			if (e > 0x7fffffff || e < 1)
 			{
-				return BigInteger.ONE;
+				return ONE;
 			}
 			BigInteger r = new BigInteger(), r2 = new BigInteger();
 			BigInteger g = z.convert(this);
@@ -982,6 +996,15 @@ namespace MJTool
 		private string toRadix(int radix)
 		{
 			return null;
+		}
+		
+		public void SetData(int nIndex, int nVal)
+		{
+			for (int i = this.datas.Count; i <= nIndex; i++)
+			{
+				this.datas.Add(0);
+			}
+			this.datas[nIndex] = nVal;
 		}
 	}
 }

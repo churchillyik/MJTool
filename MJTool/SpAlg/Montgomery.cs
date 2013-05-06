@@ -63,7 +63,7 @@ namespace MJTool
 			while (x.t <= this.mt2)
 			{
 				// pad x so am has enough room later
-				x.datas[x.t++] = 0;
+				x.SetData(x.t++, 0);
 			}
 			for (int i = 0; i < this.m.t; ++i)
 			{
