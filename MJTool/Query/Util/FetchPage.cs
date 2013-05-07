@@ -5,19 +5,19 @@ using System.Web;
 
 namespace MJTool
 {
-	partial class QueryManager
+	public enum QueryStatus
+	{
+		NotLogined,
+		Logined,
+		QueryReady,
+		QueryFinish,
+	};
+
+	public partial class User
 	{
 		private MyWebClient webClient = null;
+		public QueryStatus QrySta = QueryStatus.NotLogined;
 		
-		enum QueryStatus
-		{
-			NotLogined,
-			Logined,
-			QueryReady,
-			QueryFinish,
-		};
-		
-		private QueryStatus QrySta = QueryStatus.NotLogined;
 		public string PageQuery(string strSvr, string strURL)
 		{
 			return PageQuery(strSvr, strURL, (byte[])null, Encoding.UTF8);
@@ -40,7 +40,7 @@ namespace MJTool
 		
 		public string PageQuery(string strSvr, string strURL, byte[] qry_bytes, Encoding enc)
 		{
-			DebugLog(strSvr + "/" + strURL);
+			upCall.DebugLog(strSvr + "/" + strURL);
 			if (this.webClient == null)
 			{
 				this.webClient = new MyWebClient(strSvr, null);
@@ -63,8 +63,8 @@ namespace MJTool
 				result = webClient.HttpQuery(strURL, qry_bytes, enc, out strEx);
 				if (strEx != "")
 				{
-					DebugLog("访问：[" + strURL + "]时发生异常，接着重试");
-					DebugLog(strEx.Substring(0, strEx.IndexOfAny(new char [] {'\r', '\n'})));
+					upCall.DebugLog("访问：[" + strURL + "]时发生异常，接着重试");
+					upCall.DebugLog(strEx.Substring(0, strEx.IndexOfAny(new char [] {'\r', '\n'})));
 				}
 				else
 				{
@@ -72,7 +72,7 @@ namespace MJTool
 				}
 			}
 			
-			if (CheckIfLogined(result))
+			if (bIsLogined)
 			{
 				this.QrySta = QueryStatus.QueryFinish;
 			}

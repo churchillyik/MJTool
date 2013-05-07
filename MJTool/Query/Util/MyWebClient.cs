@@ -47,11 +47,9 @@ namespace MJTool
 			strLastQueryPageURI = Uri;
 			request.Timeout = 30000;
 			request.UserAgent = "Mozilla/5.0 (Windows NT 5.1; rv:20.0) Gecko/20100101 Firefox/20.0";
-//			request.Accept = "application/json, text/javascript, */*; q=0.01";
 			request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 			request.Headers.Add("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3");
 			request.Headers.Add("Accept-Encoding", "gzip, deflate");
-//			request.Headers.Add("Accept-Charset", "GB2312,utf-8;q=0.7,*;q=0.7");
 			request.ServicePoint.Expect100Continue = false;
 			request.KeepAlive = true;
 		}
@@ -88,10 +86,11 @@ namespace MJTool
 		private string HttpPost(byte[] qry_bytes, Encoding enc)
 		{
 			request.Method = "POST";
-			if (this.strSvrURL == QueryManager.strGameSvr)
+			// 发送用户命令的时候，改用"application/octet-stream"的发送方式
+			if (this.strSvrURL == ServerParam.strGameSvr)
 			{
 				request.ContentType = "application/octet-stream";
-				request.Referer = "http://static.kunlun.com/app/mjws/1621304121/kd2.swf?version=" + QueryManager.version;
+				request.Referer = ServerParam.strSWFDownLoadURL;
 			}
 			else
 			{

@@ -7,7 +7,7 @@ using System.Threading;
 namespace MJTool
 {
 	public partial class QueryManager
-	{
+	{	
 		public event EventHandler<UIUpdateArgs> OnUIUpdate;
 		private object SycLock = new object();
 		
@@ -40,17 +40,22 @@ namespace MJTool
 			sb.AppendLine(ex.Message);
 			sb.AppendLine(ex.StackTrace);
 			
-			FileStream fs = new FileStream("Crash.log", FileMode.Create, FileAccess.Write);
+			WriteLog("Crash.log", sb.ToString());
+		}
+		
+		public static void WriteLog(string file_name, string content)
+		{
+			FileStream fs = new FileStream(file_name, FileMode.Create, FileAccess.Write);
 			StreamWriter sw = new StreamWriter(fs, Encoding.Unicode);
-			sw.Write(sb.ToString());
+			sw.Write(content);
 			sw.Close();
 		}
 		
-		public void Login(string name, string pwd)
+		public void Login(User u)
 		{
 			Thread t = new Thread(new ParameterizedThreadStart(doLogin));
 			t.Name = "Login";
-			t.Start(new LoginParam() { strName = name, strPwd = pwd });
+			t.Start(u);
 		}
 		
 		public void SendCommand(CmdArg arg)
@@ -77,10 +82,4 @@ namespace MJTool
 	{
 		public string strLog;
 	};
-	
-	public class LoginParam
-	{
-		public string strName;
-		public string strPwd;
-	}
 }

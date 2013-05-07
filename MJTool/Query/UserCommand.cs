@@ -93,16 +93,13 @@ namespace MJTool
 		
 		public void doUserCommand(object o)
 		{
-			CmdIDs id = CmdIDs.NONE;
-			if (o is CmdArg)
-			{
-				CmdArg arg = (CmdArg)o;
-				id = arg.cmd_id;
-			}
-			else
+			CmdArg cmd_arg = (CmdArg) o;
+			if (cmd_arg == null)
 			{
 				return;
 			}
+			CmdIDs id = cmd_arg.cmd_id;
+			User curUser = cmd_arg.cur_user;
 			
 			if (!gDicCmd.ContainsKey(id))
 			{
@@ -132,18 +129,13 @@ namespace MJTool
 			// generalId => <int>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.GENERAL_ID)) != (ulong)0)
 			{
-				int nGenID = 0;
-				if (o is EplGenCmdArg)
-				{
-					EplGenCmdArg arg = (EplGenCmdArg)o;
-					nGenID = arg.nGenID;
-				}
-				else
+				EplGenCmdArg arg = (EplGenCmdArg) o;
+				if (arg == null)
 				{
 					DebugLog("错误地使用了命令参数[TYPE]");
 					return;
 				}
-				dic_pck.Add("generalId", nGenID);
+				dic_pck.Add("generalId", arg.nGenID);
 			}
 			
 			// ct => <double>ms
@@ -156,13 +148,13 @@ namespace MJTool
 			// version => <string>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.VERSION)) != (ulong)0)
 			{
-				dic_pck.Add("version", version);
+				dic_pck.Add("version", ServerParam.strVersion);
 			}
 			
 			// sessionkey => <string>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.SESSION_KEY)) != (ulong)0)
 			{
-				dic_pck.Add("sessionkey", this.MakeSessionKey());
+				dic_pck.Add("sessionkey", this.MakeSessionKey(curUser));
 			}
 			
 			// clientTime => <double> s
@@ -175,30 +167,25 @@ namespace MJTool
 			// single => <string>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.SINGLE)) != (ulong)0)
 			{
-				dic_pck.Add("single", this.single);
+				dic_pck.Add("single", curUser.single);
 			}
 			
 			// finishGuide => <int>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.FINISH_GUIDE)) != (ulong)0)
 			{
-				dic_pck.Add("finishGuide", this.finishGuide);
+				dic_pck.Add("finishGuide", curUser.finishGuide);
 			}
 			
 			// soul => <int>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.SOUL)) != (ulong)0)
 			{
-				int nSoul = 0;
-				if (o is EplGenCmdArg)
-				{
-					EplGenCmdArg arg = (EplGenCmdArg)o;
-					nSoul = arg.nSoul;
-				}
-				else
+				EplGenCmdArg arg = (EplGenCmdArg) o;
+				if (arg == null)
 				{
 					DebugLog("错误地使用了命令参数[SOUL]");
 					return;
 				}
-				dic_pck.Add("soul", nSoul);
+				dic_pck.Add("soul", arg.nSoul);
 			}
 			
 			// isAMF => <int>
@@ -226,26 +213,43 @@ namespace MJTool
 			{
 				lst_byte.Add(bs_dic[i]);
 			}
-			string result = this.PageQuery(strGameSvr, "", lst_byte.ToArray(), Encoding.ASCII);
-			byte[] bs_res = Encoding.ASCII.GetBytes(result);
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < bs_res.Length; i++)
-			{
-				sb.Append(bs_res[i].ToString("X2") + " ");
-			}
-			DebugLog(sb.ToString());
+			string result = curUser.PageQuery(ServerParam.strGameSvr, "", lst_byte.ToArray());
+			Print(Encoding.ASCII.GetBytes(result));
 		}
 		
-		private string MakeSessionKey()
+		private void Print(byte[] bs)
+		{
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < bs.Length; i++)
+			{
+				if ((bs[i] >= (byte) 'a' && bs[i] <= (byte) 'z')
+				    || (bs[i] >= (byte) 'A' && bs[i] <= (byte) 'Z'))
+				{
+					sb.Append(Convert.ToChar(bs[i]).ToString() + " ");
+				}
+				else
+				{
+					if (i + 2 < bs.Length && 
+					    bs[i] == 0x0A && bs[i + 1] == 0x0B)
+					{
+						sb.Append("\r\n");
+					}
+					sb.Append(bs[i].ToString("X2") + " ");
+				}
+			}
+			WriteLog("cmd.txt", sb.ToString());
+		}
+		
+		private string MakeSessionKey(User u)
 		{
 			return "{" 
-				+ "\"act\":\"" + strAct + "\","
-				+ "\"wyx_user_id\":\"" + this.wyx_user_id + "\","
-				+ "\"wyx_session_key\":\"" + this.wyx_session_key + "\","
-				+ "\"wyx_create\":\"" + this.wyx_create + "\","
-				+ "\"wyx_expire\":\"" + this.wyx_expire + "\","
-				+ "\"wyx_signature\":\"" + this.wyx_signature + "\","
-				+ "\"serverId\":\"" + strServerID + "\""
+				+ "\"act\":\"" + ServerParam.strAct + "\","
+				+ "\"wyx_user_id\":\"" + u.wyx_user_id + "\","
+				+ "\"wyx_session_key\":\"" + u.wyx_session_key + "\","
+				+ "\"wyx_create\":\"" + u.wyx_create + "\","
+				+ "\"wyx_expire\":\"" + u.wyx_expire + "\","
+				+ "\"wyx_signature\":\"" + u.wyx_signature + "\","
+				+ "\"serverId\":\"" + ServerParam.strServerID + "\""
 				+ "}";
 		}
 		
@@ -288,16 +292,18 @@ namespace MJTool
 	public class CmdArg
 	{
 		public CmdIDs cmd_id;
-		public CmdArg(CmdIDs id)
+		public User cur_user;
+		public CmdArg(CmdIDs id, User u)
 		{
 			this.cmd_id = id;
+			this.cur_user = u;
 		}
 	}
 	
 	public class RfsGenCmdArg : CmdArg
 	{
 		public int nType;
-		public RfsGenCmdArg(CmdIDs id, int t) : base(id)
+		public RfsGenCmdArg(CmdIDs id, User u, int t) : base(id, u)
 		{
 			this.nType = t;
 		}
@@ -307,7 +313,7 @@ namespace MJTool
 	{
 		public int nGenID;
 		public int nSoul;
-		public EplGenCmdArg(CmdIDs id, int gen_id, int s) : base(id)
+		public EplGenCmdArg(CmdIDs id, User u, int gen_id, int s) : base(id, u)
 		{
 			this.nGenID = gen_id;
 			this.nSoul = s;
