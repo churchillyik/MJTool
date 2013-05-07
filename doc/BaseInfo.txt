@@ -1,0 +1,12 @@
+{
+	serverTime => <double>
+	userData => <object>
+	{
+		userSendFeed => <object>
+		{
+			entity\\UserSend
+			id => <int>
+			num => <int>
+			ct => <double>
+		}
+	}
