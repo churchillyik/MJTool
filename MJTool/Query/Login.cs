@@ -13,12 +13,13 @@ namespace MJTool
 		
 		// 游戏的域名地址
 		public static string strGameSvr = "mjwssina.app.koramgame.com";
-		// 游戏的AppID
-		public static int nOriginID = 1013;
 		
 		// 登陆后会话的固有部分
 		public static string strAct = "Index.iframe";
 		public static string strServerID = "1";
+		
+		// 游戏的AppID
+		public string origin = "3054";
 		
 		// 新浪的账号和密码
 		private string strUserName;
@@ -28,13 +29,14 @@ namespace MJTool
 		private string inviter_id;
 
 		// 利用验证码从微博获得的会话信息
+		private string wyx_user_id;
 		private string wyx_session_key;
 		private string wyx_create;
 		private string wyx_expire;
 		private string wyx_signature;
 		
 		// 通过回合信息从游戏服务器获得的游戏版本号
-		private string version;
+		public static string version;
 		
 		// 新手引导完成情况
 		private int finishGuide = 0;
@@ -73,7 +75,7 @@ namespace MJTool
 			// 解析并获得加密公钥等信息
 			string strSvrTime, pcid, nonce, pubkey, rsakv;
 			Match m = Regex.Match(result, "\"servertime\":(.*?),\"pcid\":\"(.*?)\",\"nonce\":\"(.*?)\"," +
-			                "\"pubkey\":\"(.*?)\",\"rsakv\":\"(.*?)\"", RegexOptions.Singleline);
+			                      "\"pubkey\":\"(.*?)\",\"rsakv\":\"(.*?)\"", RegexOptions.Singleline);
 			if (!m.Success)
 			{
 				DebugLog("无法解析[sso/prelogin.php]");
@@ -129,7 +131,7 @@ namespace MJTool
 			
 			// 利用微博用户ID获得游戏登陆地址及游戏会话信息
 			result = PageQuery("game.weibo.com", "mengjiangwushuang/?inviter_id=" + this.inviter_id
-			                   + "&amp;amp;origin=" + nOriginID);
+			                   + "&origin=" + this.origin);
 			m = Regex.Match(result, "mjwssina\\.app\\.koramgame\\.com(.*?)\"", RegexOptions.Singleline);
 			if (!m.Success)
 			{
@@ -137,26 +139,38 @@ namespace MJTool
 				return;
 			}
 			string koram_url_param = m.Groups[1].Value;
-			m = Regex.Match(koram_url_param + "END", "wyx_session_key=(.*?)&wyx_create=(.*?)&wyx_expire=(.*?)&wyx_signature=(.*?)END", RegexOptions.Singleline);
+			m = Regex.Match(koram_url_param + "END", "origin=(.*?)&wyx_user_id=(.*?)&wyx_session_key=(.*?)&wyx_create=(.*?)&wyx_expire=(.*?)&wyx_signature=(.*?)END", RegexOptions.Singleline);
 			if (!m.Success)
 			{
 				DebugLog("无法解析出会话信息！");
 				return;
 			}
-			this.wyx_session_key = m.Groups[1].Value;
-			this.wyx_create = m.Groups[2].Value;
-			this.wyx_expire = m.Groups[3].Value;
-			this.wyx_signature = m.Groups[4].Value;
+			this.origin = m.Groups[1].Value;
+			this.wyx_user_id = m.Groups[2].Value;
+			this.wyx_session_key = m.Groups[3].Value;
+			this.wyx_create = m.Groups[4].Value;
+			this.wyx_expire = m.Groups[5].Value;
+			this.wyx_signature = m.Groups[6].Value;
 			
+			// 组装游戏页面URL
+			data.Clear();
+			data.Add("act",  strAct);
+			data.Add("wyx_user_id",  this.wyx_user_id);
+			data.Add("wyx_session_key",  this.wyx_session_key);
+			data.Add("wyx_create", this.wyx_create);
+			data.Add("wyx_expire",  this.wyx_expire);
+			data.Add("wyx_signature", this.wyx_signature);
+			data.Add("serverId",  strServerID);
+			koram_url_param = "?" + CreateQueryString(data);
 			// 获取游戏页面并获取游戏版本号
-			result = PageQuery("mjwssina.app.koramgame.com", koram_url_param);
+			result = PageQuery(strGameSvr, koram_url_param);
 			m = Regex.Match(result, "'version'\\s*:\\s*'(.*?)'", RegexOptions.Singleline);
 			if (!m.Success)
 			{
 				DebugLog("无法解析出版本号！");
 				return;
 			}
-			this.version = m.Groups[1].Value;
+			version = m.Groups[1].Value;
 			
 			// 获取游戏资料
 			CmdArg arg = new CmdArg(CmdIDs.USER_GET_INFO);

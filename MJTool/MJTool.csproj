@@ -60,11 +60,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\Login.cs" />
-    <Compile Include="Query\MyWebClient.cs" />
+    <Compile Include="Query\QueryManager.cs" />
     <Compile Include="Query\UserCommand.cs" />
     <Compile Include="Query\Util\FetchPage.cs" />
     <Compile Include="Query\Util\HtmlUtility.cs" />
-    <Compile Include="Query\Util\QueryManager.cs" />
+    <Compile Include="Query\Util\MyWebClient.cs" />
     <Compile Include="SpAlg\Arcfour.cs" />
     <Compile Include="SpAlg\BigInteger.cs" />
     <Compile Include="SpAlg\Classic.cs" />

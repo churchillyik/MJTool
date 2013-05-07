@@ -18,7 +18,6 @@ namespace MJTool
 		
 		private HttpWebRequest request;
 		private CookieContainer cookies = null;
-		public string strCurCookie = null;
 		private string strLastQueryPageURI = null;
 		public MyWebClient(string svr_url, string pxy_addr)
 		{
@@ -47,11 +46,12 @@ namespace MJTool
 			}
 			strLastQueryPageURI = Uri;
 			request.Timeout = 30000;
-			request.UserAgent = "Mozilla/5.0 (Windows NT 5.1; rv:13.0) Gecko/20100101 Firefox/13.0.1";
-			request.Accept = "application/json, text/javascript, */*; q=0.01";
+			request.UserAgent = "Mozilla/5.0 (Windows NT 5.1; rv:20.0) Gecko/20100101 Firefox/20.0";
+//			request.Accept = "application/json, text/javascript, */*; q=0.01";
+			request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 			request.Headers.Add("Accept-Language", "zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3");
 			request.Headers.Add("Accept-Encoding", "gzip, deflate");
-			request.Headers.Add("Accept-Charset", "GB2312,utf-8;q=0.7,*;q=0.7");
+//			request.Headers.Add("Accept-Charset", "GB2312,utf-8;q=0.7,*;q=0.7");
 			request.ServicePoint.Expect100Continue = false;
 			request.KeepAlive = true;
 		}
@@ -88,7 +88,15 @@ namespace MJTool
 		private string HttpPost(byte[] qry_bytes, Encoding enc)
 		{
 			request.Method = "POST";
-			request.ContentType = "application/x-www-form-urlencoded";
+			if (this.strSvrURL == QueryManager.strGameSvr)
+			{
+				request.ContentType = "application/octet-stream";
+				request.Referer = "http://static.kunlun.com/app/mjws/1621304121/kd2.swf?version=" + QueryManager.version;
+			}
+			else
+			{
+				request.ContentType = "application/x-www-form-urlencoded";
+			}
 			request.ContentLength = qry_bytes.Length;
 			
 			Stream newStream = request.GetRequestStream();
@@ -102,12 +110,28 @@ namespace MJTool
 		{
 			string result = null;
 			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-			response.Cookies = cookies.GetCookies(request.RequestUri);
 			
-			foreach (Cookie cook in response.Cookies)
+			// 更新cookie
+			foreach (Cookie rsp_c in response.Cookies)
 			{
-				this.strCurCookie = cook.Value;
+				CookieCollection cc = cookies.GetCookies(request.RequestUri);
+				bool bIsExist = false;
+				foreach (Cookie req_c in cc)
+				{
+					if (req_c.Name == rsp_c.Name)
+					{
+						bIsExist = true;
+						req_c.Value = rsp_c.Value;
+						req_c.Expires = rsp_c.Expires;
+						req_c.Expired = rsp_c.Expired;
+					}
+				}
+				if (!bIsExist)
+				{
+					cookies.Add(rsp_c);
+				}
 			}
+			
 			
 			if (response.ContentEncoding == "gzip")
 			{

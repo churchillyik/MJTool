@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using FluorineFx.AMF3;
 
 namespace MJTool
@@ -155,7 +156,7 @@ namespace MJTool
 			// version => <string>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.VERSION)) != (ulong)0)
 			{
-				dic_pck.Add("version", this.version);
+				dic_pck.Add("version", version);
 			}
 			
 			// sessionkey => <string>
@@ -225,15 +226,21 @@ namespace MJTool
 			{
 				lst_byte.Add(bs_dic[i]);
 			}
-			string result = this.PageQuery(strGameSvr, "", lst_byte.ToArray());
-			DebugLog(result);
+			string result = this.PageQuery(strGameSvr, "", lst_byte.ToArray(), Encoding.ASCII);
+			byte[] bs_res = Encoding.ASCII.GetBytes(result);
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < bs_res.Length; i++)
+			{
+				sb.Append(bs_res[i].ToString("X2") + " ");
+			}
+			DebugLog(sb.ToString());
 		}
 		
 		private string MakeSessionKey()
 		{
 			return "{" 
 				+ "\"act\":\"" + strAct + "\","
-				+ "\"wyx_user_id\":\"" + this.inviter_id + "\","
+				+ "\"wyx_user_id\":\"" + this.wyx_user_id + "\","
 				+ "\"wyx_session_key\":\"" + this.wyx_session_key + "\","
 				+ "\"wyx_create\":\"" + this.wyx_create + "\","
 				+ "\"wyx_expire\":\"" + this.wyx_expire + "\","
