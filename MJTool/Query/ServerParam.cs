@@ -1,9 +1,4 @@
-﻿/*
- * 用户： Administrator
- * 日期: 2013-5-7
- * 时间: 21:48
- */
-using System;
+﻿using System;
 
 namespace MJTool
 {
