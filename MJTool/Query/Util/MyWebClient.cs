@@ -131,7 +131,6 @@ namespace MJTool
 				}
 			}
 			
-			
 			if (response.ContentEncoding == "gzip")
 			{
 				using(Stream streamReceive = response.GetResponseStream())

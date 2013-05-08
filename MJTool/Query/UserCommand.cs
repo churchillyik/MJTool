@@ -213,8 +213,8 @@ namespace MJTool
 			{
 				lst_byte.Add(bs_dic[i]);
 			}
-			string result = curUser.PageQuery(ServerParam.strGameSvr, "", lst_byte.ToArray());
-			Print(Encoding.ASCII.GetBytes(result));
+			string result = curUser.PageQuery(ServerParam.strGameSvr, "", lst_byte.ToArray(), Encoding.GetEncoding("iso-8859-1"));
+			Print(Encoding.GetEncoding("iso-8859-1").GetBytes(result));
 		}
 		
 		private void Print(byte[] bs)
