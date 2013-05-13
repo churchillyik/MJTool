@@ -5,7 +5,7 @@ namespace MJTool
 	/// <summary>
 	/// Description of User.
 	/// </summary>
-	public partial class User
+	public partial class Account
 	{
 		public QueryManager upCall = null;
 		
@@ -26,10 +26,12 @@ namespace MJTool
 		// 游戏账号的唯一ID
 		public string single = "";
 		
+		public UserRoot root = new UserRoot();
+		
 		// 判断用户是否登录
 		public bool bIsLogined = false;
 		
-		public User(string name, string pswd)
+		public Account(string name, string pswd)
 		{
 			strUserName = name;
 			strPassword = pswd;

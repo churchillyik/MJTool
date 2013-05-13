@@ -26,7 +26,7 @@ namespace MJTool
 		private delegate void dlgClearLog();
 		
 		private QueryManager sInsMgr = new QueryManager();
-		private User curUser = null;
+		private Account curAcc= null;
 		
 		void MainFormLoad(object sender, EventArgs e)
 		{
@@ -71,9 +71,9 @@ namespace MJTool
 		
 		void BtLoginClick(object sender, EventArgs e)
 		{
-			curUser = new User(this.tbAccount.Text, this.tbPassword.Text);
-			curUser.upCall = sInsMgr;
-			sInsMgr.Login(curUser);
+			curAcc = new Account(this.tbAccount.Text, this.tbPassword.Text);
+			curAcc.upCall = sInsMgr;
+			sInsMgr.Login(curAcc);
 		}
 	}
 }

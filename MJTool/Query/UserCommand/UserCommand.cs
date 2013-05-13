@@ -99,7 +99,7 @@ namespace MJTool
 				return;
 			}
 			CmdIDs id = cmd_arg.cmd_id;
-			User curUser = cmd_arg.cur_user;
+			Account curAcc = cmd_arg.cur_acc;
 			
 			if (!gDicCmd.ContainsKey(id))
 			{
@@ -154,7 +154,7 @@ namespace MJTool
 			// sessionkey => <string>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.SESSION_KEY)) != (ulong)0)
 			{
-				dic_pck.Add("sessionkey", this.MakeSessionKey(curUser));
+				dic_pck.Add("sessionkey", this.MakeSessionKey(curAcc));
 			}
 			
 			// clientTime => <double> s
@@ -167,13 +167,13 @@ namespace MJTool
 			// single => <string>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.SINGLE)) != (ulong)0)
 			{
-				dic_pck.Add("single", curUser.single);
+				dic_pck.Add("single", curAcc.single);
 			}
 			
 			// finishGuide => <int>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.FINISH_GUIDE)) != (ulong)0)
 			{
-				dic_pck.Add("finishGuide", curUser.finishGuide);
+				dic_pck.Add("finishGuide", curAcc.finishGuide);
 			}
 			
 			// soul => <int>
@@ -213,11 +213,23 @@ namespace MJTool
 			{
 				lst_byte.Add(bs_dic[i]);
 			}
-			string result = curUser.PageQuery(ServerParam.strGameSvr, "", lst_byte.ToArray(), Encoding.GetEncoding("iso-8859-1"));
-			Print(Encoding.GetEncoding("iso-8859-1").GetBytes(result));
+			string result = curAcc.PageQuery(ServerParam.strGameSvr, "", lst_byte.ToArray(), Encoding.GetEncoding("iso-8859-1"));
+			byte[] bs_result = Encoding.GetEncoding("iso-8859-1").GetBytes(result);
+			
+			ParseResult(id, bs_result, curAcc);
 		}
 		
-		private void Print(byte[] bs)
+		private void ParseResult(CmdIDs id, byte[] bs_result, Account acc)
+		{
+			switch (id)
+			{
+				case CmdIDs.USER_GET_INFO:
+					acc.ParseGetInfo(bs_result);
+					break;
+			}
+		}
+		
+		public void Print(byte[] bs)
 		{
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < bs.Length; i++)
@@ -240,15 +252,15 @@ namespace MJTool
 			WriteLog("cmd.txt", sb.ToString());
 		}
 		
-		private string MakeSessionKey(User u)
+		private string MakeSessionKey(Account acc)
 		{
 			return "{" 
 				+ "\"act\":\"" + ServerParam.strAct + "\","
-				+ "\"wyx_user_id\":\"" + u.wyx_user_id + "\","
-				+ "\"wyx_session_key\":\"" + u.wyx_session_key + "\","
-				+ "\"wyx_create\":\"" + u.wyx_create + "\","
-				+ "\"wyx_expire\":\"" + u.wyx_expire + "\","
-				+ "\"wyx_signature\":\"" + u.wyx_signature + "\","
+				+ "\"wyx_user_id\":\"" + acc.wyx_user_id + "\","
+				+ "\"wyx_session_key\":\"" + acc.wyx_session_key + "\","
+				+ "\"wyx_create\":\"" + acc.wyx_create + "\","
+				+ "\"wyx_expire\":\"" + acc.wyx_expire + "\","
+				+ "\"wyx_signature\":\"" + acc.wyx_signature + "\","
 				+ "\"serverId\":\"" + ServerParam.strServerID + "\""
 				+ "}";
 		}
@@ -292,18 +304,18 @@ namespace MJTool
 	public class CmdArg
 	{
 		public CmdIDs cmd_id;
-		public User cur_user;
-		public CmdArg(CmdIDs id, User u)
+		public Account cur_acc;
+		public CmdArg(CmdIDs id, Account acc)
 		{
 			this.cmd_id = id;
-			this.cur_user = u;
+			this.cur_acc = acc;
 		}
 	}
 	
 	public class RfsGenCmdArg : CmdArg
 	{
 		public int nType;
-		public RfsGenCmdArg(CmdIDs id, User u, int t) : base(id, u)
+		public RfsGenCmdArg(CmdIDs id, Account acc, int t) : base(id, acc)
 		{
 			this.nType = t;
 		}
@@ -313,7 +325,7 @@ namespace MJTool
 	{
 		public int nGenID;
 		public int nSoul;
-		public EplGenCmdArg(CmdIDs id, User u, int gen_id, int s) : base(id, u)
+		public EplGenCmdArg(CmdIDs id, Account acc, int gen_id, int s) : base(id, acc)
 		{
 			this.nGenID = gen_id;
 			this.nSoul = s;

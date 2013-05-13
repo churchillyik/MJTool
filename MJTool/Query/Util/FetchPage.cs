@@ -13,7 +13,7 @@ namespace MJTool
 		QueryFinish,
 	};
 
-	public partial class User
+	public partial class Account
 	{
 		private MyWebClient webClient = null;
 		public QueryStatus QrySta = QueryStatus.NotLogined;

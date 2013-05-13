@@ -10,12 +10,12 @@ namespace MJTool
 	{
 		public void doLogin(object o)
 		{
-			User curUser = (User) o;
-			if (curUser == null)
+			Account curAcc = (Account) o;
+			if (curAcc == null)
 			{
 				return;
 			}
-			curUser.bIsLogined = false;
+			curAcc.bIsLogined = false;
 
 			// 组装包发到登陆服务器
 			Dictionary<string, string> data = new Dictionary<string, string>();
@@ -27,7 +27,7 @@ namespace MJTool
 			data.Add("_", UnixTimeStamp(DateTime.Now).ToString());
 			string strSvrTimeURL = "sso/prelogin.php?"
 				+ CreateQueryString(data);
-			string result = curUser.PageQuery("login.sina.com.cn", strSvrTimeURL);
+			string result = curAcc.PageQuery("login.sina.com.cn", strSvrTimeURL);
 
 			// 解析并获得加密公钥等信息
 			string strSvrTime, pcid, nonce, pubkey, rsakv;
@@ -54,20 +54,20 @@ namespace MJTool
 			data.Add("useticket", "1");
 			data.Add("vsnf", "1");
 			data.Add("ssosimplelogin", "1");
-			data.Add("su", base64_encode(curUser.strUserName));
+			data.Add("su", base64_encode(curAcc.strUserName));
 			data.Add("service", "miniblog");
 			data.Add("servertime", strSvrTime);
 			data.Add("nonce", nonce);
 			data.Add("pwencode", "rsa2");
 			data.Add("rsakv", rsakv);
-			data.Add("sp", PswRSAEncode(curUser.strPassword, pubkey, strSvrTime, nonce));
+			data.Add("sp", PswRSAEncode(curAcc.strPassword, pubkey, strSvrTime, nonce));
 			data.Add("encoding", "UTF-8");
 			data.Add("prelt", r.Next(100, 150).ToString());
 			data.Add("url", "http://weibo.com/ajaxlogin.php?framelogin=1&callback=parent.sinaSSOController.feedBackUrlCallBack");
 			data.Add("returntype", "META");
 			
 			// 发送登陆包，解析出微博的登陆URL
-			result = curUser.PageQuery("login.sina.com.cn", "sso/login.php?client=ssologin.js(v1.4.2)", data, Encoding.GetEncoding("GBK"));
+			result = curAcc.PageQuery("login.sina.com.cn", "sso/login.php?client=ssologin.js(v1.4.2)", data, Encoding.GetEncoding("GBK"));
 			m = Regex.Match(result, "location\\.replace\\(\"http://weibo\\.com/(.*?)\"\\);", RegexOptions.Singleline);
 			if (!m.Success)
 			{
@@ -77,7 +77,7 @@ namespace MJTool
 			string strLoginURL = m.Groups[1].Value;
 			
 			// 登陆微博，并解析出微博用户ID
-			result = curUser.PageQuery("weibo.com", strLoginURL);
+			result = curAcc.PageQuery("weibo.com", strLoginURL);
 			m = Regex.Match(result, "\"uniqueid\":\"(.*?)\",", RegexOptions.Singleline);
 			if (!m.Success)
 			{
@@ -86,7 +86,7 @@ namespace MJTool
 			}
 			
 			// 利用微博用户ID获得游戏登陆地址及游戏会话信息
-			result = curUser.PageQuery("game.weibo.com", "mengjiangwushuang?origin=" + ServerParam.strOrigin);
+			result = curAcc.PageQuery("game.weibo.com", "mengjiangwushuang?origin=" + ServerParam.strOrigin);
 			m = Regex.Match(result, "mjwssina\\.app\\.koramgame\\.com(.*?)\"", RegexOptions.Singleline);
 			if (!m.Success)
 			{
@@ -101,25 +101,25 @@ namespace MJTool
 				return;
 			}
 			ServerParam.strOrigin = m.Groups[1].Value;
-			curUser.wyx_user_id = m.Groups[2].Value;
-			curUser.wyx_session_key = m.Groups[3].Value;
-			curUser.wyx_create = m.Groups[4].Value;
-			curUser.wyx_expire = m.Groups[5].Value;
-			curUser.wyx_signature = m.Groups[6].Value;
+			curAcc.wyx_user_id = m.Groups[2].Value;
+			curAcc.wyx_session_key = m.Groups[3].Value;
+			curAcc.wyx_create = m.Groups[4].Value;
+			curAcc.wyx_expire = m.Groups[5].Value;
+			curAcc.wyx_signature = m.Groups[6].Value;
 			
 			// 组装游戏页面URL
 			data.Clear();
 			data.Add("act",  ServerParam.strAct);
-			data.Add("wyx_user_id",  curUser.wyx_user_id);
-			data.Add("wyx_session_key",  curUser.wyx_session_key);
-			data.Add("wyx_create", curUser.wyx_create);
-			data.Add("wyx_expire",  curUser.wyx_expire);
-			data.Add("wyx_signature", curUser.wyx_signature);
+			data.Add("wyx_user_id",  curAcc.wyx_user_id);
+			data.Add("wyx_session_key",  curAcc.wyx_session_key);
+			data.Add("wyx_create", curAcc.wyx_create);
+			data.Add("wyx_expire",  curAcc.wyx_expire);
+			data.Add("wyx_signature", curAcc.wyx_signature);
 			data.Add("serverId",   ServerParam.strServerID);
 			koram_url_param = "?" + CreateQueryString(data);
 
 			// 获取游戏页面并获取游戏版本号以及swf下载地址
-			result = curUser.PageQuery(ServerParam.strGameSvr, koram_url_param);
+			result = curAcc.PageQuery(ServerParam.strGameSvr, koram_url_param);
 			m = Regex.Match(result, "embedSWF\\(\"(.*?)=(.*?)\"", RegexOptions.Singleline);
 			if (!m.Success)
 			{
@@ -130,11 +130,11 @@ namespace MJTool
 			ServerParam.strVersion = m.Groups[2].Value;
 
 			// 获取游戏资料
-			CmdArg arg = new CmdArg(CmdIDs.USER_GET_INFO, curUser);
+			CmdArg arg = new CmdArg(CmdIDs.USER_GET_INFO, curAcc);
 			this.doUserCommand(arg);
 			
-			curUser.bIsLogined = true;
-			curUser.QrySta = QueryStatus.Logined;
+			curAcc.bIsLogined = true;
+			curAcc.QrySta = QueryStatus.Logined;
 			DebugLog("已成功登陆！");
 		}
 		

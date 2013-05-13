@@ -51,11 +51,11 @@ namespace MJTool
 			sw.Close();
 		}
 		
-		public void Login(User u)
+		public void Login(Account acc)
 		{
 			Thread t = new Thread(new ParameterizedThreadStart(doLogin));
 			t.Name = "Login";
-			t.Start(u);
+			t.Start(acc);
 		}
 		
 		public void SendCommand(CmdArg arg)

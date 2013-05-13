@@ -62,8 +62,10 @@
     <Compile Include="Query\Login.cs" />
     <Compile Include="Query\QueryManager.cs" />
     <Compile Include="Query\ServerParam.cs" />
-    <Compile Include="Query\User.cs" />
-    <Compile Include="Query\UserCommand.cs" />
+    <Compile Include="Query\Account.cs" />
+    <Compile Include="Query\UserCommand\ParseGetInfo.cs" />
+    <Compile Include="Query\UserCommand\UserCommand.cs" />
+    <Compile Include="Query\UserDatas.cs" />
     <Compile Include="Query\Util\FetchPage.cs" />
     <Compile Include="Query\Util\HtmlUtility.cs" />
     <Compile Include="Query\Util\MyWebClient.cs" />
@@ -82,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Query\Util" />
+    <Folder Include="Query\UserCommand" />
     <Folder Include="SpAlg" />
     <Folder Include="Query" />
   </ItemGroup>
