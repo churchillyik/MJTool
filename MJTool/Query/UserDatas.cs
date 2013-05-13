@@ -28,6 +28,9 @@ namespace MJTool
 		public List<entityUserGeneral> userGeneral = new List<entityUserGeneral>();
 		public List<entityUserItem> userItem = new List<entityUserItem>();
 		public List<entityUserEquip> userEquip = new List<entityUserEquip>();
+		public List<entityUserFormation> userFormation = new List<entityUserFormation>();
+		public int feedstoryovi;
+		public List<entityUserFriend> userFriend = new List<entityUserFriend>();
 		
 		public void Clear()
 		{
@@ -35,6 +38,8 @@ namespace MJTool
 			userGeneral.Clear();
 			userItem.Clear();
 			userEquip.Clear();
+			userFormation.Clear();
+			userFriend.Clear();
 		}
 	}
 	
@@ -320,5 +325,52 @@ namespace MJTool
 		public int def_4;
 		public int def_3;
 		public int hp;
+	}
+	
+	public class entityUserFormation
+	{
+		public int id;
+		public int level;
+		public string unlockGrid;
+	}
+	
+	public class entityUserFriend
+	{
+		public string id;
+		public string name;
+		public string icon;
+		public int sex;
+		public string birthday;
+		public int yellowLevel;
+		public int yearYellow;
+		public int level;
+		public double lastModify;
+		public int vipPoint;
+		public double lastVisited;
+		public int dayOperateTimes;
+		public int lastOperateTime;
+		public int maxSceneId;
+		public int nEvent;
+		public double eventTime;
+		public int fourImages;
+		public int guild;
+		public string guildName;
+		public int vipLevel;
+		public string guildIcon;
+		public int guildLevel;
+		public int qzoneName;
+		public int qzoneIcon;
+		public int isQzone;
+		public int isOther;
+		public double lastLoginTime;
+		public int tech2Level;
+		public int lastGiftTime;
+		public int attention;
+		public string sid;
+		public int serverId;
+		public int dayGifted;
+		public int verified_type;
+		public int threeRacing;
+		public int fightLevel;
 	}
 }

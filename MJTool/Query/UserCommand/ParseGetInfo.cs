@@ -19,7 +19,7 @@ namespace MJTool
 		public void ParseGetInfo(byte[] bs_result)
 		{
 			List<byte> lst_byte_res = new List<byte>();
-			string end_str = "userFormation";
+			string end_str = "userEnemy";
 			for (int i = 1; i < bs_result.Length; i++)
 			{
 				lst_byte_res.Add(bs_result[i]);
@@ -118,6 +118,7 @@ namespace MJTool
 					                               });
 
 				}
+				
 				// userData.msgBoxNum
 				root.userData.msgBoxNum = (int)dic_userData["msgBoxNum"];
 				
@@ -415,6 +416,70 @@ namespace MJTool
 							def_4 = (int)dic_equip["def_4"],
 							def_3 = (int)dic_equip["def_3"],
 							hp = (int)dic_equip["hp"],
+						});
+				}
+				
+				// userData.userFormation
+				object[] lstUserFormation = (object[])dic_userData["userFormation"];
+				foreach (object o in lstUserFormation)
+				{
+					Dictionary<string, object> dic_userFmt = (Dictionary<string, object>) o;
+					root.userData.userFormation.Add(
+						new entityUserFormation()
+						{
+							id = (int)dic_userFmt["id"],
+							level = (int)dic_userFmt["level"],
+							unlockGrid = (string)dic_userFmt["unlockGrid"],
+						});
+				}
+				
+				// userData.feedstoryovi
+				root.userData.feedstoryovi = (int)dic_userData["feedstoryovi"];
+				
+				// userData.userFriend
+				object[] lstUserFriend = (object[])dic_userData["userFriend"];
+				foreach (object o in lstUserFriend)
+				{
+					Dictionary<string, object> dic_userFriend = (Dictionary<string, object>) o;
+					root.userData.userFriend.Add(
+						new entityUserFriend()
+						{
+							id = (string)dic_userFriend["id"],
+							name = (string)dic_userFriend["name"],
+							icon = (string)dic_userFriend["icon"],
+							sex = (int)dic_userFriend["sex"],
+							birthday = (string)dic_userFriend["birthday"],
+							yellowLevel = (int)dic_userFriend["yellowLevel"],
+							yearYellow = (int)dic_userFriend["yearYellow"],
+							level = (int)dic_userFriend["level"],
+							lastModify = Convert.ToDouble(dic_userFriend["lastModify"]),
+							vipPoint = (int)dic_userFriend["vipPoint"],
+							lastVisited = Convert.ToDouble(dic_userFriend["lastVisited"]),
+							dayOperateTimes = (int)dic_userFriend["dayOperateTimes"],
+							lastOperateTime = (int)dic_userFriend["lastOperateTime"],
+							maxSceneId = (int)dic_userFriend["maxSceneId"],
+							nEvent = (int)dic_userFriend["event"],
+							eventTime = Convert.ToDouble(dic_userFriend["eventTime"]),
+							fourImages = (int)dic_userFriend["fourImages"],
+							guild = (int)dic_userFriend["guild"],
+							guildName = (string)dic_userFriend["guildName"],
+							vipLevel = (int)dic_userFriend["vipLevel"],
+							guildIcon = (string)dic_userFriend["guildIcon"],
+							guildLevel = (int)dic_userFriend["guildLevel"],
+							qzoneName = (int)dic_userFriend["qzoneName"],
+							qzoneIcon = (int)dic_userFriend["qzoneIcon"],
+							isQzone = (int)dic_userFriend["isQzone"],
+							isOther = (int)dic_userFriend["isOther"],
+							lastLoginTime = Convert.ToDouble(dic_userFriend["lastLoginTime"]),
+							tech2Level = (int)dic_userFriend["tech2Level"],
+							lastGiftTime = (int)dic_userFriend["lastGiftTime"],
+							attention = (int)dic_userFriend["attention"],
+							sid = (string)dic_userFriend["sid"],
+							serverId = (int)dic_userFriend["serverId"],
+							dayGifted = (int)dic_userFriend["dayGifted"],
+							verified_type = (int)dic_userFriend["verified_type"],
+							threeRacing = (int)dic_userFriend["threeRacing"],
+							fightLevel = (int)dic_userFriend["fightLevel"],
 						});
 				}
 			}
