@@ -31,6 +31,35 @@ namespace MJTool
 		public List<entityUserFormation> userFormation = new List<entityUserFormation>();
 		public int feedstoryovi;
 		public List<entityUserFriend> userFriend = new List<entityUserFriend>();
+		public List<entityUserEnemy> userEnemy = new List<entityUserEnemy>();
+		public List<entityUserEmployNpc> userEmployNpc = new List<entityUserEmployNpc>();
+		public List<entityUserPlant> userPlant = new List<entityUserPlant>();
+		public List<entityUserRace> userRace = new List<entityUserRace>();
+		public List<entityLastUserRace> lastUserRace = new List<entityLastUserRace>();
+		public List<entityUserTrain> userTrain = new List<entityUserTrain>();
+		public List<entityUserArena> userArena = new List<entityUserArena>();
+		public List<entityUserSoul> userSoul = new List<entityUserSoul>();
+		public entityUserTavern userTavern = new entityUserTavern();
+		public List<entityUserFormationGeneral> userFormationGeneral = new List<entityUserFormationGeneral>();
+		public entityUserDefend userDefend = new entityUserDefend();
+		public entityUserTower userTower = new entityUserTower();
+		public List<entityUserScene> userScene = new List<entityUserScene>();
+		public List<entityUserTotem> userTotem = new List<entityUserTotem>();
+		public List<entityUserUnlock> userUnlock = new List<entityUserUnlock>();
+		public entityActivityInfo activityInfo = new entityActivityInfo();
+		public entityActivitySendInfo activitySendInfo = new entityActivitySendInfo();
+		
+		public int warTally;
+		public List<entityUserMission> userMission = new List<entityUserMission>();
+		public List<entityUserLivenessEvent> userLivenessEvent = new List<entityUserLivenessEvent>();
+		public entityUserTimeAward userTimeAward = new entityUserTimeAward();
+		public entityUserSevenDayAward userSevenDayAward = new entityUserSevenDayAward();
+		public entityUserYellow userYellow = new entityUserYellow();
+		public List<entityUserOccupyTotem> userOccupyTotem = new List<entityUserOccupyTotem>();
+		public List<entityUserRobbedTotems> userRobbedTotems = new List<entityUserRobbedTotems>();
+		public entityUserLevelupChest userLevelupChest = new entityUserLevelupChest();
+		public List<entityUserGeneralStar> userGeneralStar = new List<entityUserGeneralStar>();
+		public List<entityUserGeneralSpectrum> userGeneralSpectrum = new List<entityUserGeneralSpectrum>();
 		
 		public void Clear()
 		{
@@ -40,6 +69,24 @@ namespace MJTool
 			userEquip.Clear();
 			userFormation.Clear();
 			userFriend.Clear();
+			userEnemy.Clear();
+			userEmployNpc.Clear();
+			userPlant.Clear();
+			userRace.Clear();
+			lastUserRace.Clear();
+			userTrain.Clear();
+			userArena.Clear();
+			userSoul.Clear();
+			userFormationGeneral.Clear();
+			userScene.Clear();
+			userTotem.Clear();
+			userUnlock.Clear();
+			userMission.Clear();
+			userLivenessEvent.Clear();
+			userOccupyTotem.Clear();
+			userRobbedTotems.Clear();
+			userGeneralStar.Clear();
+			userGeneralSpectrum.Clear();
 		}
 	}
 	
@@ -109,7 +156,7 @@ namespace MJTool
 		public int guildDonate;
 		public double lastDonateTime;
 		public int dayContribute;
-		public int lastContributeTime;
+		public double lastContributeTime;
 		public int markGuildWar;
 		public int inspire;
 		public int inspireConsume;
@@ -140,7 +187,7 @@ namespace MJTool
 		public int dayVisitEnergy;
 		public int eventGetNumber;
 		public double eventGetTime;
-		public int eventCdEndTime;
+		public double eventCdEndTime;
 		public int characterLevel;
 		public int liveness;
 		public double livenessLastModify;
@@ -154,15 +201,15 @@ namespace MJTool
 		public int newMailNumber;
 		public double lastGetMessageTime;
 		public int historyContribute;
-		public int vipEndTime;
-		public int lastPayTime;
+		public double vipEndTime;
+		public double lastPayTime;
 		public double npcLastVisit;
 		public double arenaCdEndTime;
 		public double userInfoLastUpdateTime;
-		public int qzoneInfoLastUpdateTime;
+		public double qzoneInfoLastUpdateTime;
 		public int bakName;
 		public int bakIcon;
-		public int qzoneFriendLastUpdate;
+		public double qzoneFriendLastUpdate;
 		public int lastTollgateId;
 		public int qrjKeepLoginDays;
 		public double arenaLastModify;
@@ -197,7 +244,7 @@ namespace MJTool
 		public int stargazingEnergy;
 		public int stargazingLevel;
 		public int stargazingVisitTimes;
-		public int stargazingVisitLastTime;
+		public double stargazingVisitLastTime;
 		public int lugNum;
 		public double petFight;
 		public int buyViped;
@@ -219,10 +266,10 @@ namespace MJTool
 		public int lotteryMaxNumber;
 		public int lotteryResetMaxNumber;
 		public int sinaFirstCharge;
-		public int sinaFirstChargeGetTime;
+		public double sinaFirstChargeGetTime;
 		public int serverRaceStage3ServerAward;
 		public double userRecallTime;
-		public int awardTime;
+		public double awardTime;
 		public int skillDot;
 		public int leaveUseEnergy;
 		public int leaveBuyEnergy;
@@ -239,7 +286,7 @@ namespace MJTool
 		public int level;
 		public int anger;
 		public int str;
-		public int intel;
+		public int intel;//int
 		public int agi;
 		public int vit;
 		public int atk_1;
@@ -364,7 +411,7 @@ namespace MJTool
 		public int isOther;
 		public double lastLoginTime;
 		public int tech2Level;
-		public int lastGiftTime;
+		public double lastGiftTime;
 		public int attention;
 		public string sid;
 		public int serverId;
@@ -372,5 +419,446 @@ namespace MJTool
 		public int verified_type;
 		public int threeRacing;
 		public int fightLevel;
+	}
+	
+	public class entityUserEnemy
+	{
+		public string id;
+		public string name;
+		public string icon;
+		public int sex;
+		public string birthday;
+		public int level;
+		public string guildName;
+		public int vipLevel;
+		public string guildIcon;
+		public int guildLevel;
+		public int qzoneName;
+		public int qzoneIcon;
+		public int isQzone;
+		public int isOther;
+		public int tech2Level;
+		public int attention;
+		public int hatred;
+		public double lasthatredTime;
+		public int serverId;
+	}
+	
+	public class entityUserEmployNpc
+	{
+		
+	}
+	
+	public class entityUserPlant
+	{
+		public int landId;
+		
+		public double createTime;
+		public int ripenTime;
+		public int operateTimes;
+		public string operateUsers;
+		public string operateUserId1;
+		public string operateUserId2;
+		public string operateUserId3;
+		public string operateUserId4;
+		public string operateUserId5;
+		public string operateUserIcon1;
+		public string operateUserIcon2;
+		public string operateUserIcon3;
+		public string operateUserIcon4;
+		public string operateUserIcon5;
+		public string operateUserName1;
+		public string operateUserName2;
+		public string operateUserName3;
+		public string operateUserName4;
+		public string operateUserName5;
+	}
+	
+	public class entityUserRace
+	{
+	}
+	
+	public class entityLastUserRace
+	{
+	}
+	
+	public class entityUserTrain
+	{
+		public int id;
+		public int campId;
+		public double beginTime;
+		public int payType;
+		public int trainType;
+	}
+	
+	public class entityUserArena
+	{
+		public int tileX;
+		public int tileY;
+		
+		public string playId;
+		public string userName;
+		public string userIcon;
+		public int userLevel;
+		
+	}
+	
+	public class entityUserSoul
+	{
+		
+	}
+	
+	public class entityUserTavern
+	{
+		public int id_1;
+		public int id_2;
+		public int id_3;
+		public double ct;
+		public int nomalRefreshTimes;
+		public double nomalRefreshTime;
+	}
+	
+	public class entityUserFormationGeneral
+	{
+		public int formationId;
+		public int id;
+		public int grid_0;
+		public int grid_1;
+		public int grid_2;
+		public int grid_3;
+		public int grid_4;
+		public int grid_5;
+		public int grid_6;
+		public int grid_7;
+		public int grid_8;
+		public int grid_9;
+		public int grid_10;
+		public int grid_11;
+	}
+	
+	public class entityUserDefend
+	{
+		public int lastLose;
+		public int times;
+		public double lastTime;
+		
+		public int maxLevel;
+		public int propTimes;
+	}
+	
+	public class entityUserTower
+	{
+		public int lastLevel;
+		public int win;
+		
+		
+		
+		public int reviveTimes;
+		
+		public string getLevels;
+		public double lastGetTime;
+		public string awards;
+		public int boss;
+	}
+	
+	public class entityUserScene
+	{
+		public int sceneId;
+		
+		public int pass;
+		
+		public string award_1;
+		public string award_2;
+		public string award_3;
+		public string award_4;
+		public string award_5;
+		public int star;
+	}
+	
+	public class entityUserTotem
+	{
+		
+		
+		public int hasReap;
+		public double lastReapTime;
+		public int friendId_o;
+		public int flastReapTime;
+		public int occupyTime;
+		public string friendId;
+		public string friendIcon;
+		public string friendName;
+		public int friendLevel;
+		public int remainNum;
+		public int totemLevel;
+	}
+	
+	public class entityUserUnlock
+	{
+		public int category;
+		
+		public double unlockTime;
+	}
+	
+	public class entityActivityInfo
+	{
+		public string activityId;
+		public int activityNormalNum;
+		public int activitySpecialNum;
+		public double activityStartTime;
+		public double activityEndTime;
+		public double couponStartTime;
+		public double couponEndTime;
+		public double loveStartTime;
+		public double loveEndTime;
+		public double yellowRegStartTime;
+		public double yellowRegEndTime;
+		public string turntableId;
+		public string turntableBegTime;
+		public string turntableEndTime;
+		public string eggId;
+		public string eggBegTime;
+		public string eggEndTime;
+		public double increaseTimesBegTime;
+		public double increaseTimesEndTime;
+		public int increaseTimesEscortRobTimes;
+		public int increaseTimesTowerFreeMaxTimes;
+		public int increaseTimesTowerPropMaxTimes;
+		public int increaseTimesDefendFreeMaxTimes;
+		public int increaseTimesDefendPropMaxTimes;
+		public string serverRaceId;
+		public string serverRacejoinTime;
+		public string serverRacebegTime;
+		public string serverRaceServerIdList;
+		public string serverRaceStage1List;
+		public string serverRaceStage2List;
+
+		public string starTowerId;
+		public string starTowerBegTime;
+		public string starTowerEndTime;
+		public string fishActId;
+		public string fishBegTime;
+		public string fishEndTime;
+		public string fishCost1;
+		public string fishCost2;
+		public string fishCost3;
+		public string guessId;
+		public double guessBegTime;
+		public double guessEndTime;
+		public double levelupChestStartTime;
+		public double levelupChestEndTime;
+	}
+	
+	public class entityActivitySendInfo
+	{
+		
+		public int activitySendNum;
+		public int activityGetNum;
+		
+		
+	}
+	
+	public class entityUnkown
+	{
+		public int memNumber;
+		public int memLimit;
+		public int leaderId;
+		public string leaderName;
+		public int announcement_1;
+
+		public int order;
+		public int recruitStatus;
+		public int warStatus;
+
+		public int tech_1;
+		public int tech_2;
+		public int tech_3;
+		public int tech_4;
+		public int tech_5;
+		public int tech_6;
+		public int tech_7;
+		public int tech_8;
+		public int tech_9;
+		public int tech_10;
+		public int petLevel;
+		public int petExp;
+		public int petFeedTimes;
+		public double jadePropEndTime;
+		public int jade;
+		public double jadeLastModify;
+		public int deputyLeader_1;
+		public int deputyLeader_2;
+		public double petWakeTime;
+		public string techNeed;
+		public string warRefresh;
+		public double lastRefresh;
+		public int atkGuild;
+		public int defGuild;
+		public int atkWinFlag;
+		public int defWinFlag;
+		public int increaseScore;
+		public int increaseJade;
+		public string tech_1_userId;
+		public string tech_2_userId;
+		public string tech_3_userId;
+		public string tech_4_userId;
+		public string tech_5_userId;
+		public string tech_6_userId;
+		public string tech_7_userId;
+		public string tech_8_userId;
+		public string tech_9_userId;
+		public string tech_10_userId;
+		public string tech_1_userName;
+		public string tech_2_userName;
+		public string tech_3_userName;
+		public string tech_4_userName;
+		public string tech_5_userName;
+		public string tech_6_userName;
+		public string tech_7_userName;
+		public string tech_8_userName;
+		public string tech_9_userName;
+		public string tech_10_userName;
+		public string tech_1_userIcon;
+		public string tech_2_userIcon;
+		public string tech_3_userIcon;
+		public string tech_4_userIcon;
+		public string tech_5_userIcon;
+		public string tech_6_userIcon;
+		public string tech_7_userIcon;
+		public string tech_8_userIcon;
+		public string tech_9_userIcon;
+		public string tech_10_userIcon;
+		public int reLevel;
+		public int reLimit;
+		public int reCurrNumber;
+		public double reEndTime;
+		public int winRate;
+		public int totalWar;
+		public int winWar;
+		public string leaderIcon;
+		public int warNumber;
+		public int atkNumber;
+		public int defNumber;
+		public int missionReducePetTime;
+		public int decreaseJade;
+		public int leaderLvl;
+		public int qqGroup;
+		public int tech_11;
+		public int tech_11_userId;
+		public int tech_11_userName;
+		public int tech_11_userIcon;
+		public int position_2_number;
+		public int position_3_number;
+		public int position_5_number;
+		public int position_6_number;
+		public int position_7_number;
+		public int position_8_number;
+		public int position_9_number;
+		public int donateGold;
+		public int lastPetTime;
+		public int callNumber;
+		public int petChipNumber;
+		public int donateGoldUserId;
+		public string donateGoldUserName;
+		public string donateGoldUserIcon;
+		public int donateChipUserId;
+		public string donateChipUserName;
+		public string donateChipUserIcon;
+		public double lastIncreaseCallCt;
+		public int textDataId;
+		public int donateSymbolNumber;
+		public int groupId;
+	}
+	
+	public class entityUserMission
+	{
+		public int missionId;
+		public int missionClauseId;
+		public int type;
+		public int currentNumber;
+		public int status;
+		public int missionAwardId;
+	}
+	
+	public class entityUserLivenessEvent
+	{
+		public int eventId;
+		
+		public int currentTimes;
+		
+	}
+	
+	public class entityUserTimeAward
+	{
+		public int timerId;
+		
+		public int nowItemId;
+		public int nextItemId;
+		public int dayReceiveTimes;
+	}
+	
+	public class entityUserSevenDayAward
+	{
+		public int stat_1;
+		public int stat_2;
+		public int stat_3;
+		public int stat_4;
+		public int stat_5;
+		public int stat_6;
+		public int stat_7;
+		
+	}
+	
+	public class entityUserYellow
+	{
+		public int lastNewhandTime;
+		public int lastDailyTime;
+		public int lastLevelup_1;
+		public int lastLevelup_2;
+		public int lastLevelup_3;
+		public int lastLevelup_4;
+		public int lastLevelup_5;
+		public int lastLevelup_6;
+		public int lastLevelup_7;
+		public int lastLevelup_8;
+		public int lastLevelup_9;
+		public int lastLevelup_10;
+	}
+	
+	public class entityUserOccupyTotem
+	{
+		
+	}
+	
+	public class entityUserRobbedTotems
+	{
+		
+	}
+	
+	public class entityUserLevelupChest
+	{
+		public int levelup_10;
+		public int levelup_20;
+		public int levelup_30;
+		public int levelup_45;
+	}
+	
+	public class entityUserGeneralStar
+	{
+		
+		
+		
+		public int soulNumber;
+	}
+	
+	public class entityUserGeneralSpectrum
+	{
+		
+		public int slot_1;
+		public int slot_2;
+		public int slot_3;
+		public int slot_4;
+		public int slot_5;
+		public int slot_6;
+		public int enable;
 	}
 }
