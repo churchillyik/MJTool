@@ -18,6 +18,8 @@ namespace MJTool
 	{
 		public double serverTime;
 		public UserData userData = new UserData();
+		public string single;
+		public int newMailNumber;
 	}
 	
 	public class UserData
@@ -32,6 +34,8 @@ namespace MJTool
 		public int feedstoryovi;
 		public List<entityUserFriend> userFriend = new List<entityUserFriend>();
 		public List<entityUserEnemy> userEnemy = new List<entityUserEnemy>();
+		public List<entityUserBuff> userBuff = new List<entityUserBuff>();
+		public List<entityUserGuildFriend> userGuildFriend = new List<entityUserGuildFriend>();
 		public List<entityUserEmployNpc> userEmployNpc = new List<entityUserEmployNpc>();
 		public List<entityUserPlant> userPlant = new List<entityUserPlant>();
 		public List<entityUserRace> userRace = new List<entityUserRace>();
@@ -48,7 +52,7 @@ namespace MJTool
 		public List<entityUserUnlock> userUnlock = new List<entityUserUnlock>();
 		public entityActivityInfo activityInfo = new entityActivityInfo();
 		public entityActivitySendInfo activitySendInfo = new entityActivitySendInfo();
-		
+		public entityGuild guild = new entityGuild();
 		public int warTally;
 		public List<entityUserMission> userMission = new List<entityUserMission>();
 		public List<entityUserLivenessEvent> userLivenessEvent = new List<entityUserLivenessEvent>();
@@ -60,6 +64,46 @@ namespace MJTool
 		public entityUserLevelupChest userLevelupChest = new entityUserLevelupChest();
 		public List<entityUserGeneralStar> userGeneralStar = new List<entityUserGeneralStar>();
 		public List<entityUserGeneralSpectrum> userGeneralSpectrum = new List<entityUserGeneralSpectrum>();
+		public List<entityUserCopy> userCopy = new List<entityUserCopy>();
+		public List<entityCopyOrderInfo> copyOrderInfo = new List<entityCopyOrderInfo>();
+		public List<entityHonorAnnoun> honorAnnoun = new List<entityHonorAnnoun>();
+		public List<entityUserEscorts> userEscorts = new List<entityUserEscorts>();
+		public List<entityUserRobbeds> userRobbeds = new List<entityUserRobbeds>();
+		public List<entityUserRess> userRess = new List<entityUserRess>();
+		public entityUserExchangeCode userExchangeCode = new entityUserExchangeCode();
+		public List<entityUserCards> userCards = new List<entityUserCards>();
+		public entityCardActivity cardActivity = new entityCardActivity();
+		public List<entityUserStargazings> userStargazings = new List<entityUserStargazings>();
+		public List<entityUserStargazingGenerals> userStargazingGenerals = new List<entityUserStargazingGenerals>();
+		public entityUserConquerorInfo userConquerorInfo = new entityUserConquerorInfo();
+		public List<entityUserConquerorCityInfo> userConquerorCityInfo = new List<entityUserConquerorCityInfo>();
+		public List<entityUserConquerorLugInfo> userConquerorLugInfo = new List<entityUserConquerorLugInfo>();
+		public entityUserConquerorAward userConquerorAward = new entityUserConquerorAward();
+		public List<entityUserPetFight> userPetFight = new List<entityUserPetFight>();
+		public entityUserTurntable userTurntable = new entityUserTurntable();
+		public List<entityUserGood> userGood = new List<entityUserGood>();
+		public List<entityServerGood> serverGood = new List<entityServerGood>();
+		public entityUserDice userDice = new entityUserDice();
+		public List<entityUserHook> userHook = new List<entityUserHook>();
+		public List<entityUserShadow> userShadow = new List<entityUserShadow>();
+		public entityUserPropLock userPropLock = new entityUserPropLock();
+		public entityUserServerRace userServerRace = new entityUserServerRace();
+		public List<entityUserServerRaceStage3ServerCounts> userServerRaceStage3ServerCounts = new List<entityUserServerRaceStage3ServerCounts>();
+		public List<entityUserServerRace1s> userServerRace1s = new List<entityUserServerRace1s>();
+		public entityUserServerRace3 userServerRace3 = new entityUserServerRace3();
+		public List<entityServerRace4s> serverRace4s = new List<entityServerRace4s>();
+		public entityUserStarTower userStarTower = new entityUserStarTower();
+		public entityUserRich yUserRich = new entityUserRich();
+		public List<entityUserThreeRacing> userThreeRacing = new List<entityUserThreeRacing>();
+		public List<entityUserThreeRacingItem> userThreeRacingItem = new List<entityUserThreeRacingItem>();
+		public entityUserPetBaby userPetBaby = new entityUserPetBaby();
+		public entityFunctionOpen functionOpen = new entityFunctionOpen();
+		public entityUserSigin userSigin = new entityUserSigin();
+		public entityUserEggAward userEggAward = new entityUserEggAward();
+		public List<entityUserFish> userFish = new List<entityUserFish>();
+		public entityUserGuess userGuess = new entityUserGuess();
+		public List<int> VipShadowWin = new List<int>();
+		public string invitIsOpen;
 		
 		public void Clear()
 		{
@@ -70,6 +114,8 @@ namespace MJTool
 			userFormation.Clear();
 			userFriend.Clear();
 			userEnemy.Clear();
+			userBuff.Clear();
+			userGuildFriend.Clear();
 			userEmployNpc.Clear();
 			userPlant.Clear();
 			userRace.Clear();
@@ -87,6 +133,33 @@ namespace MJTool
 			userRobbedTotems.Clear();
 			userGeneralStar.Clear();
 			userGeneralSpectrum.Clear();
+			userCopy.Clear();
+			copyOrderInfo.Clear();
+			honorAnnoun.Clear();
+			userEscorts.Clear();
+			userRobbeds.Clear();
+			userRess.Clear();
+			userCards.Clear();
+			userStargazings.Clear();
+			userStargazingGenerals.Clear();
+			userConquerorCityInfo.Clear();
+			userConquerorLugInfo.Clear();
+			userConquerorAward.dayAward.Clear();
+			userConquerorAward.weekAward.Clear();
+			userPetFight.Clear();
+			userGood.Clear();
+			serverGood.Clear();
+			userHook.Clear();
+			userShadow.Clear();
+			userServerRaceStage3ServerCounts.Clear();
+			userServerRace1s.Clear();
+			serverRace4s.Clear();
+			userThreeRacing.Clear();
+			userThreeRacingItem.Clear();
+			userSigin.dayDetail.Clear();
+			userSigin.lastDayDetail.Clear();
+			userFish.Clear();
+			VipShadowWin.Clear();
 		}
 	}
 	
@@ -444,9 +517,48 @@ namespace MJTool
 		public int serverId;
 	}
 	
+	public class entityUserBuff
+	{
+	}
+	
+	public class entityUserGuildFriend
+	{
+		public string id;
+		public string name;
+		public string icon;
+		public int level;
+		public double lastModify;
+	}
+	
 	public class entityUserEmployNpc
 	{
-		
+		public int id;
+		public string name;
+		public string icon;
+		public int sex;
+		public int birthday;
+		public int yellowLevel;
+		public int yearYellow;
+		public int level;
+		public double lastModify;
+		public int vipPoint;
+		public int lastVisited;
+		public int dayOperateTimes;
+		public double lastOperateTime;
+		public int maxSceneId;
+		public int nEvent;
+		public int eventTime;
+		public int fourImages;
+		public int guild;
+		public int guildName;
+		public int vipLevel;
+		public int guildIcon;
+		public int guildLevel;
+		public int qzoneName;
+		public int qzoneIcon;
+		public int isQzone;
+		public int isOther;
+		public double lastLoginTime;
 	}
 	
 	public class entityUserPlant
@@ -657,7 +769,7 @@ namespace MJTool
 		
 	}
 	
-	public class entityUnkown
+	public class entityGuild
 	{
 		public int memNumber;
 		public int memLimit;
@@ -860,5 +972,496 @@ namespace MJTool
 		public int slot_5;
 		public int slot_6;
 		public int enable;
+	}
+	
+	public class entityUserCopy
+	{
+		
+		public int copyId;
+		
+		public int awardStatus;
+		
+		public string roomNumber;
+		
+		
+	}
+	
+	public class entityCopyOrderInfo
+	{
+		public string userId1;
+		public string userName1;
+		public string icon1;
+		public string serverId1;
+		public string userId2;
+		public string userName2;
+		public string icon2;
+		public string serverId2;
+		public string userId3;
+		public string userName3;
+		public string icon3;
+		public string serverId3;
+		
+		
+		
+	}
+	
+	public class entityHonorAnnoun
+	{
+		public int userId;
+		
+		
+		public string message;
+		public double sendTime;
+		public string hz;
+		public int vip;
+		
+		public int priority;
+		public int conquerorType;
+	}
+	
+	public class entityUserEscorts
+	{
+		public int stage;
+		
+		public int robTimes;
+		public int failTimes;
+		public int isReceiveAward;
+		
+		public string failReport;
+		public int robUserId;
+		public int robUserServerId;
+		public string robUserName;
+		public int robUserLevel;
+		public string robUserIcon;
+		
+		
+	}
+	
+	public class entityUserRobbeds
+	{
+	}
+	
+	public class entityUserRess
+	{
+		public double date;
+	}
+	
+	public class entityUserExchangeCode
+	{
+		public string batch;
+		public string cdkey_1;
+		public string cdkey_2;
+		public string cdkey_3;
+		public string cdkey_4;
+		public string cdkey_5;
+		public string cdkey_6;
+		public string cdkey_7;
+		public string cdkey_8;
+		public string cdkey_9;
+		public string cdkey_10;
+		public int cdkey_st_1;
+		public int cdkey_st_2;
+		public int cdkey_st_3;
+		public int cdkey_st_4;
+		public int cdkey_st_5;
+		public int cdkey_st_6;
+		public int cdkey_st_7;
+		public int cdkey_st_8;
+		public int cdkey_st_9;
+		public int cdkey_st_10;
+		public int shareAward;
+		public int cdkeys;
+		public int cdkeyGroup;
+	}
+	
+	public class entityUserCards
+	{
+	}
+	
+	public class entityCardActivity
+	{
+		public string id;
+		public string begTime;
+		public string endTime;
+	}
+	
+	public class entityUserStargazings
+	{
+		
+		
+		
+		public int gridNum;
+		public int shapeId;
+		public int propertyId;
+		public int isInBackpack;
+		
+		public int strEnergy;
+		
+		
+		
+		
+		
+		public string crit;
+		
+		
+	}
+	
+	public class entityUserStargazingGenerals
+	{
+		
+		public int x;
+		public int y;
+		public int userStargazingId;
+	}
+	
+	public class entityUserConquerorInfo
+	{
+		
+		public int action;
+		public int life;
+		public int scort;
+		public int morale;
+		
+		public double lugFrushCt;
+		public int lugFrushCash;
+		public int resetLug;
+		
+		
+		public int cityId;
+		public int rate;
+		
+		
+		
+		
+		public int moveLastModify;
+		public int descTime;
+		
+		public int inspireCash;
+		public int getMorale;
+		public int currentTurn;
+		public int homeCity;
+		public int getChangeMorale;
+		public int guildLv;
+		public int getTreasure;
+		public int firstGoHome;
+		public int highWin;
+		public int otherWin;
+		public int otherWinName;
+		public int buffLife;
+		public double LugFrushTime;
+		
+		public int guildTech;
+		public int fail;
+		public double inCityTime;
+		public int cityAccountTime;
+		
+	}
+	
+	public class entityUserConquerorCityInfo
+	{
+		
+		
+		public string guildId;
+		public int countryId;
+		public string cityBuff;
+		public int isEmpty;
+	}
+	
+	public class entityUserConquerorLugInfo
+	{
+		
+		public int lugPosition;
+		
+		
+		
+		public double frushCt;
+		
+		
+	}
+	
+	public class entityUserConquerorAward
+	{
+		
+		public List<entityDayAward> dayAward = new List<entityDayAward>();
+		public List<entityWeekAward> weekAward = new List<entityWeekAward>();
+		public string dayStatus;
+		
+		public int attackTreasure;
+	}
+	
+	public class entityDayAward
+	{
+		
+		
+		
+		public int nValue;
+	}
+	
+	public class entityWeekAward
+	{
+		
+	}
+	
+	public class entityUserPetFight
+	{
+	}
+	
+	public class entityUserTurntable
+	{
+		
+		
+		public string awardIds;
+		public string fixedAwardIds;
+	}
+	
+	public class entityUserGood
+	{
+	}
+	
+	public class entityServerGood
+	{
+		public int goodsId;
+		public int bugTimes;
+		public double lastBuyTime;
+	}
+	
+	public class entityUserDice
+	{
+		public int dice_1;
+		public int dice_2;
+		public int dice_3;
+		public int dice_4;
+		public int dice_5;
+		public int dice_6;
+		public int getAward;
+	}
+	
+	public class entityUserHook
+	{
+	}
+	
+	public class entityUserShadow
+	{
+	}
+	
+	public class entityUserPropLock
+	{
+		public int general_1;
+		public int general_2;
+		public int general_3;
+		public int general_4;
+		public int generalSoul_1;
+		public int generalSoul_2;
+		public int generalSoul_3;
+		public int generalSoul_4;
+		public int equip_1;
+		public int equip_2;
+		public int equip_3;
+		public int equip_4;
+		public int stargazingStone_1;
+		public int stargazingStone_2;
+		public int stargazingStone_3;
+		public int stargazingStone_4;
+		public string passwd;
+		public int applyUnlock;
+		public int applyCt;
+	}
+	
+	public class entityUserServerRace
+	{
+		
+		public int isJoin;
+		public double joinTime;
+		public int fightTimes;
+		public double refreshTime;
+		public int integral_1;
+		public int integral_2;
+		public int integral_1_list;
+		public int integral_2_list;
+		public int isPromotion;
+		public string receiveList;
+		
+		public int day;
+		public string stage3WinList;
+		public string guessUserIdList;
+		public int isReceiveguess;
+	}
+	
+	public class entityUserServerRaceStage3ServerCounts
+	{
+	}
+	
+	public class entityUserServerRace1s
+	{
+	}
+	
+	public class entityUserServerRace3
+	{
+		public int id;
+		public int turn;
+		public int isRevival;
+		public int isWin;
+		public string report;
+		public double updateTime;
+		
+		public int userLevel1;
+		public int userServerId1;
+		
+		public string userIcon1;
+		public int userVipLevel1;
+		public int userRank1;
+		
+		public int userLevel2;
+		public int userServerId2;
+		
+		public string userIcon2;
+		public int userVipLevel2;
+		public int userRank2;
+	}
+	
+	public class entityServerRace4s
+	{
+	}
+	
+	public class entityUserStarTower
+	{
+		
+		public int layers;
+		public int layersTimes;
+	}
+	
+	public class entityUserRich
+	{
+		
+	}
+	
+	public class entityUserThreeRacing
+	{
+	}
+	
+	public class entityUserThreeRacingItem
+	{
+	}
+	
+	public class entityUserPetBaby
+	{
+		
+		
+		public int chipNumber;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public int slot_7;
+		public int slot_8;
+		public int slotUnlock_1;
+		public int slotUnlock_2;
+		public int slotUnlock_3;
+		public int slotUnlock_4;
+		public int slotUnlock_5;
+		public int slotUnlock_6;
+		public int slotUnlock_7;
+		public int slotUnlock_8;
+		public int fightEnable;
+		public string idList;
+	}
+	
+	public class entityFunctionOpen
+	{
+		public bool copyDisable;
+		public bool conquerorDisable;
+		public bool escortDisable;
+		public bool stargazingDisable;
+		public bool giftDisable;
+		public bool bookSynthetic;
+		public bool guildPetDisable;
+		public bool hiddenSceneDisable;
+		public bool secSkillDisable;
+		public bool buyVipDisable;
+
+		public bool reincarnDisable;
+		public bool spotDisable;
+		public bool rSkillDisable;
+		public bool shadowDisable;
+		public bool userSiginDisable;
+		public bool propUnlockDisable;
+		public bool petBabyDisable;
+		public bool doubleExpDisable;
+	}
+	
+	public class entityUserSigin
+	{
+		
+		
+		
+		public Dictionary<string, entityDayDetail> dayDetail = new Dictionary<string, entityDayDetail>();
+		public int days;
+		public string award;
+		public Dictionary<string, entityContinueSigin> continueSigin = new Dictionary<string, entityContinueSigin>();
+		public Dictionary<string, entityLastDayDetail> lastDayDetail = new Dictionary<string, entityLastDayDetail>();
+		public int lastDays;
+		public string lastAward;
+		public int vipSign;
+		public int lastCash;
+		public entityAwardInfo awardInfo = new entityAwardInfo();
+		public entityLastAwardInfo lastAwardInfo = new entityLastAwardInfo();
+	}
+	
+	public class entityDayDetail
+	{
+	}
+	
+	public class entityContinueSigin
+	{
+	}
+	
+	public class entityLastDayDetail
+	{
+	}
+	
+	public class entityAwardInfo
+	{
+	}
+	
+	public class entityLastAwardInfo
+	{
+		
+		
+		
+		public int lastVipSign;
+		public int lastTurnCash;
+	}
+	
+	public class entityUserEggAward
+	{
+		public int gid;
+		
+		
+		
+		
+		
+		public string award_6;
+		public string award_7;
+		public string award_8;
+		public string award_9;
+		public int actId;
+	}
+	
+	public class entityUserFish
+	{
+	}
+	
+	public class entityUserGuess
+	{
+		
+		public int partId;
+		public int maxNumber;
 	}
 }
