@@ -47,6 +47,7 @@ namespace MJTool
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.tbLog = new System.Windows.Forms.TextBox();
+			this.btLogout = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
@@ -78,6 +79,7 @@ namespace MJTool
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.btLogout);
 			this.groupBox1.Controls.Add(this.btLogin);
 			this.groupBox1.Controls.Add(this.tbPassword);
 			this.groupBox1.Controls.Add(this.tbAccount);
@@ -92,7 +94,7 @@ namespace MJTool
 			// 
 			// btLogin
 			// 
-			this.btLogin.Location = new System.Drawing.Point(65, 92);
+			this.btLogin.Location = new System.Drawing.Point(20, 98);
 			this.btLogin.Name = "btLogin";
 			this.btLogin.Size = new System.Drawing.Size(75, 23);
 			this.btLogin.TabIndex = 2;
@@ -165,6 +167,17 @@ namespace MJTool
 			this.tbLog.Size = new System.Drawing.Size(653, 328);
 			this.tbLog.TabIndex = 0;
 			// 
+			// btLogout
+			// 
+			this.btLogout.Enabled = false;
+			this.btLogout.Location = new System.Drawing.Point(109, 98);
+			this.btLogout.Name = "btLogout";
+			this.btLogout.Size = new System.Drawing.Size(75, 23);
+			this.btLogout.TabIndex = 2;
+			this.btLogout.Text = "登出";
+			this.btLogout.UseVisualStyleBackColor = true;
+			this.btLogout.Click += new System.EventHandler(this.BtLogoutClick);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -183,6 +196,7 @@ namespace MJTool
 			this.tabPage3.PerformLayout();
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Button btLogout;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.TextBox tbAccount;

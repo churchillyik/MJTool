@@ -58,6 +58,13 @@ namespace MJTool
 			t.Start(acc);
 		}
 		
+		public void Logout(Account acc)
+		{
+			Thread t = new Thread(new ParameterizedThreadStart(doLogout));
+			t.Name = "Logout";
+			t.Start(acc);
+		}
+		
 		public void SendCommand(CmdArg arg)
 		{
 			Thread t = new Thread(new ParameterizedThreadStart(doUserCommand));

@@ -60,6 +60,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\Login.cs" />
+    <Compile Include="Query\Logout.cs" />
     <Compile Include="Query\QueryManager.cs" />
     <Compile Include="Query\ServerParam.cs" />
     <Compile Include="Query\Account.cs" />

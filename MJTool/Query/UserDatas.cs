@@ -1112,7 +1112,7 @@ namespace MJTool
 		
 		public string guildId;
 		public int countryId;
-		public string cityBuff;
+		//public string cityBuff;
 		public int isEmpty;
 	}
 	
@@ -1131,8 +1131,8 @@ namespace MJTool
 	public class entityUserConquerorAward
 	{
 		
-		public List<entityDayAward> dayAward = new List<entityDayAward>();
-		public List<entityWeekAward> weekAward = new List<entityWeekAward>();
+		//public List<entityDayAward> dayAward = new List<entityDayAward>();
+		//public List<entityWeekAward> weekAward = new List<entityWeekAward>();
 		public string dayStatus;
 		
 		public int attackTreasure;

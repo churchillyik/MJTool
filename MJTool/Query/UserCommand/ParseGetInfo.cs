@@ -138,7 +138,16 @@ namespace MJTool
 				SetArrayObjects(dic_userData, "userPetFight", root.userData.userPetFight);
 				
 				// userData.VipShadowWin
-				SetArrayObjects(dic_userData, "VipShadowWin", root.userData.VipShadowWin);
+				if (dic_userData.ContainsKey("VipShadowWin"))
+				{
+					root.userData.VipShadowWin.Clear();
+					object[] arr_obj = (object[])dic_userData["VipShadowWin"];
+					foreach (object o in arr_obj)
+					{
+						int nVal = Convert.ToInt32(o);
+						root.userData.VipShadowWin.Add(nVal);
+					}
+				}
 				
 				// userData.invitIsOpen
 				if (dic_userData.ContainsKey("invitIsOpen"))

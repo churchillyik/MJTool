@@ -74,6 +74,16 @@ namespace MJTool
 			curAcc = new Account(this.tbAccount.Text, this.tbPassword.Text);
 			curAcc.upCall = sInsMgr;
 			sInsMgr.Login(curAcc);
+			
+			this.btLogin.Enabled = false;
+			this.btLogout.Enabled = true;
+		}
+		
+		void BtLogoutClick(object sender, EventArgs e)
+		{
+			sInsMgr.Logout(curAcc);
+			this.btLogin.Enabled = true;
+			this.btLogout.Enabled = false;
 		}
 	}
 }
