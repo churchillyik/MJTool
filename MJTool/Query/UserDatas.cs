@@ -104,63 +104,6 @@ namespace MJTool
 		public entityUserGuess userGuess = new entityUserGuess();
 		public List<int> VipShadowWin = new List<int>();
 		public string invitIsOpen;
-		
-		public void Clear()
-		{
-			userSendFeed.Clear();
-			userGeneral.Clear();
-			userItem.Clear();
-			userEquip.Clear();
-			userFormation.Clear();
-			userFriend.Clear();
-			userEnemy.Clear();
-			userBuff.Clear();
-			userGuildFriend.Clear();
-			userEmployNpc.Clear();
-			userPlant.Clear();
-			userRace.Clear();
-			lastUserRace.Clear();
-			userTrain.Clear();
-			userArena.Clear();
-			userSoul.Clear();
-			userFormationGeneral.Clear();
-			userScene.Clear();
-			userTotem.Clear();
-			userUnlock.Clear();
-			userMission.Clear();
-			userLivenessEvent.Clear();
-			userOccupyTotem.Clear();
-			userRobbedTotems.Clear();
-			userGeneralStar.Clear();
-			userGeneralSpectrum.Clear();
-			userCopy.Clear();
-			copyOrderInfo.Clear();
-			honorAnnoun.Clear();
-			userEscorts.Clear();
-			userRobbeds.Clear();
-			userRess.Clear();
-			userCards.Clear();
-			userStargazings.Clear();
-			userStargazingGenerals.Clear();
-			userConquerorCityInfo.Clear();
-			userConquerorLugInfo.Clear();
-			userConquerorAward.dayAward.Clear();
-			userConquerorAward.weekAward.Clear();
-			userPetFight.Clear();
-			userGood.Clear();
-			serverGood.Clear();
-			userHook.Clear();
-			userShadow.Clear();
-			userServerRaceStage3ServerCounts.Clear();
-			userServerRace1s.Clear();
-			serverRace4s.Clear();
-			userThreeRacing.Clear();
-			userThreeRacingItem.Clear();
-			userSigin.dayDetail.Clear();
-			userSigin.lastDayDetail.Clear();
-			userFish.Clear();
-			VipShadowWin.Clear();
-		}
 	}
 	
 	public class entityUserSend
@@ -564,7 +507,7 @@ namespace MJTool
 	public class entityUserPlant
 	{
 		public int landId;
-		
+		public int typeId;
 		public double createTime;
 		public int ripenTime;
 		public int operateTimes;
@@ -607,17 +550,18 @@ namespace MJTool
 	{
 		public int tileX;
 		public int tileY;
-		
+		public int typeId;
 		public string playId;
 		public string userName;
 		public string userIcon;
 		public int userLevel;
-		
+		public int serverId;
 	}
 	
 	public class entityUserSoul
 	{
-		
+		public int generalType;
+		public int number;
 	}
 	
 	public class entityUserTavern
@@ -653,7 +597,7 @@ namespace MJTool
 		public int lastLose;
 		public int times;
 		public double lastTime;
-		
+		public double cdEndTime;
 		public int maxLevel;
 		public int propTimes;
 	}
@@ -662,11 +606,12 @@ namespace MJTool
 	{
 		public int lastLevel;
 		public int win;
-		
-		
-		
+		public int times;
+		public double lastTime;
+		public double cdEndTime;
+		public int maxLevel;
 		public int reviveTimes;
-		
+		public int propTimes;
 		public string getLevels;
 		public double lastGetTime;
 		public string awards;
@@ -676,9 +621,9 @@ namespace MJTool
 	public class entityUserScene
 	{
 		public int sceneId;
-		
+		public int times;
 		public int pass;
-		
+		public double lastTime;
 		public string award_1;
 		public string award_2;
 		public string award_3;
@@ -689,8 +634,8 @@ namespace MJTool
 	
 	public class entityUserTotem
 	{
-		
-		
+		public int id;
+		public int itemNum;
 		public int hasReap;
 		public double lastReapTime;
 		public int friendId_o;
@@ -707,7 +652,7 @@ namespace MJTool
 	public class entityUserUnlock
 	{
 		public int category;
-		
+		public int typeId;
 		public double unlockTime;
 	}
 	
@@ -718,12 +663,12 @@ namespace MJTool
 		public int activitySpecialNum;
 		public double activityStartTime;
 		public double activityEndTime;
-		public double couponStartTime;
-		public double couponEndTime;
+		public string couponStartTime;
+		public string couponEndTime;
 		public double loveStartTime;
 		public double loveEndTime;
-		public double yellowRegStartTime;
-		public double yellowRegEndTime;
+		public string yellowRegStartTime;
+		public string yellowRegEndTime;
 		public string turntableId;
 		public string turntableBegTime;
 		public string turntableEndTime;
@@ -732,18 +677,18 @@ namespace MJTool
 		public string eggEndTime;
 		public double increaseTimesBegTime;
 		public double increaseTimesEndTime;
-		public int increaseTimesEscortRobTimes;
-		public int increaseTimesTowerFreeMaxTimes;
-		public int increaseTimesTowerPropMaxTimes;
-		public int increaseTimesDefendFreeMaxTimes;
-		public int increaseTimesDefendPropMaxTimes;
+		public string increaseTimesEscortRobTimes;
+		public string increaseTimesTowerFreeMaxTimes;
+		public string increaseTimesTowerPropMaxTimes;
+		public string increaseTimesDefendFreeMaxTimes;
+		public string increaseTimesDefendPropMaxTimes;
 		public string serverRaceId;
 		public string serverRacejoinTime;
 		public string serverRacebegTime;
 		public string serverRaceServerIdList;
 		public string serverRaceStage1List;
 		public string serverRaceStage2List;
-
+		public string serverRaceStage3ServerAward;
 		public string starTowerId;
 		public string starTowerBegTime;
 		public string starTowerEndTime;
@@ -754,33 +699,37 @@ namespace MJTool
 		public string fishCost2;
 		public string fishCost3;
 		public string guessId;
-		public double guessBegTime;
-		public double guessEndTime;
+		public string guessBegTime;
+		public string guessEndTime;
 		public double levelupChestStartTime;
 		public double levelupChestEndTime;
 	}
 	
 	public class entityActivitySendInfo
 	{
-		
+		public string activityId;
 		public int activitySendNum;
 		public int activityGetNum;
-		
-		
+		public bool activityStartTime;
+		public bool activityEndTime;
 	}
 	
 	public class entityGuild
 	{
+		public int id;
+		public string name;
+		public string icon;
+		public int level;
 		public int memNumber;
 		public int memLimit;
 		public int leaderId;
 		public string leaderName;
 		public int announcement_1;
-
+		public int dayContribute;
 		public int order;
 		public int recruitStatus;
 		public int warStatus;
-
+		public double createTime;
 		public int tech_1;
 		public int tech_2;
 		public int tech_3;
@@ -878,7 +827,7 @@ namespace MJTool
 		public double lastIncreaseCallCt;
 		public int textDataId;
 		public int donateSymbolNumber;
-		public int groupId;
+		public string groupId;
 	}
 	
 	public class entityUserMission
