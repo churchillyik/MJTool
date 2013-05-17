@@ -45,7 +45,7 @@ namespace MJTool
 			data.Add("client", "ssologin.js(v1.4.2)");
 			data.Add("_", time_stamp);
 			strURL = "sso/mutelogout.php?" + CreateQueryString(data);
-			result = curAcc.PageQuery("www.meishitui.com", strURL);
+			curAcc.PageQuery("www.meishitui.com", strURL);
 		}
 	}
 }

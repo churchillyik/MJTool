@@ -93,7 +93,7 @@ namespace MJTool
 		public entityUserServerRace3 userServerRace3 = new entityUserServerRace3();
 		public List<entityServerRace4s> serverRace4s = new List<entityServerRace4s>();
 		public entityUserStarTower userStarTower = new entityUserStarTower();
-		public entityUserRich yUserRich = new entityUserRich();
+		public entityUserRich userRich = new entityUserRich();
 		public List<entityUserThreeRacing> userThreeRacing = new List<entityUserThreeRacing>();
 		public List<entityUserThreeRacingItem> userThreeRacingItem = new List<entityUserThreeRacingItem>();
 		public entityUserPetBaby userPetBaby = new entityUserPetBaby();
@@ -843,15 +843,15 @@ namespace MJTool
 	public class entityUserLivenessEvent
 	{
 		public int eventId;
-		
+		public int currentNumber;
 		public int currentTimes;
-		
+		public double createTime;
 	}
 	
 	public class entityUserTimeAward
 	{
 		public int timerId;
-		
+		public double lastModify;
 		public int nowItemId;
 		public int nextItemId;
 		public int dayReceiveTimes;
@@ -859,14 +859,14 @@ namespace MJTool
 	
 	public class entityUserSevenDayAward
 	{
-		public int stat_1;
-		public int stat_2;
-		public int stat_3;
-		public int stat_4;
-		public int stat_5;
-		public int stat_6;
-		public int stat_7;
-		
+		public int stat1;
+		public int stat2;
+		public int stat3;
+		public int stat4;
+		public int stat5;
+		public int stat6;
+		public int stat7;
+		public double registerTime;
 	}
 	
 	public class entityUserYellow
@@ -905,15 +905,15 @@ namespace MJTool
 	
 	public class entityUserGeneralStar
 	{
-		
-		
-		
+		public int generalType;
+		public int level;
+		public int status;
 		public int soulNumber;
 	}
 	
 	public class entityUserGeneralSpectrum
 	{
-		
+		public int typeId;
 		public int slot_1;
 		public int slot_2;
 		public int slot_3;
@@ -925,14 +925,14 @@ namespace MJTool
 	
 	public class entityUserCopy
 	{
-		
+		public int uid;
 		public int copyId;
-		
+		public int num;
 		public int awardStatus;
-		
+		public int status;
 		public string roomNumber;
-		
-		
+		public double ct;
+		public int level;
 	}
 	
 	public class entityCopyOrderInfo
@@ -949,21 +949,21 @@ namespace MJTool
 		public string userName3;
 		public string icon3;
 		public string serverId3;
-		
-		
-		
+		public string userLevel;
+		public string copyId;
+		public string id;
 	}
 	
 	public class entityHonorAnnoun
 	{
 		public int userId;
-		
-		
+		public string userName;
+		public string userIcon;
 		public string message;
 		public double sendTime;
 		public string hz;
 		public int vip;
-		
+		public int quality;
 		public int priority;
 		public int conquerorType;
 	}
@@ -971,19 +971,19 @@ namespace MJTool
 	public class entityUserEscorts
 	{
 		public int stage;
-		
+		public double beginTime;
 		public int robTimes;
 		public int failTimes;
 		public int isReceiveAward;
-		
+		public int generalId;
 		public string failReport;
 		public int robUserId;
 		public int robUserServerId;
 		public string robUserName;
 		public int robUserLevel;
 		public string robUserIcon;
-		
-		
+		public int userLevel;
+		public string awards;
 	}
 	
 	public class entityUserRobbeds
@@ -993,6 +993,12 @@ namespace MJTool
 	public class entityUserRess
 	{
 		public double date;
+		public int gold;
+		public int cash;
+		public int exp;
+		public int energy;
+		public int honor;
+		public int contribute;
 	}
 	
 	public class entityUserExchangeCode
@@ -1029,35 +1035,35 @@ namespace MJTool
 	
 	public class entityCardActivity
 	{
-		public string id;
-		public string begTime;
-		public string endTime;
+		public string id; // 01
+		public string begTime; // 01
+		public string endTime; // 01
 	}
 	
 	public class entityUserStargazings
 	{
-		
-		
-		
+		public int id;
+		public int generalId;
+		public int quality;
 		public int gridNum;
 		public int shapeId;
 		public int propertyId;
 		public int isInBackpack;
-		
+		public int strTimes;
 		public int strEnergy;
-		
-		
-		
-		
-		
+		public int atk_1;
+		public int atk_2;
+		public int def_1;
+		public int def_2;
+		public int hp;
 		public string crit;
-		
-		
+		public string hit;
+		public string dodge;
 	}
 	
 	public class entityUserStargazingGenerals
 	{
-		
+		public int generalId;
 		public int x;
 		public int y;
 		public int userStargazingId;
@@ -1065,26 +1071,26 @@ namespace MJTool
 	
 	public class entityUserConquerorInfo
 	{
-		
+		public int uid;
 		public int action;
 		public int life;
 		public int scort;
 		public int morale;
-		
+		public int win;
 		public double lugFrushCt;
 		public int lugFrushCash;
 		public int resetLug;
-		
-		
+		public int lugNum;
+		public double lastModify;
 		public int cityId;
 		public int rate;
-		
-		
-		
-		
+		public string guildIcon;
+		public string icon;
+		public string name;
+		public int level;
 		public int moveLastModify;
 		public int descTime;
-		
+		public int inspire;
 		public int inspireCash;
 		public int getMorale;
 		public int currentTurn;
@@ -1098,43 +1104,62 @@ namespace MJTool
 		public int otherWinName;
 		public int buffLife;
 		public double LugFrushTime;
-		
+		public int cas;
 		public int guildTech;
 		public int fail;
 		public double inCityTime;
 		public int cityAccountTime;
-		
+		public int guildName;
 	}
 	
 	public class entityUserConquerorCityInfo
 	{
-		
-		
+		public int cityId;
+		public List<entityGuildName> guildName = new List<entityGuildName>();
 		public string guildId;
 		public int countryId;
-		//public string cityBuff;
+		public List<entityConquerorCityBuff> cityBuff = new List<entityConquerorCityBuff>();
 		public int isEmpty;
+	}
+	
+	public class entityGuildName
+	{
+		public int id;
+		public int guildLv;
+		public string guildName;
+		public string guildIcon;
+		public int guildTech;
+	}
+	
+	public class entityConquerorCityBuff 
+	{
+		public string id; 
+		public string buffType;
+		public string cityType;
+		public string buff;
+		public string isrand;
+		public string desc;
 	}
 	
 	public class entityUserConquerorLugInfo
 	{
-		
+		public int uid;
 		public int lugPosition;
-		
-		
-		
+		public int category;
+		public int type;
+		public int id;
 		public double frushCt;
-		
-		
+		public int num;
+		public double lugFrushCt;
 	}
 	
 	public class entityUserConquerorAward
 	{
-		
-		//public List<entityDayAward> dayAward = new List<entityDayAward>();
-		//public List<entityWeekAward> weekAward = new List<entityWeekAward>();
+		public int uid;
+		public List<entityDayAward> dayAward = new List<entityDayAward>();
+		public List<entityWeekAward> weekAward = new List<entityWeekAward>();
 		public string dayStatus;
-		
+		public double ct;
 		public int attackTreasure;
 	}
 	
@@ -1157,8 +1182,8 @@ namespace MJTool
 	
 	public class entityUserTurntable
 	{
-		
-		
+		public int turntableId;
+		public int times;
 		public string awardIds;
 		public string fixedAwardIds;
 	}
@@ -1218,18 +1243,18 @@ namespace MJTool
 	
 	public class entityUserServerRace
 	{
-		
+		public int serverRaceId;
 		public int isJoin;
 		public double joinTime;
 		public int fightTimes;
 		public double refreshTime;
 		public int integral_1;
 		public int integral_2;
-		public int integral_1_list;
-		public int integral_2_list;
+		public string integral_1_list;
+		public string integral_2_list;
 		public int isPromotion;
 		public string receiveList;
-		
+		public int stage;
 		public int day;
 		public string stage3WinList;
 		public string guessUserIdList;

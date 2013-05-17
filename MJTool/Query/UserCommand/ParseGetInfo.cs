@@ -29,62 +29,23 @@ namespace MJTool
 			{
 				byte[] b_res = lst_byte_res.ToArray();
 				Dictionary<string, object> dic_root = QueryManager.AMF_Deserializer<Dictionary<string, object>>(b_res, b_res.Length);
-				
-				// serverTime
-				if (dic_root.ContainsKey("serverTime"))
-				{
-					root.serverTime = Convert.ToDouble(dic_root["serverTime"]);
-				}
-				
-				// single
-				if (dic_root.ContainsKey("single"))
-				{
-					root.single = Convert.ToString(dic_root["single"]);
-				}
-				
-				// newMailNumber
-				if (dic_root.ContainsKey("newMailNumber"))
-				{
-					root.newMailNumber = Convert.ToInt32(dic_root["newMailNumber"]);
-				}
+				SetSingleObject(dic_root, null, root);
 				
 				// userData
 				if (!dic_root.ContainsKey("userData"))
 				{
+					upCall.DebugLog("dic_root不存在userData键值");
 					return;
 				}
 				Dictionary<string, object> dic_userData = (Dictionary<string, object>)dic_root["userData"];
-				
-				// userData.userSendFeed
-				if (dic_userData.ContainsKey("userSendFeed"))
-				{
-					Dictionary<string, object> dic_userSendFeed = (Dictionary<string, object>)dic_userData["userSendFeed"];
-					foreach (KeyValuePair<string, object> pair in dic_userSendFeed)
-					{
-						Dictionary<string, object> val = (Dictionary<string, object>)pair.Value;
-						entityUserSend ent = new entityUserSend();
-						ent.id = Convert.ToInt32(val["id"]);
-						ent.num = Convert.ToInt32(val["num"]);
-						ent.ct = Convert.ToDouble(val["ct"]);
-						root.userData.userSendFeed.Add(pair.Key, ent);
-					}
-				}
-				
-				// userData.msgBoxNum
-				if (dic_userData.ContainsKey("msgBoxNum"))
-				{
-					root.userData.msgBoxNum = (int)dic_userData["msgBoxNum"];
-				}
-				
+				SetSingleObject(dic_root, "userData", root.userData);
+
+				SetMapObjects(dic_userData, "userSendFeed", root.userData.userSendFeed);
 				SetSingleObject(dic_userData, "user", root.userData.user);
 				SetArrayObjects(dic_userData, "userGeneral", root.userData.userGeneral);
 				SetArrayObjects(dic_userData, "userItem", root.userData.userItem);
 				SetArrayObjects(dic_userData, "userEquip", root.userData.userEquip);
 				SetArrayObjects(dic_userData, "userFormation", root.userData.userFormation);
-				if (dic_userData.ContainsKey("feedstoryovi"))
-				{
-					root.userData.feedstoryovi = Convert.ToInt32(dic_userData["feedstoryovi"]);
-				}
 				SetArrayObjects(dic_userData, "userFriend", root.userData.userFriend);
 				SetArrayObjects(dic_userData, "userEnemy", root.userData.userEnemy);
 				SetArrayObjects(dic_userData, "userBuff", root.userData.userBuff);
@@ -106,10 +67,6 @@ namespace MJTool
 				SetSingleObject(dic_userData, "activityInfo", root.userData.activityInfo);
 				SetSingleObject(dic_userData, "activitySendInfo", root.userData.activitySendInfo);
 				SetSingleObject(dic_userData, "guild", root.userData.guild);
-				if (dic_userData.ContainsKey("warTally"))
-				{
-					root.userData.warTally = Convert.ToInt32(dic_userData["warTally"]);
-				}
 				SetArrayObjects(dic_userData, "userMission", root.userData.userMission);
 				SetArrayObjects(dic_userData, "userLivenessEvent", root.userData.userLivenessEvent);
 				SetSingleObject(dic_userData, "userTimeAward", root.userData.userTimeAward);
@@ -136,23 +93,48 @@ namespace MJTool
 				SetArrayObjects(dic_userData, "userConquerorLugInfo", root.userData.userConquerorLugInfo);
 				SetSingleObject(dic_userData, "userConquerorAward", root.userData.userConquerorAward);
 				SetArrayObjects(dic_userData, "userPetFight", root.userData.userPetFight);
+				SetSingleObject(dic_userData, "userTurntable", root.userData.userTurntable);
+				SetArrayObjects(dic_userData, "userGood", root.userData.userGood);
+				SetArrayObjects(dic_userData, "serverGood", root.userData.serverGood);
+				SetSingleObject(dic_userData, "userDice", root.userData.userDice);
+				SetArrayObjects(dic_userData, "userHook", root.userData.userHook);
+				SetArrayObjects(dic_userData, "userShadow", root.userData.userShadow);
+				SetSingleObject(dic_userData, "userPropLock", root.userData.userPropLock);
+				SetSingleObject(dic_userData, "userServerRace", root.userData.userServerRace);
+				SetArrayObjects(dic_userData, "userServerRaceStage3ServerCounts", root.userData.userServerRaceStage3ServerCounts);
+				SetArrayObjects(dic_userData, "userServerRace1s", root.userData.userServerRace1s);
+				SetSingleObject(dic_userData, "userServerRace3", root.userData.userServerRace3);
+				SetArrayObjects(dic_userData, "serverRace4s", root.userData.serverRace4s);
+				SetSingleObject(dic_userData, "userStarTower", root.userData.userStarTower);
+				SetSingleObject(dic_userData, "userRich", root.userData.userRich);
+				SetArrayObjects(dic_userData, "userThreeRacing", root.userData.userThreeRacing);
+				SetArrayObjects(dic_userData, "userThreeRacingItem", root.userData.userThreeRacingItem);
+				SetSingleObject(dic_userData, "userPetBaby", root.userData.userPetBaby);
+				SetSingleObject(dic_userData, "functionOpen", root.userData.functionOpen);
+				SetSingleObject(dic_userData, "userSigin", root.userData.userSigin);
+				SetSingleObject(dic_userData, "userEggAward", root.userData.userEggAward);
+				SetArrayObjects(dic_userData, "userFish", root.userData.userFish);
+				SetSingleObject(dic_userData, "userGuess", root.userData.userGuess);
+				SetBaseArrayObjects(dic_userData, "VipShadowWin", root.userData.VipShadowWin);
 				
-				// userData.VipShadowWin
-				if (dic_userData.ContainsKey("VipShadowWin"))
+				// userData.userConquerorCityInfo
+				if (dic_userData.ContainsKey("userConquerorCityInfo"))
 				{
-					root.userData.VipShadowWin.Clear();
-					object[] arr_obj = (object[])dic_userData["VipShadowWin"];
-					foreach (object o in arr_obj)
+					object[] arr_obj = (object[]) dic_userData["userConquerorCityInfo"];
+					for (int i = 0; i < arr_obj.Length; i++)
 					{
-						int nVal = Convert.ToInt32(o);
-						root.userData.VipShadowWin.Add(nVal);
+						Dictionary<string, object> dic = (Dictionary<string, object>) arr_obj[i];
+						SetArrayObjects(dic, "guildName", root.userData.userConquerorCityInfo[i].guildName);
+						SetArrayObjects(dic, "cityBuff", root.userData.userConquerorCityInfo[i].cityBuff);
 					}
 				}
 				
-				// userData.invitIsOpen
-				if (dic_userData.ContainsKey("invitIsOpen"))
+				// userData.userConquerorAward
+				if (dic_userData.ContainsKey("userConquerorAward"))
 				{
-					root.userData.invitIsOpen = Convert.ToString(dic_userData["invitIsOpen"]);
+					Dictionary<string, object> dic_userConquerorAward = (Dictionary<string, object>)dic_userData["userConquerorAward"];
+					SetArrayObjects(dic_userConquerorAward, "dayAward", root.userData.userConquerorAward.dayAward);
+					SetArrayObjects(dic_userConquerorAward, "weekAward", root.userData.userConquerorAward.weekAward);
 				}
 			}
 			catch (Exception e)
@@ -161,43 +143,148 @@ namespace MJTool
 			}
 		}
 		
+		private static Dictionary<string, string> dicValidFieldName = new Dictionary<string, string>()
+		{
+			{"intel", "int"},
+			{"nEvent", "event"},
+			{"groupId", "groupId "},
+			{"nValue", "value "},
+		};
+		
+		public string GetVaildFieldName(string field_name)
+		{
+			if (dicValidFieldName.ContainsKey(field_name))
+			{
+				return dicValidFieldName[field_name];
+			}
+			else
+			{
+				return field_name;
+			}
+		}
+		
 		public void SetSingleObject<T>(Dictionary<string, object> dic_parent, string key, T t_obj)
 		{
-			if (!dic_parent.ContainsKey(key))
+			if (dic_parent == null)
 			{
 				return;
 			}
-			
-			Dictionary<string, object> dic = (Dictionary<string, object>)dic_parent[key];
-			SetSingleObject(dic, t_obj);
+			if (key == null)
+			{
+				SetSingleObject(dic_parent, t_obj);
+			}
+			else
+			{
+				if (!dic_parent.ContainsKey(key))
+				{
+					upCall.DebugLog(t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+					return;
+				}
+				Dictionary<string, object> dic = (Dictionary<string, object>)dic_parent[key];
+				SetSingleObject(dic, t_obj);
+			}
 		}
 		
 		public void SetSingleObject<T>(Dictionary<string, object> dic, T t_obj)
 		{
+			if (dic == null)
+			{
+				return;
+			}
 			FieldInfo[] field_info = t_obj.GetType().GetFields();
+			if (field_info == null)
+			{
+				return;
+			}
 			foreach (FieldInfo f in field_info)
 			{
-				if (dic.ContainsKey(f.Name))
+				string valid_name = GetVaildFieldName(f.Name);
+				if (dic.ContainsKey(valid_name))
 				{
-					f.SetValue(t_obj, dic[f.Name]);
+					if (!f.FieldType.IsGenericType && f.FieldType.Namespace == "System")
+					{
+						f.SetValue(t_obj, dic[valid_name]);
+					}
+				}
+				else
+				{
+					upCall.DebugLog(t_obj.ToString() + "无法从字典中获取 " + valid_name + " 值");
 				}
 			}
 		}
 		
 		public void SetArrayObjects<T>(Dictionary<string, object> dic_parent, string key, List<T> lst_t_obj) where T : new()
 		{
+			if (dic_parent == null)
+			{
+				return;
+			}
 			if (!dic_parent.ContainsKey(key))
 			{
+				upCall.DebugLog(lst_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
 				return;
 			}
 			lst_t_obj.Clear();
 			object[] arr_obj = (object[])dic_parent[key];
+			if (arr_obj == null)
+			{
+				return;
+			}
 			foreach (object o in arr_obj)
 			{
 				Dictionary<string, object> dic = (Dictionary<string, object>) o;
 				T obj = new T();
 				SetSingleObject(dic, obj);
 				lst_t_obj.Add(obj);
+			}
+		}
+		
+		public void SetMapObjects<T>(Dictionary<string, object> dic_parent, string key, Dictionary<string, T> dic_t_obj) where T : new()
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (!dic_parent.ContainsKey(key))
+			{
+				upCall.DebugLog(dic_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+				return;
+			}
+			dic_t_obj.Clear();
+			Dictionary<string, object> dic = (Dictionary<string, object>)dic_parent[key];
+			if (dic == null)
+			{
+				return;
+			}
+			foreach (KeyValuePair<string, object> pair in dic)
+			{
+				Dictionary<string, object> val = (Dictionary<string, object>)pair.Value;
+				T obj = new T();
+				SetSingleObject(val, obj);
+				dic_t_obj.Add(pair.Key, obj);
+			}
+		}
+		
+		public void SetBaseArrayObjects<T>(Dictionary<string, object> dic_parent, string key, List<T> lst_t_obj)
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (!dic_parent.ContainsKey(key))
+			{
+				upCall.DebugLog(lst_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+				return;
+			}
+			lst_t_obj.Clear();
+			object[] arr_obj = (object[])dic_parent[key];
+			if (arr_obj == null)
+			{
+				return;
+			}
+			foreach (T t in arr_obj)
+			{
+				lst_t_obj.Add(t);
 			}
 		}
 	}
