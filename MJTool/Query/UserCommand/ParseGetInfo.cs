@@ -136,6 +136,17 @@ namespace MJTool
 					SetArrayObjects(dic_userConquerorAward, "dayAward", root.userData.userConquerorAward.dayAward);
 					SetArrayObjects(dic_userConquerorAward, "weekAward", root.userData.userConquerorAward.weekAward);
 				}
+				
+				// userSigin.dayDetail
+				if (dic_userData.ContainsKey("userSigin"))
+				{
+					Dictionary<string, object> dic_userSigin = (Dictionary<string, object>)dic_userData["userSigin"];
+					//SetMapObjects(dic_userSigin, "dayDetail", root.userData.userSigin.dayDetail);
+					//SetBaseMapObjects(dic_userSigin, "continueSigin", root.userData.userSigin.continueSigin);
+					SetMapObjects(dic_userSigin, "lastDayDetail", root.userData.userSigin.lastDayDetail);
+					SetSingleObject(dic_userSigin, "awardInfo", root.userData.userSigin.awardInfo);
+					SetSingleObject(dic_userSigin, "lastAwardInfo", root.userData.userSigin.lastAwardInfo);					
+				}
 			}
 			catch (Exception e)
 			{
@@ -148,7 +159,7 @@ namespace MJTool
 			{"intel", "int"},
 			{"nEvent", "event"},
 			{"groupId", "groupId "},
-			{"nValue", "value "},
+			{"nValue", "value"},
 		};
 		
 		public string GetVaildFieldName(string field_name)
@@ -203,7 +214,26 @@ namespace MJTool
 				{
 					if (!f.FieldType.IsGenericType && f.FieldType.Namespace == "System")
 					{
-						f.SetValue(t_obj, dic[valid_name]);
+						if (f.FieldType.Name == "Int32")
+						{
+							f.SetValue(t_obj, Convert.ToInt32(dic[valid_name]));
+						}
+						else if (f.FieldType.Name == "Double")
+						{
+							f.SetValue(t_obj, Convert.ToDouble(dic[valid_name]));
+						}
+						else if (f.FieldType.Name == "String")
+						{
+							f.SetValue(t_obj, Convert.ToString(dic[valid_name]));
+						}
+						else if (f.FieldType.Name == "Boolean")
+						{
+							f.SetValue(t_obj, Convert.ToBoolean(dic[valid_name]));
+						}
+						else
+						{
+							upCall.DebugLog("无法设定" + f.FieldType.Name + "类型的数据");
+						}
 					}
 				}
 				else
@@ -285,6 +315,29 @@ namespace MJTool
 			foreach (T t in arr_obj)
 			{
 				lst_t_obj.Add(t);
+			}
+		}
+		
+		public void SetBaseMapObjects<T>(Dictionary<string, object> dic_parent, string key, Dictionary<string, T> dic_t_obj)
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (!dic_parent.ContainsKey(key))
+			{
+				upCall.DebugLog(dic_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+				return;
+			}
+			dic_t_obj.Clear();
+			Dictionary<string, T> dic = (Dictionary<string, T>)dic_parent[key];
+			if (dic == null)
+			{
+				return;
+			}
+			foreach (KeyValuePair<string, T> pair in dic)
+			{
+				dic_t_obj.Add(pair.Key, pair.Value);
 			}
 		}
 	}

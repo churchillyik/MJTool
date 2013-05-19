@@ -1133,11 +1133,11 @@ namespace MJTool
 	
 	public class entityConquerorCityBuff 
 	{
-		public string id; 
-		public string buffType;
-		public string cityType;
-		public string buff;
-		public string isrand;
+		public int id; 
+		public int buffType;
+		public int cityType;
+		public int buff;
+		public int isrand;
 		public string desc;
 	}
 	
@@ -1165,15 +1165,18 @@ namespace MJTool
 	
 	public class entityDayAward
 	{
-		
-		
-		
+		public int type;
+		public int number;
+		public int id;
 		public int nValue;
 	}
 	
 	public class entityWeekAward
 	{
-		
+		public int type;
+		public int number;
+		public int id;
+		public int nValue;
 	}
 	
 	public class entityUserPetFight
@@ -1275,20 +1278,20 @@ namespace MJTool
 		public int turn;
 		public int isRevival;
 		public int isWin;
-		public string report;
+		public string report; // 01
 		public double updateTime;
-		
+		public int userId1;
 		public int userLevel1;
 		public int userServerId1;
-		
-		public string userIcon1;
+		public string userName1; // 01
+		public string userIcon1; // 01
 		public int userVipLevel1;
 		public int userRank1;
-		
+		public int userId2;
 		public int userLevel2;
 		public int userServerId2;
-		
-		public string userIcon2;
+		public string userName2; // 01
+		public string userIcon2; // 01
 		public int userVipLevel2;
 		public int userRank2;
 	}
@@ -1299,14 +1302,35 @@ namespace MJTool
 	
 	public class entityUserStarTower
 	{
-		
+		public int starTowerId;
 		public int layers;
 		public int layersTimes;
 	}
 	
 	public class entityUserRich
 	{
-		
+		public int useTimes;
+		public double refreshTime;
+		public int mapId;
+		public int pointId;
+		public int prevPointId;
+		public int hp;
+		public string buffIds;
+		public string debuffIds;
+		public int steps;
+		public int isTurned;
+		public int turtleTimes;
+		public int cuishenSteps;
+		public int timeBombSteps;
+		public string hasBeenPointIds;
+		public int bossSceneId;
+		public int hplimit;
+		public string award_1;
+		public string award_2;
+		public string award_3;
+		public string award_4;
+		public string award_5;
+		public int rmapId;
 	}
 	
 	public class entityUserThreeRacing
@@ -1319,20 +1343,20 @@ namespace MJTool
 	
 	public class entityUserPetBaby
 	{
-		
-		
+		public int avatar;
+		public int level;
 		public int chipNumber;
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		public int atk_1;
+		public int def_1;
+		public int atk_2;
+		public int def_2; 
+		public int hp;
+		public int slot_1;
+		public int slot_2;
+		public int slot_3;
+		public int slot_4;
+		public int slot_5;
+		public int slot_6;
 		public int slot_7;
 		public int slot_8;
 		public int slotUnlock_1;
@@ -1359,7 +1383,7 @@ namespace MJTool
 		public bool hiddenSceneDisable;
 		public bool secSkillDisable;
 		public bool buyVipDisable;
-
+		public bool sinaBadge;
 		public bool reincarnDisable;
 		public bool spotDisable;
 		public bool rSkillDisable;
@@ -1372,13 +1396,13 @@ namespace MJTool
 	
 	public class entityUserSigin
 	{
-		
-		
-		
+		public int uid;
+		public double beginTime;
+		public double endTime;
 		public Dictionary<string, entityDayDetail> dayDetail = new Dictionary<string, entityDayDetail>();
 		public int days;
 		public string award;
-		public Dictionary<string, entityContinueSigin> continueSigin = new Dictionary<string, entityContinueSigin>();
+		public Dictionary<string, int> continueSigin = new Dictionary<string, int>();
 		public Dictionary<string, entityLastDayDetail> lastDayDetail = new Dictionary<string, entityLastDayDetail>();
 		public int lastDays;
 		public string lastAward;
@@ -1386,18 +1410,20 @@ namespace MJTool
 		public int lastCash;
 		public entityAwardInfo awardInfo = new entityAwardInfo();
 		public entityLastAwardInfo lastAwardInfo = new entityLastAwardInfo();
+		public int lastVipSign;
+		public int lastTurnCash;
 	}
 	
 	public class entityDayDetail
 	{
 	}
 	
-	public class entityContinueSigin
-	{
-	}
-	
 	public class entityLastDayDetail
 	{
+		public int status;
+		public string day;
+		public double ct;
+		public double asCt;
 	}
 	
 	public class entityAwardInfo
@@ -1406,21 +1432,16 @@ namespace MJTool
 	
 	public class entityLastAwardInfo
 	{
-		
-		
-		
-		public int lastVipSign;
-		public int lastTurnCash;
 	}
 	
 	public class entityUserEggAward
 	{
 		public int gid;
-		
-		
-		
-		
-		
+		public string award_1;
+		public string award_2;
+		public string award_3;
+		public string award_4;
+		public string award_5;
 		public string award_6;
 		public string award_7;
 		public string award_8;
@@ -1434,8 +1455,9 @@ namespace MJTool
 	
 	public class entityUserGuess
 	{
-		
+		public int activityId;
 		public int partId;
 		public int maxNumber;
+		public int win;
 	}
 }
