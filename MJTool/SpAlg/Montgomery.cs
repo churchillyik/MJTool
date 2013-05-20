@@ -2,9 +2,6 @@
 
 namespace MJTool
 {
-	/// <summary>
-	/// Montgomery reduction
-	/// </summary>
 	public class Montgomery
 	{
 		private BigInteger m;

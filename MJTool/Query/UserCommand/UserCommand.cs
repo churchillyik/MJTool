@@ -12,7 +12,7 @@ namespace MJTool
 		private void init_cmd()
 		{
 			gDicCmd.Add(CmdIDs.USER_GET_INFO, new UserCommand(
-				"User.getInfo", 
+				"User.getInfo",
 				((ulong)1<<(int)CmdParam.CT)|
 				((ulong)1<<(int)CmdParam.VERSION)|
 				((ulong)1<<(int)CmdParam.SESSION_KEY)|
@@ -21,7 +21,7 @@ namespace MJTool
 			));
 			
 			gDicCmd.Add(CmdIDs.USER_GET_GIFT, new UserCommand(
-				"User.getGift", 
+				"User.getGift",
 				((ulong)1<<(int)CmdParam.CT)|
 				((ulong)1<<(int)CmdParam.VERSION)|
 				((ulong)1<<(int)CmdParam.CLIENT_TIME)|
@@ -30,7 +30,7 @@ namespace MJTool
 			));
 			
 			gDicCmd.Add(CmdIDs.USER_GET_MESSAGE, new UserCommand(
-				"User.getMessage", 
+				"User.getMessage",
 				((ulong)1<<(int)CmdParam.CT)|
 				((ulong)1<<(int)CmdParam.VERSION)|
 				((ulong)1<<(int)CmdParam.CLIENT_TIME)|
@@ -39,7 +39,7 @@ namespace MJTool
 			));
 			
 			gDicCmd.Add(CmdIDs.FEED_MSG_BOX, new UserCommand(
-				"Feed.msgBox", 
+				"Feed.msgBox",
 				((ulong)1<<(int)CmdParam.CT)|
 				((ulong)1<<(int)CmdParam.VERSION)|
 				((ulong)1<<(int)CmdParam.CLIENT_TIME)|
@@ -49,7 +49,7 @@ namespace MJTool
 			));
 			
 			gDicCmd.Add(CmdIDs.USER_GET_LOGIN_AWARD, new UserCommand(
-				"User.getLoginAward", 
+				"User.getLoginAward",
 				((ulong)1<<(int)CmdParam.CT)|
 				((ulong)1<<(int)CmdParam.VERSION)|
 				((ulong)1<<(int)CmdParam.CLIENT_TIME)|
@@ -59,7 +59,7 @@ namespace MJTool
 			));
 			
 			gDicCmd.Add(CmdIDs.USER_GET_LUCK_INFO, new UserCommand(
-				"User.getLuckInfo", 
+				"User.getLuckInfo",
 				((ulong)1<<(int)CmdParam.CT)|
 				((ulong)1<<(int)CmdParam.VERSION)|
 				((ulong)1<<(int)CmdParam.CLIENT_TIME)|
@@ -68,7 +68,7 @@ namespace MJTool
 			));
 			
 			gDicCmd.Add(CmdIDs.USER_REFRESH_GENERAL, new UserCommand(
-				"User.refreshGeneral", 
+				"User.refreshGeneral",
 				((ulong)1<<(int)CmdParam.TYPE)|
 				((ulong)1<<(int)CmdParam.CT)|
 				((ulong)1<<(int)CmdParam.VERSION)|
@@ -79,7 +79,7 @@ namespace MJTool
 			));
 			
 			gDicCmd.Add(CmdIDs.USER_EMPLOY_GENERAL, new UserCommand(
-				"User.employGeneral", 
+				"User.employGeneral",
 				((ulong)1<<(int)CmdParam.GENERAL_ID)|
 				((ulong)1<<(int)CmdParam.CT)|
 				((ulong)1<<(int)CmdParam.VERSION)|
@@ -167,7 +167,7 @@ namespace MJTool
 			// single => <string>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.SINGLE)) != (ulong)0)
 			{
-				dic_pck.Add("single", curAcc.single);
+				dic_pck.Add("single", curAcc.root.single);
 			}
 			
 			// finishGuide => <int>
@@ -226,10 +226,26 @@ namespace MJTool
 				case CmdIDs.USER_GET_INFO:
 					acc.ParseGetInfo(bs_result);
 					break;
+					
+				case CmdIDs.USER_GET_GIFT:
+					acc.ParseGetGift(bs_result);
+					break;
+				case CmdIDs.USER_GET_MESSAGE:
+					acc.ParseGetMessage(bs_result);
+					break;
+				case CmdIDs.FEED_MSG_BOX:
+					acc.ParseMsgBox(bs_result);
+					break;
+				case CmdIDs.USER_GET_LOGIN_AWARD:
+					acc.ParseGetLoginAward(bs_result);
+					break;
+				case CmdIDs.USER_GET_LUCK_INFO:
+					acc.ParseGetLuckInfo(bs_result);
+					break;
 			}
 		}
 		
-		public void Print(byte[] bs)
+		public void Print(string file_name, byte[] bs)
 		{
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < bs.Length; i++)
@@ -241,7 +257,7 @@ namespace MJTool
 				}
 				else
 				{
-					if (i + 2 < bs.Length && 
+					if (i + 2 < bs.Length &&
 					    bs[i] == 0x0A && bs[i + 1] == 0x0B)
 					{
 						sb.Append("\r\n");
@@ -249,12 +265,12 @@ namespace MJTool
 					sb.Append(bs[i].ToString("X2") + " ");
 				}
 			}
-			WriteLog("cmd.txt", sb.ToString());
+			WriteLog(file_name, sb.ToString());
 		}
 		
 		private string MakeSessionKey(Account acc)
 		{
-			return "{" 
+			return "{"
 				+ "\"act\":\"" + ServerParam.strAct + "\","
 				+ "\"wyx_user_id\":\"" + acc.wyx_user_id + "\","
 				+ "\"wyx_session_key\":\"" + acc.wyx_session_key + "\","
@@ -346,7 +362,7 @@ namespace MJTool
 	}
 	
 	public enum CmdParam : int
-	{	
+	{
 		TYPE, // 将魂刷新类型
 		GENERAL_ID, // 武将ID
 		CT, // 客户端的unix时间戳（毫秒数）

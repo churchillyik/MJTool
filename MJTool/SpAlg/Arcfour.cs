@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 namespace MJTool
 {
-	/// <summary>
-	/// Description of Arcfour.
-	/// </summary>
 	public class Arcfour
 	{
 		private int i;

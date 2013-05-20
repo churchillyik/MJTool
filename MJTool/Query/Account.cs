@@ -2,9 +2,6 @@
 
 namespace MJTool
 {
-	/// <summary>
-	/// Description of User.
-	/// </summary>
 	public partial class Account
 	{
 		public QueryManager upCall = null;
@@ -22,9 +19,6 @@ namespace MJTool
 		
 		// 新手引导完成情况
 		public int finishGuide = 0;
-		
-		// 游戏账号的唯一ID
-		public string single = "";
 		
 		public UserRoot root = new UserRoot();
 		

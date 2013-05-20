@@ -2,9 +2,6 @@
 
 namespace MJTool
 {
-	/// <summary>
-	/// Description of ServerParam.
-	/// </summary>
 	public class ServerParam
 	{
 		// 加密用到的辅助数值

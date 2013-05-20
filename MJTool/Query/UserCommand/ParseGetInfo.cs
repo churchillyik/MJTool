@@ -1,14 +1,9 @@
-﻿/*
- * 由SharpDevelop创建。
- * 用户： Administrator
- * 日期: 2013-5-13
- * 时间: 15:23
- * 
- * 要改变这种模板请点击 工具|选项|代码编写|编辑标准头文件
- */
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Reflection;
+using FluorineFx;
 
 namespace MJTool
 {
@@ -19,16 +14,9 @@ namespace MJTool
 	{
 		public void ParseGetInfo(byte[] bs_result)
 		{
-			List<byte> lst_byte_res = new List<byte>();
-			for (int i = 1; i < bs_result.Length; i++)
-			{
-				lst_byte_res.Add(bs_result[i]);
-			}
-
 			try
 			{
-				byte[] b_res = lst_byte_res.ToArray();
-				Dictionary<string, object> dic_root = QueryManager.AMF_Deserializer<Dictionary<string, object>>(b_res, b_res.Length);
+				Dictionary<string, object> dic_root = GetRootDic(bs_result);
 				SetSingleObject(dic_root, null, root);
 				
 				// userData
@@ -141,17 +129,44 @@ namespace MJTool
 				if (dic_userData.ContainsKey("userSigin"))
 				{
 					Dictionary<string, object> dic_userSigin = (Dictionary<string, object>)dic_userData["userSigin"];
-					//SetMapObjects(dic_userSigin, "dayDetail", root.userData.userSigin.dayDetail);
-					//SetBaseMapObjects(dic_userSigin, "continueSigin", root.userData.userSigin.continueSigin);
+					SetMapObjects(dic_userSigin, "dayDetail", root.userData.userSigin.dayDetail);
+					SetBaseMapObjects(dic_userSigin, "continueSigin", root.userData.userSigin.continueSigin);
 					SetMapObjects(dic_userSigin, "lastDayDetail", root.userData.userSigin.lastDayDetail);
-					SetSingleObject(dic_userSigin, "awardInfo", root.userData.userSigin.awardInfo);
-					SetSingleObject(dic_userSigin, "lastAwardInfo", root.userData.userSigin.lastAwardInfo);					
+					SetMapArrayObjects(dic_userSigin, "awardInfo", root.userData.userSigin.awardInfo);
+					SetMapArrayObjects(dic_userSigin, "lastAwardInfo", root.userData.userSigin.lastAwardInfo);
 				}
+				
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine("--------------userSoul---------------");
+				foreach (entityUserSoul soul in root.userData.userSoul)
+				{
+					sb.AppendLine("generalType/number: " + soul.generalType + "\t" + soul.number);
+				}
+				sb.AppendLine("--------------userTavern---------------");
+				sb.AppendLine("id_1: " + root.userData.userTavern.id_1);
+				sb.AppendLine("id_2: " + root.userData.userTavern.id_2);
+				sb.AppendLine("id_3: " + root.userData.userTavern.id_3);
+				sb.AppendLine("ct: " + QueryManager.SecondsToDateTime(root.userData.userTavern.ct));
+				sb.AppendLine("nomalRefreshTimes: " + root.userData.userTavern.nomalRefreshTimes);
+				sb.AppendLine("nomalRefreshTime: " + QueryManager.SecondsToDateTime(root.userData.userTavern.nomalRefreshTime));
+				upCall.DebugLog(sb.ToString());
 			}
 			catch (Exception e)
 			{
 				upCall.DebugLog(e.StackTrace);
 			}
+		}
+		
+		private Dictionary<string, object> GetRootDic(byte[] bs_result)
+		{
+			List<byte> lst_byte_res = new List<byte>();
+			for (int i = 1; i < bs_result.Length; i++)
+			{
+				lst_byte_res.Add(bs_result[i]);
+			}
+			
+			byte[] b_res = lst_byte_res.ToArray();
+			return QueryManager.AMF_Deserializer<Dictionary<string, object>>(b_res, b_res.Length);
 		}
 		
 		private static Dictionary<string, string> dicValidFieldName = new Dictionary<string, string>()
@@ -160,6 +175,7 @@ namespace MJTool
 			{"nEvent", "event"},
 			{"groupId", "groupId "},
 			{"nValue", "value"},
+			{"nDouble", "double"},
 		};
 		
 		public string GetVaildFieldName(string field_name)
@@ -255,11 +271,11 @@ namespace MJTool
 				return;
 			}
 			lst_t_obj.Clear();
-			object[] arr_obj = (object[])dic_parent[key];
-			if (arr_obj == null)
+			if (dic_parent[key] == null || !dic_parent[key].GetType().IsArray)
 			{
 				return;
 			}
+			object[] arr_obj = (object[])dic_parent[key];
 			foreach (object o in arr_obj)
 			{
 				Dictionary<string, object> dic = (Dictionary<string, object>) o;
@@ -281,11 +297,11 @@ namespace MJTool
 				return;
 			}
 			dic_t_obj.Clear();
-			Dictionary<string, object> dic = (Dictionary<string, object>)dic_parent[key];
-			if (dic == null)
+			if (dic_parent[key] == null || !(dic_parent[key] is ASObject))
 			{
 				return;
 			}
+			Dictionary<string, object> dic = (Dictionary<string, object>)dic_parent[key];
 			foreach (KeyValuePair<string, object> pair in dic)
 			{
 				Dictionary<string, object> val = (Dictionary<string, object>)pair.Value;
@@ -307,11 +323,11 @@ namespace MJTool
 				return;
 			}
 			lst_t_obj.Clear();
-			object[] arr_obj = (object[])dic_parent[key];
-			if (arr_obj == null)
+			if (dic_parent[key] == null || !dic_parent[key].GetType().IsArray)
 			{
 				return;
 			}
+			object[] arr_obj = (object[])dic_parent[key];
 			foreach (T t in arr_obj)
 			{
 				lst_t_obj.Add(t);
@@ -330,14 +346,70 @@ namespace MJTool
 				return;
 			}
 			dic_t_obj.Clear();
-			Dictionary<string, T> dic = (Dictionary<string, T>)dic_parent[key];
-			if (dic == null)
+			if (dic_parent[key] == null || !(dic_parent[key] is ASObject))
 			{
 				return;
 			}
+			Dictionary<string, T> dic = (Dictionary<string, T>)dic_parent[key];
 			foreach (KeyValuePair<string, T> pair in dic)
 			{
 				dic_t_obj.Add(pair.Key, pair.Value);
+			}
+		}
+		
+		public void SetMapArrayObjects<T>(Dictionary<string, object> dic_parent, string key, Dictionary<string, List<T>> dic_arr_t_obj) where T : new()
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (!dic_parent.ContainsKey(key))
+			{
+				upCall.DebugLog(dic_arr_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+				return;
+			}
+			dic_arr_t_obj.Clear();
+			if (dic_parent[key] == null || !(dic_parent[key] is ASObject))
+			{
+				return;
+			}
+			Dictionary<string, object> dic = (Dictionary<string, object>)dic_parent[key];
+			foreach (KeyValuePair<string, object> pair in dic)
+			{
+				List<T> lst = new List<T>();
+				SetArrayObjects(dic, pair.Key, lst);
+				dic_arr_t_obj.Add(pair.Key, lst);
+			}
+		}
+		
+		public void SetArrayArrayObjects<T>(Dictionary<string, object> dic_parent, string key, List<List<T>> lst_lst_t_obj) where T : new()
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (!dic_parent.ContainsKey(key))
+			{
+				upCall.DebugLog(lst_lst_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+				return;
+			}
+			lst_lst_t_obj.Clear();
+			if (dic_parent[key] == null || !dic_parent[key].GetType().IsArray)
+			{
+				return;
+			}
+			object[] arr_arr = (object[])dic_parent[key];
+			foreach (object[] arr_obj in arr_arr)
+			{
+				List<T> lst_t_obj = new List<T>();
+				foreach (object o in arr_obj)
+				{
+					Dictionary<string, object> dic = (Dictionary<string, object>) o;
+					T obj = new T();
+					SetSingleObject(dic, obj);
+					lst_t_obj.Add(obj);
+				}
+				lst_lst_t_obj.Add(lst_t_obj);
 			}
 		}
 	}

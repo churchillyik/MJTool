@@ -4,9 +4,6 @@ using System.Text;
 
 namespace MJTool
 {
-	/// <summary>
-	/// Description of RSAKey.
-	/// </summary>
 	public class RSAKey
 	{
 		private BigInteger n;

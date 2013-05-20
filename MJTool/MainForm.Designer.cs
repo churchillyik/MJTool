@@ -38,7 +38,14 @@ namespace MJTool
 		{
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.btRefreshGeneral = new System.Windows.Forms.Button();
+			this.btGetLuckInfo = new System.Windows.Forms.Button();
+			this.btGetLoginAward = new System.Windows.Forms.Button();
+			this.btMsgBox = new System.Windows.Forms.Button();
+			this.btGetMessage = new System.Windows.Forms.Button();
+			this.btGetGift = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.btLogout = new System.Windows.Forms.Button();
 			this.btLogin = new System.Windows.Forms.Button();
 			this.tbPassword = new System.Windows.Forms.TextBox();
 			this.tbAccount = new System.Windows.Forms.TextBox();
@@ -47,7 +54,7 @@ namespace MJTool
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.tbLog = new System.Windows.Forms.TextBox();
-			this.btLogout = new System.Windows.Forms.Button();
+			this.btEmployGeneral = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
@@ -68,6 +75,13 @@ namespace MJTool
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.btEmployGeneral);
+			this.tabPage1.Controls.Add(this.btRefreshGeneral);
+			this.tabPage1.Controls.Add(this.btGetLuckInfo);
+			this.tabPage1.Controls.Add(this.btGetLoginAward);
+			this.tabPage1.Controls.Add(this.btMsgBox);
+			this.tabPage1.Controls.Add(this.btGetMessage);
+			this.tabPage1.Controls.Add(this.btGetGift);
 			this.tabPage1.Controls.Add(this.groupBox1);
 			this.tabPage1.Location = new System.Drawing.Point(4, 21);
 			this.tabPage1.Name = "tabPage1";
@@ -76,6 +90,72 @@ namespace MJTool
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "挂机";
 			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// btRefreshGeneral
+			// 
+			this.btRefreshGeneral.Enabled = false;
+			this.btRefreshGeneral.Location = new System.Drawing.Point(245, 161);
+			this.btRefreshGeneral.Name = "btRefreshGeneral";
+			this.btRefreshGeneral.Size = new System.Drawing.Size(164, 23);
+			this.btRefreshGeneral.TabIndex = 2;
+			this.btRefreshGeneral.Text = "刷新武将";
+			this.btRefreshGeneral.UseVisualStyleBackColor = true;
+			this.btRefreshGeneral.Click += new System.EventHandler(this.BtRefreshGeneral);
+			// 
+			// btGetLuckInfo
+			// 
+			this.btGetLuckInfo.Enabled = false;
+			this.btGetLuckInfo.Location = new System.Drawing.Point(245, 132);
+			this.btGetLuckInfo.Name = "btGetLuckInfo";
+			this.btGetLuckInfo.Size = new System.Drawing.Size(164, 23);
+			this.btGetLuckInfo.TabIndex = 2;
+			this.btGetLuckInfo.Text = "获取幸运消息";
+			this.btGetLuckInfo.UseVisualStyleBackColor = true;
+			this.btGetLuckInfo.Click += new System.EventHandler(this.BtGetLuckInfo);
+			// 
+			// btGetLoginAward
+			// 
+			this.btGetLoginAward.Enabled = false;
+			this.btGetLoginAward.Location = new System.Drawing.Point(245, 103);
+			this.btGetLoginAward.Name = "btGetLoginAward";
+			this.btGetLoginAward.Size = new System.Drawing.Size(164, 23);
+			this.btGetLoginAward.TabIndex = 2;
+			this.btGetLoginAward.Text = "获取登录奖励";
+			this.btGetLoginAward.UseVisualStyleBackColor = true;
+			this.btGetLoginAward.Click += new System.EventHandler(this.BtGetLoginAward);
+			// 
+			// btMsgBox
+			// 
+			this.btMsgBox.Enabled = false;
+			this.btMsgBox.Location = new System.Drawing.Point(245, 74);
+			this.btMsgBox.Name = "btMsgBox";
+			this.btMsgBox.Size = new System.Drawing.Size(164, 23);
+			this.btMsgBox.TabIndex = 2;
+			this.btMsgBox.Text = "消息盒";
+			this.btMsgBox.UseVisualStyleBackColor = true;
+			this.btMsgBox.Click += new System.EventHandler(this.BtMsgBox);
+			// 
+			// btGetMessage
+			// 
+			this.btGetMessage.Enabled = false;
+			this.btGetMessage.Location = new System.Drawing.Point(245, 45);
+			this.btGetMessage.Name = "btGetMessage";
+			this.btGetMessage.Size = new System.Drawing.Size(164, 23);
+			this.btGetMessage.TabIndex = 2;
+			this.btGetMessage.Text = "获取消息";
+			this.btGetMessage.UseVisualStyleBackColor = true;
+			this.btGetMessage.Click += new System.EventHandler(this.BtGetMessage);
+			// 
+			// btGetGift
+			// 
+			this.btGetGift.Enabled = false;
+			this.btGetGift.Location = new System.Drawing.Point(245, 16);
+			this.btGetGift.Name = "btGetGift";
+			this.btGetGift.Size = new System.Drawing.Size(164, 23);
+			this.btGetGift.TabIndex = 2;
+			this.btGetGift.Text = "获取礼物";
+			this.btGetGift.UseVisualStyleBackColor = true;
+			this.btGetGift.Click += new System.EventHandler(this.BtGetGift);
 			// 
 			// groupBox1
 			// 
@@ -91,6 +171,17 @@ namespace MJTool
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "登录";
+			// 
+			// btLogout
+			// 
+			this.btLogout.Enabled = false;
+			this.btLogout.Location = new System.Drawing.Point(109, 98);
+			this.btLogout.Name = "btLogout";
+			this.btLogout.Size = new System.Drawing.Size(75, 23);
+			this.btLogout.TabIndex = 2;
+			this.btLogout.Text = "登出";
+			this.btLogout.UseVisualStyleBackColor = true;
+			this.btLogout.Click += new System.EventHandler(this.BtLogoutClick);
 			// 
 			// btLogin
 			// 
@@ -167,16 +258,16 @@ namespace MJTool
 			this.tbLog.Size = new System.Drawing.Size(653, 328);
 			this.tbLog.TabIndex = 0;
 			// 
-			// btLogout
+			// btEmployGeneral
 			// 
-			this.btLogout.Enabled = false;
-			this.btLogout.Location = new System.Drawing.Point(109, 98);
-			this.btLogout.Name = "btLogout";
-			this.btLogout.Size = new System.Drawing.Size(75, 23);
-			this.btLogout.TabIndex = 2;
-			this.btLogout.Text = "登出";
-			this.btLogout.UseVisualStyleBackColor = true;
-			this.btLogout.Click += new System.EventHandler(this.BtLogoutClick);
+			this.btEmployGeneral.Enabled = false;
+			this.btEmployGeneral.Location = new System.Drawing.Point(245, 190);
+			this.btEmployGeneral.Name = "btEmployGeneral";
+			this.btEmployGeneral.Size = new System.Drawing.Size(164, 23);
+			this.btEmployGeneral.TabIndex = 2;
+			this.btEmployGeneral.Text = "雇佣武将";
+			this.btEmployGeneral.UseVisualStyleBackColor = true;
+			this.btEmployGeneral.Click += new System.EventHandler(this.BtEmployGeneral);
 			// 
 			// MainForm
 			// 
@@ -196,6 +287,13 @@ namespace MJTool
 			this.tabPage3.PerformLayout();
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Button btEmployGeneral;
+		private System.Windows.Forms.Button btRefreshGeneral;
+		private System.Windows.Forms.Button btGetLuckInfo;
+		private System.Windows.Forms.Button btGetLoginAward;
+		private System.Windows.Forms.Button btMsgBox;
+		private System.Windows.Forms.Button btGetMessage;
+		private System.Windows.Forms.Button btGetGift;
 		private System.Windows.Forms.Button btLogout;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;

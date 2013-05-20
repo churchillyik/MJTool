@@ -11,9 +11,6 @@ namespace MJTool
 		MOZILLA,
 	}
 	
-	/// <summary>
-	/// Description of BigInteger.
-	/// </summary>
 	public class BigInteger
 	{
 		// Bits per digit

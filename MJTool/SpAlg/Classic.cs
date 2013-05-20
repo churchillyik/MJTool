@@ -2,9 +2,6 @@
 
 namespace MJTool
 {
-	/// <summary>
-	/// // Modular reduction using "classic" algorithm
-	/// </summary>
 	public class Classic
 	{
 		private BigInteger m;

@@ -64,6 +64,7 @@
     <Compile Include="Query\QueryManager.cs" />
     <Compile Include="Query\ServerParam.cs" />
     <Compile Include="Query\Account.cs" />
+    <Compile Include="Query\UserCommand\ParseCmd.cs" />
     <Compile Include="Query\UserCommand\ParseGetInfo.cs" />
     <Compile Include="Query\UserCommand\UserCommand.cs" />
     <Compile Include="Query\UserDatas.cs" />

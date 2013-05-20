@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Threading;
 
 namespace MJTool
 {
 	partial class QueryManager
 	{
+		public void Login(Account acc)
+		{
+			Thread t = new Thread(new ParameterizedThreadStart(doLogin));
+			t.Name = "Login";
+			t.Start(acc);
+		}
+		
 		public void doLogin(object o)
 		{
 			Account curAcc = (Account) o;
@@ -184,6 +192,18 @@ namespace MJTool
 		public static long UnixTimeStamp(DateTime time)
 		{
 			return Convert.ToInt64(time.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds);
+		}
+		
+		public static DateTime SecondsToDateTime(double seconds)
+		{
+			DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0);
+			return dt.AddSeconds(seconds);
+		}
+		
+		public static DateTime MillisecondsToDateTime(long milliseconds)
+		{
+			DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0);
+			return dt.AddMilliseconds(milliseconds);
 		}
 	}
 }

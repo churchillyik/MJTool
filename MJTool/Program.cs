@@ -3,9 +3,6 @@ using System.Windows.Forms;
 
 namespace MJTool
 {
-	/// <summary>
-	/// Class with program entry point.
-	/// </summary>
 	internal sealed class Program
 	{
 		/// <summary>

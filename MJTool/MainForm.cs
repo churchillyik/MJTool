@@ -5,9 +5,6 @@ using System.Windows.Forms;
 
 namespace MJTool
 {
-	/// <summary>
-	/// Description of MainForm.
-	/// </summary>
 	public partial class MainForm : Form
 	{
 		public MainForm()
@@ -69,21 +66,69 @@ namespace MJTool
 			this.tbLog.Text = "";
 		}
 		
+		private void Buttonbehaviour(bool bLogined)
+		{
+			this.btLogin.Enabled = (!bLogined);
+			this.btLogout.Enabled = bLogined;
+			
+			this.btGetGift.Enabled = bLogined;
+			this.btGetMessage.Enabled = bLogined;
+			this.btMsgBox.Enabled = bLogined;
+			this.btGetLoginAward.Enabled = bLogined;
+			this.btGetLuckInfo.Enabled = bLogined;
+			this.btRefreshGeneral.Enabled = bLogined;
+			this.btEmployGeneral.Enabled = bLogined;
+		}
+		
 		void BtLoginClick(object sender, EventArgs e)
 		{
 			curAcc = new Account(this.tbAccount.Text, this.tbPassword.Text);
 			curAcc.upCall = sInsMgr;
 			sInsMgr.Login(curAcc);
 			
-			this.btLogin.Enabled = false;
-			this.btLogout.Enabled = true;
+			Buttonbehaviour(true);
 		}
 		
 		void BtLogoutClick(object sender, EventArgs e)
 		{
 			sInsMgr.Logout(curAcc);
-			this.btLogin.Enabled = true;
-			this.btLogout.Enabled = false;
+			
+			Buttonbehaviour(false);
+		}
+		
+		void BtGetGift(object sender, EventArgs e)
+		{
+			sInsMgr.SendCommand(new CmdArg(CmdIDs.USER_GET_GIFT, curAcc));
+		}
+		
+		void BtGetMessage(object sender, EventArgs e)
+		{
+			sInsMgr.SendCommand(new CmdArg(CmdIDs.USER_GET_MESSAGE, curAcc));
+		}
+		
+		void BtMsgBox(object sender, EventArgs e)
+		{
+			sInsMgr.SendCommand(new CmdArg(CmdIDs.FEED_MSG_BOX, curAcc));
+		}
+		
+		void BtGetLoginAward(object sender, EventArgs e)
+		{
+			sInsMgr.SendCommand(new CmdArg(CmdIDs.USER_GET_LOGIN_AWARD, curAcc));
+		}
+		
+		void BtGetLuckInfo(object sender, EventArgs e)
+		{
+			sInsMgr.SendCommand(new CmdArg(CmdIDs.USER_GET_LUCK_INFO, curAcc));
+		}
+		
+		void BtRefreshGeneral(object sender, EventArgs e)
+		{
+			sInsMgr.SendCommand(new RfsGenCmdArg(CmdIDs.USER_REFRESH_GENERAL, curAcc, 1));
+		}
+		
+		void BtEmployGeneral(object sender, EventArgs e)
+		{
+			sInsMgr.SendCommand(new EplGenCmdArg(CmdIDs.USER_EMPLOY_GENERAL, curAcc, 0, 1));
 		}
 	}
 }

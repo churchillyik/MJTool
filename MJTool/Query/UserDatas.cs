@@ -1,19 +1,8 @@
-﻿/*
- * 由SharpDevelop创建。
- * 用户： Administrator
- * 日期: 2013-5-13
- * 时间: 15:04
- * 
- * 要改变这种模板请点击 工具|选项|代码编写|编辑标准头文件
- */
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace MJTool
 {
-	/// <summary>
-	/// Description of UserRoot.
-	/// </summary>
 	public class UserRoot
 	{
 		public double serverTime;
@@ -558,6 +547,7 @@ namespace MJTool
 		public int serverId;
 	}
 	
+	// 玩家当前拥有的将魂和对应数量
 	public class entityUserSoul
 	{
 		public int generalType;
@@ -574,6 +564,7 @@ namespace MJTool
 		public double nomalRefreshTime;
 	}
 	
+	// 玩家的阵形数据
 	public class entityUserFormationGeneral
 	{
 		public int formationId;
@@ -1403,22 +1394,18 @@ namespace MJTool
 		public int days;
 		public string award;
 		public Dictionary<string, int> continueSigin = new Dictionary<string, int>();
-		public Dictionary<string, entityLastDayDetail> lastDayDetail = new Dictionary<string, entityLastDayDetail>();
+		public Dictionary<string, entityDayDetail> lastDayDetail = new Dictionary<string, entityDayDetail>();
 		public int lastDays;
 		public string lastAward;
 		public int vipSign;
 		public int lastCash;
-		public entityAwardInfo awardInfo = new entityAwardInfo();
-		public entityLastAwardInfo lastAwardInfo = new entityLastAwardInfo();
+		public Dictionary<string, List<entitySiginAwardInfo>> awardInfo = new Dictionary<string, List<entitySiginAwardInfo>>();
+		public Dictionary<string, List<entitySiginAwardInfo>> lastAwardInfo = new Dictionary<string, List<entitySiginAwardInfo>>();
 		public int lastVipSign;
 		public int lastTurnCash;
 	}
 	
 	public class entityDayDetail
-	{
-	}
-	
-	public class entityLastDayDetail
 	{
 		public int status;
 		public string day;
@@ -1426,12 +1413,14 @@ namespace MJTool
 		public double asCt;
 	}
 	
-	public class entityAwardInfo
+	public class entitySiginAwardInfo
 	{
-	}
-	
-	public class entityLastAwardInfo
-	{
+		public int id;
+		public int days;
+		public int awardType;
+		public int category;
+		public int type;
+		public int num;
 	}
 	
 	public class entityUserEggAward
