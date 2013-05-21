@@ -38,6 +38,7 @@ namespace MJTool
 		{
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.btEmployGeneral = new System.Windows.Forms.Button();
 			this.btRefreshGeneral = new System.Windows.Forms.Button();
 			this.btGetLuckInfo = new System.Windows.Forms.Button();
 			this.btGetLoginAward = new System.Windows.Forms.Button();
@@ -54,7 +55,6 @@ namespace MJTool
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.tbLog = new System.Windows.Forms.TextBox();
-			this.btEmployGeneral = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
@@ -91,10 +91,21 @@ namespace MJTool
 			this.tabPage1.Text = "挂机";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
+			// btEmployGeneral
+			// 
+			this.btEmployGeneral.Enabled = false;
+			this.btEmployGeneral.Location = new System.Drawing.Point(245, 45);
+			this.btEmployGeneral.Name = "btEmployGeneral";
+			this.btEmployGeneral.Size = new System.Drawing.Size(164, 23);
+			this.btEmployGeneral.TabIndex = 2;
+			this.btEmployGeneral.Text = "雇佣武将";
+			this.btEmployGeneral.UseVisualStyleBackColor = true;
+			this.btEmployGeneral.Click += new System.EventHandler(this.BtEmployGeneral);
+			// 
 			// btRefreshGeneral
 			// 
 			this.btRefreshGeneral.Enabled = false;
-			this.btRefreshGeneral.Location = new System.Drawing.Point(245, 161);
+			this.btRefreshGeneral.Location = new System.Drawing.Point(245, 16);
 			this.btRefreshGeneral.Name = "btRefreshGeneral";
 			this.btRefreshGeneral.Size = new System.Drawing.Size(164, 23);
 			this.btRefreshGeneral.TabIndex = 2;
@@ -105,7 +116,7 @@ namespace MJTool
 			// btGetLuckInfo
 			// 
 			this.btGetLuckInfo.Enabled = false;
-			this.btGetLuckInfo.Location = new System.Drawing.Point(245, 132);
+			this.btGetLuckInfo.Location = new System.Drawing.Point(28, 277);
 			this.btGetLuckInfo.Name = "btGetLuckInfo";
 			this.btGetLuckInfo.Size = new System.Drawing.Size(164, 23);
 			this.btGetLuckInfo.TabIndex = 2;
@@ -116,7 +127,7 @@ namespace MJTool
 			// btGetLoginAward
 			// 
 			this.btGetLoginAward.Enabled = false;
-			this.btGetLoginAward.Location = new System.Drawing.Point(245, 103);
+			this.btGetLoginAward.Location = new System.Drawing.Point(28, 248);
 			this.btGetLoginAward.Name = "btGetLoginAward";
 			this.btGetLoginAward.Size = new System.Drawing.Size(164, 23);
 			this.btGetLoginAward.TabIndex = 2;
@@ -127,7 +138,7 @@ namespace MJTool
 			// btMsgBox
 			// 
 			this.btMsgBox.Enabled = false;
-			this.btMsgBox.Location = new System.Drawing.Point(245, 74);
+			this.btMsgBox.Location = new System.Drawing.Point(28, 219);
 			this.btMsgBox.Name = "btMsgBox";
 			this.btMsgBox.Size = new System.Drawing.Size(164, 23);
 			this.btMsgBox.TabIndex = 2;
@@ -138,7 +149,7 @@ namespace MJTool
 			// btGetMessage
 			// 
 			this.btGetMessage.Enabled = false;
-			this.btGetMessage.Location = new System.Drawing.Point(245, 45);
+			this.btGetMessage.Location = new System.Drawing.Point(28, 190);
 			this.btGetMessage.Name = "btGetMessage";
 			this.btGetMessage.Size = new System.Drawing.Size(164, 23);
 			this.btGetMessage.TabIndex = 2;
@@ -149,7 +160,7 @@ namespace MJTool
 			// btGetGift
 			// 
 			this.btGetGift.Enabled = false;
-			this.btGetGift.Location = new System.Drawing.Point(245, 16);
+			this.btGetGift.Location = new System.Drawing.Point(28, 161);
 			this.btGetGift.Name = "btGetGift";
 			this.btGetGift.Size = new System.Drawing.Size(164, 23);
 			this.btGetGift.TabIndex = 2;
@@ -257,17 +268,6 @@ namespace MJTool
 			this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
 			this.tbLog.Size = new System.Drawing.Size(653, 328);
 			this.tbLog.TabIndex = 0;
-			// 
-			// btEmployGeneral
-			// 
-			this.btEmployGeneral.Enabled = false;
-			this.btEmployGeneral.Location = new System.Drawing.Point(245, 190);
-			this.btEmployGeneral.Name = "btEmployGeneral";
-			this.btEmployGeneral.Size = new System.Drawing.Size(164, 23);
-			this.btEmployGeneral.TabIndex = 2;
-			this.btEmployGeneral.Text = "雇佣武将";
-			this.btEmployGeneral.UseVisualStyleBackColor = true;
-			this.btEmployGeneral.Click += new System.EventHandler(this.BtEmployGeneral);
 			// 
 			// MainForm
 			// 

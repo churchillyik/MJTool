@@ -101,6 +101,9 @@ namespace MJTool
 			CmdIDs id = cmd_arg.cmd_id;
 			Account curAcc = cmd_arg.cur_acc;
 			
+			// 记录用户操作
+			CmdOperation cmdOprt = new CmdOperation();
+			
 			if (!gDicCmd.ContainsKey(id))
 			{
 				DebugLog("未初始化的命令ID - " + id.ToString());
@@ -117,6 +120,9 @@ namespace MJTool
 				{
 					RfsGenCmdArg arg = (RfsGenCmdArg)o;
 					nType = arg.nType;
+					
+					// 记录上次武将刷新的类型，供后面解析数据时的数据同步之用
+					cmdOprt.nGenRefType = arg.nType;
 				}
 				else
 				{
@@ -216,10 +222,10 @@ namespace MJTool
 			string result = curAcc.PageQuery(ServerParam.strGameSvr, "", lst_byte.ToArray(), Encoding.GetEncoding("iso-8859-1"));
 			byte[] bs_result = Encoding.GetEncoding("iso-8859-1").GetBytes(result);
 			
-			ParseResult(id, bs_result, curAcc);
+			ParseResult(id, bs_result, curAcc, cmdOprt);
 		}
 		
-		private void ParseResult(CmdIDs id, byte[] bs_result, Account acc)
+		private void ParseResult(CmdIDs id, byte[] bs_result, Account acc, CmdOperation cmdOprt)
 		{
 			switch (id)
 			{
@@ -241,6 +247,10 @@ namespace MJTool
 					break;
 				case CmdIDs.USER_GET_LUCK_INFO:
 					acc.ParseGetLuckInfo(bs_result);
+					break;
+					
+				case CmdIDs.USER_REFRESH_GENERAL:
+					acc.ParseRefreshGeneral(bs_result, cmdOprt);
 					break;
 			}
 		}
@@ -264,6 +274,16 @@ namespace MJTool
 					}
 					sb.Append(bs[i].ToString("X2") + " ");
 				}
+			}
+			WriteLog(file_name, sb.ToString());
+		}
+		
+		public void PrintRaw(string file_name, byte[] bs)
+		{
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < bs.Length; i++)
+			{
+				sb.Append(bs[i].ToString("X2") + " ");
 			}
 			WriteLog(file_name, sb.ToString());
 		}
@@ -375,5 +395,10 @@ namespace MJTool
 		IS_AMF, // 是否为AMF包
 		
 		CMD_PARAM_END,
+	}
+	
+	public class CmdOperation
+	{
+		public int nGenRefType;
 	}
 }

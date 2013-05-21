@@ -78,6 +78,79 @@ namespace MJTool
 			
 			SetSingleObject(dic_root, "userData", pkg.userData);
 		}
+		
+		public bool CheckGeneralRefreshAvailable(int type, out DateTime dt)
+		{
+			
+			switch (type)
+			{
+				case 1:
+					dt = QueryManager.SecondsToDateTime(this.root.userData.user.tavernCdEndTime_1);
+					return DateTime.Now > dt;
+				case 2:
+					dt = QueryManager.SecondsToDateTime(this.root.userData.user.tavernCdEndTime_2);
+					return DateTime.Now > dt;
+				case 3:
+					dt = QueryManager.SecondsToDateTime(this.root.userData.user.tavernCdEndTime_3);
+					return DateTime.Now > dt;
+				case 4:
+					dt = QueryManager.SecondsToDateTime(this.root.userData.user.tavernCdEndTime_4);
+					return DateTime.Now > dt;
+				default:
+					dt = DateTime.MinValue;
+					return false;
+			}
+		}
+		
+		public void UpdateGeneralRefreshData(recvRefreshGeneral pkg, int type)
+		{
+			this.root.userData.userTavern.id_1 = pkg.userData.userTavern.id_1;
+			this.root.userData.userTavern.id_2 = pkg.userData.userTavern.id_2;
+			this.root.userData.userTavern.id_3 = pkg.userData.userTavern.id_3;
+			this.root.userData.userTavern.ct = pkg.userData.userTavern.ct;
+			this.root.userData.userTavern.nomalRefreshTimes = pkg.userData.userTavern.nomalRefreshTimes;
+			this.root.userData.userTavern.nomalRefreshTime = pkg.userData.userTavern.nomalRefreshTime;
+			
+			switch (type)
+			{
+				case 1:
+					this.root.userData.user.tavernCdEndTime_1 = pkg.userData.userTavern.ct;
+					break;
+				case 2:
+					this.root.userData.user.tavernCdEndTime_2 = pkg.userData.userTavern.ct;
+					break;
+				case 3:
+					this.root.userData.user.tavernCdEndTime_3 = pkg.userData.userTavern.ct;
+					break;
+				case 4:
+					this.root.userData.user.tavernCdEndTime_4 = pkg.userData.userTavern.ct;
+					break;
+			}
+		}
+		
+		public void ParseRefreshGeneral(byte[] bs_result, CmdOperation cmdOprt)
+		{
+			upCall.Print("ParseRefreshGeneral", bs_result);
+			Dictionary<string, object> dic_root = GetRootDic(bs_result);
+			
+			recvRefreshGeneral pkg = new recvRefreshGeneral();
+			SetSingleObject(dic_root, null, pkg);
+			
+			if (!dic_root.ContainsKey("userData"))
+			{
+				upCall.DebugLog("dic_root不存在userData键值");
+				return;
+			}
+			Dictionary<string, object> dic_userData = (Dictionary<string, object>) dic_root["userData"];
+			SetSingleObject(dic_root, "userData", pkg.userData);
+			SetSingleObject(dic_userData, "userTavern", pkg.userData.userTavern);
+			SetArrayObjects(dic_userData, "userSoul", pkg.userData.userSoul);
+			
+			// 同步到角色数据中
+			UpdateGeneralRefreshData(pkg, cmdOprt.nGenRefType);
+			
+			PrintTavern();
+		}
 	}
 	
 	public class recvGetGift
@@ -88,7 +161,7 @@ namespace MJTool
 		public int newMailNumber;
 		public int finishGuide;
 		public List<object> message = new List<object>();
-		public List<object> announcement = new List<object>();
+		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
 	public class recvGetMessage
@@ -99,7 +172,7 @@ namespace MJTool
 		public int newMailNumber;
 		public int finishGuide;
 		public List<object> message = new List<object>();
-		public List<object> announcement = new List<object>();
+		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
 	public class recvUserDataGetMessage
@@ -154,7 +227,7 @@ namespace MJTool
 		public int newMailNumber;
 		public int finishGuide;
 		public List<object> message = new List<object>();
-		public List<object> announcement = new List<object>();
+		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
 	public class recvUserDataGetLoginAward
@@ -178,7 +251,7 @@ namespace MJTool
 		public int newMailNumber;
 		public int finishGuide;
 		public List<object> message = new List<object>();
-		public List<object> announcement = new List<object>();
+		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
 	public class recvUserDataGetLuckInfo
@@ -189,5 +262,23 @@ namespace MJTool
 		public int cdTrend;
 		public double cdEndTime;
 		public List<object> userBuff = new List<object>();
+	}
+	
+	public class recvRefreshGeneral
+	{
+		public double serverTime;
+		public int onlineX;
+		public recvUserDataRefreshGeneral userData = new recvUserDataRefreshGeneral();
+		public int newMailNumber;
+		public int finishGuide;
+		public List<object> message = new List<object>();
+		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
+	}
+	
+	public class recvUserDataRefreshGeneral
+	{
+		public entityUserTavern userTavern;
+		public int firstStar;
+		public List<entityUserSoul> userSoul = new List<entityUserSoul>();
 	}
 }

@@ -1,0 +1,3813 @@
+*define
+defaultspeed 10,5,1
+underline 600
+linepage
+pause
+
+*skill0(230011,230012,230013);主角
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-100*%4,60,NaN,500,1,1
+actjump 1,50,500
+wait 500
+screentargetoffest %4*100,-130
+zoomscreen 150,200,1
+wait 200
+movielabel 1,"attack2",1
+spwait 1
+zoomscreen 100,200,1
+movielabel 1,"idle",-1
+getsppos 1,%2,%3
+swfback 1001,"230013",%4,%2,%3-30,0,1
+blend 1001,"add"
+wait 120
+shakescreen 200,100,20
+for %1=2 to %5
+	getdamage %1,%6
+	hurt %1,%6,230011,"idle",%4
+	actspin %1,360*5,500
+	msp %1,0,0,500,500
+next
+wait 1600
+screenposition2 %2+200*%4,%3-100,500
+for %1=2 to %5
+	actspin %1,360*5,500
+	msp %1,0,0,-350,500
+next
+wait 500
+;第一次撞击
+frontblur 2000,70,101
+movielabel 1,"attack2",1
+moviespeed 1,40
+for %1=2 to %5
+	actspin %1,240,1200
+	msp %1,0,0,-130,1200
+next
+wait 1200
+shakescreen 200,100,20
+for %1=2 to %5
+	msp %1,%4*1100,%1,0,100
+	getdamage %1,%6
+	hurt %1,%6/11,230011,"idle",%4
+	actshadow %1,0
+next
+wait 500
+;龙飞行中
+showspeed %4,0,0
+screenposition2 %2+1300*%4,%3-100,100
+swfchangelayer 1001,2
+wait 100
+shakescreen 200,100,20
+for %1=2 to %5
+	rnd2 %6,0,180
+	amsp %1,%2+%4*1000,%3-30
+	cell %1,1
+	actspin %1,%6,50
+	getdamage %1,%6
+	hurt %1,%6/11,230011,"idle",%4,1,-1
+next
+screenposition2 %2+1000*%4,%3,1000
+wait 1000
+shakescreen 200,100,20
+for %1=2 to %5
+	getdamage %1,%6
+	hurt %1,%6/11,230011,"idle",%4,1,-1
+next
+screenposition2 %2+1100*%4,%3-50,1000
+;人物追赶
+movielabel 1,"run",-1
+moviespeed 1,300
+msp 1,%4*350,200,0,0
+msp 1,%4*600,0,0,2000,1,1
+for %10=1 to 2
+	wait 1000
+	shakescreen 200,100,20
+	for %1=2 to %5
+		getdamage %1,%6
+		hurt %1,%6/11,230011,"idle",%4,1,-1
+	next
+next
+moviespeed 1,600
+msp 1,%4*1000,-200,0,1000
+screenposition2 %2+1900*%4,%3,1000
+hidespeed
+wait 1000
+movielabel 1,"idle",-1
+moviespeed 1,100
+msp 1,%4*200,0,100,200
+fsp 1,0-%4
+wait 300
+;第二次撞击
+movielabel 1,"attack",1
+cell 1,4
+screenposition2 %2+1100*%4,%3-50,500
+amsp 1,%2+1100*%4,%3-50,100,500,1,1
+actspin 1,120,500
+for %1=2 to %5
+	msp %1,%4*50,20,0,0
+next
+sound "Bomb"
+randomshakescreen 1000,50,0
+wait 500
+frontblur 3100,90,105,1
+zoomscreen 150,500,1
+for %10=1 to 6
+	for %1=2 to %5
+		getdamage %1,%6
+		hurt %1,%6/11,230012,"idle",%4,1,-1
+	next
+	shakescreen 200,100,20
+	wait 500
+next
+return
+
+*skill1(20010,20011,20012);张角
+wait 200
+getspfliped 1,%4
+msp 1,-480*%4,0,NaN,500,1,1
+actjump 1,100,500
+wait 750
+getsppos 1,%2,%3
+swffront 1001,"20011",%4,%2,%3,0,1
+swfback 1002,"20012",%4,%2,%3,0,1
+moviechange 1,20010
+movielabel 1,"start",1
+spwait 1
+showspeed %4
+movielabel 1,"idle",1
+screento 2,1000
+wait 500
+hidespeed
+screento 2,150
+gettargetslen %5
+for %2=1 to 2
+	for %1=2 to %5
+		getdamage %1,%6
+		hurt %1,%6/12,0,"idle",%4
+	next
+	wait 350
+next
+wait 300
+zoomscreen 150,200
+for %2=1 to 10
+	for %1=2 to %5
+		getdamage %1,%6
+		hurt %1,%6/12,0,"idle",%4
+	next
+	wait 150
+next
+return
+
+*skill2(20021,20022);丘处机
+getsppos 1,%2,%3
+getspfliped 1,%4
+gettargetslen %5
+moviechange 1,20021
+acteffect 1,1,1
+mov %11,0
+for %10=1 to 2
+for %1=2 to %5
+	getsppos %1,%6,%7
+	amsp 1,%6,%7+1
+	if (%11)%(2)=0 fsp 1,-1
+	if (%11)%(2)=1 fsp 1,1
+	movielabel 1,"idle",1
+	getdamage %1,%8
+	hurt %1,%8/2,0,"idle",%4
+	swffront 1001,20022,%4,%6,%7,0,1,1
+	wait 400
+	shakescreen 100
+	inc %11
+next
+next
+wait 1200
+acteffect 1,1,0
+return
+
+*skill3(20031,20032,20033,20034);华雄
+getsppos 1,%2,%3
+psp 1,%3+1
+getspfliped 1,%4
+gettargetslen %5
+screentarget 2
+swffront 1001,20034,%4,%2,%3,0,1,1
+moviechange 1,20031
+movielabel 1,"start",1
+wait 40
+msp 2,220*%4,0,NaN,100
+wait 100
+getdamage 2,%8
+hurt 2,%8/4,20033,"idle",%4
+wait 350
+movielabel 1,"idle",3
+for %6=1 to 3
+	msp 2,-280*%4,0,280,550
+	actspin 2,-90,550
+	wait 550
+	msp 2,280*%4,0,-300,200
+	actspin 2,90,200
+	wait 200
+	for %7=2 to %5
+		getdamage %7,%8
+		hurt %7,%8/4,20032,"idle",%4
+	next
+	if %6=3 shakescreen 400,10,50
+	if %6!=3 shakescreen 200,10,20
+	wait 50
+next
+wait 800
+return
+
+*skill4(20041);玄冥
+getsppos 1,%2,%3
+getspfliped 1,%4
+gettargetslen %5
+shadoweffect 1
+for %1=1 to %5
+	clonesp %1,%1+100
+	vsp %1+100,0
+	addtoshadoweffect %1+100
+next
+tasp 1,0
+wait 1000
+for %1=2 to %5
+	getsppos %1+100,%9,%10
+	actjump 101,20,200
+	amsp 101,%9-70*%4,%10,0,200
+	movielabel 101,"attack",1
+	wait 400
+	shakesp %1+100
+ 	shakescreen 200
+	movielabel %1+100,"lie",1
+	spwait 101
+	movielabel 101,"idle"
+next
+amsp 101,%2,%3,NaN,200
+actjump 101,20,200
+wait 1000
+shadoweffect 0
+tasp 1,100,200
+randomshakescreen 800,150,0
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8,20041,"idle",%4
+next
+wait 1500
+shadoweffect 0
+cspall 1
+return
+
+*skill5(20051);岳灵珊
+getsppos 1,%2,%3
+psp 1,%3+1
+getspfliped 1,%4
+movielabel 1,"attack",1
+wait 200
+acteffect 1,1,1
+msp 1,300*%4,0,0,50
+gettargetslen %5
+for %1=2 to %5
+	getsppos %1,%2,%3
+	actspin %1,1440,1000
+	actjump %1,200,1000
+	getdamage %1,%6
+	hurt %1,%6/2,20051,"idle",%4
+	shakescreen 200
+	wait 200
+next
+wait 50
+acteffect 1,1,0
+wait 500
+fsp 1,0-%4
+movielabel 1,"attack",1
+wait 200
+acteffect 1,1,1
+msp 1,-300*%4,0,0,50
+for %1=%5 to 2 step -1
+	getsppos %1,%2,%3
+	actspin %1,1440,1000
+	actjump %1,200,1500,1
+	getdamage %1,%6
+	hurt %1,%6/2,20051,"idle",%4
+	;swffront 1000+%1,20051,%4,%2,%3,0,1,1
+	wait 200
+next
+acteffect 1,1,0
+wait 500
+fsp 1,%4
+movielabel 1,"idle"
+wait 1000
+return
+
+*skill6(20061,20062,20063,20064,20065);蔡文姬
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-220*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 500
+moviechange 1,20061
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle",-1
+wait 100
+getsppos 1,%2,%3
+swffront 1001,20062,%4,%2,%3,0,5,1
+blend 1001,"add"
+for %10=1 to 5
+	for %1=2 to %5
+		getsppos %1,%2,%3
+		lsp 1001+%10*%5+%1,20063,%4,%2,%3,0,1,1
+		if %10=1 movielabel %1,"lie",1
+	next
+	wait 500
+next
+screentarget 2
+peoplecreater 20065,%4
+wait 500
+for %10= 1 to 4
+	shakescreen 200,100,10
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/4,20064,"idle",%4
+	next
+	wait 500
+next
+peoplecreater 0
+return
+
+*skill7(20071,20072,20073);王语嫣
+getsppos 1,%2,%3
+getspfliped 1,%4
+gettargetslen %5
+moviechange 1,20071
+movielabel 1,"idle",1
+wait 200
+lsp 1001,20073,%4,%2,%3,0,1,1
+wait 1000
+shakescreen 200,50,50
+zoomscreen 150,350
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,20073,"idle",%4
+	getsppos %1,%2,%3
+	actspin %1,1440,1500
+	actjump %1,500,2000,1
+next
+wait 1000
+zoomscreen 100,200
+wait 800
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,20072,"idle",%4
+	movielabel %1,"lie",1
+next
+wait 1500
+return
+
+*skill8(20081,20082,20083);董卓
+getsppos 1,%12,%13
+getspfliped 1,%4
+gettargetslen %5
+moviechange 1,20081
+movielabel 1,"start",1
+wait 500
+movielabel 1,"idle",-1
+for %10=1 to 4
+	rnd2 %11,2,%5
+	for %1=2 to %5
+		getsppos %1,%2,%3
+		if %1=%11 amsp 1,%2-%4*70,%3,0,100
+		getdamage %1,%8
+		hurt %1,%8/20,20083,"idle",%4
+	next
+	shakescreen 100,10,20
+	wait 200
+next
+amsp 1,%12,%13
+wait 300
+swffront 1001,20082,1,0,0
+screenswf 1001
+for %10=1 to 16
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/20,0,"idle",%4
+	next
+	wait 200
+next
+mosiclayer 1
+for %1=2 to %5
+	movielabel %1,"lie",1
+	cell %1,6
+	addtomosiclayer %1
+	vsp %1,0
+next
+movielabel 1,"end",-1
+cell 1,1
+wait 500
+movielabel 1,"end",-1
+wait 1000
+mosiclayer 0
+csp 1001
+return
+
+*skill9(20091,20092,20093);鳌拜
+getsppos 1,%12,%13
+psp 1,%3+1
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-420*%4,0,0,500,1,1
+actjump 1,50,500
+wait 1000
+moviechange 1,20091
+movielabel 1,"start",1
+getsppos 2,%2,%3
+acteffect 1,1,1
+amsp 1,%2-30*%4,%3,0,400
+wait 1000
+movielabel 1,"up",-1
+movielabel 2,"hurt",1
+msp 1,0,0,1000,500,1,1
+msp 2,0,0,1000,500,1,1
+wait 250
+showspeed %4,500,90,-125
+wait 750
+msp 1,0,0,1000,500,1,2
+msp 2,0,0,1000,500,1,2
+hidespeed
+wait 500
+acteffect 1,1,0
+showspeed %4,500,-90,-125
+movielabel 1,"down",-1
+getsppos 1,%2,%3
+msp 2,0,0,-30
+scale 2,100,-100
+msp 1,0,0,-500,500,1,1
+msp 2,0,0,-500,500,1,1
+wait 500
+lsp 1001,20092,%4,%2,%3,1500,-1
+screenposition2 %12,%13,500
+msp 1,0,0,-1500,500,1,2
+msp 2,0,0,-1500,500,1,2
+msp 1001,0,0,-1500,500,1,2
+wait 500
+csp 1001
+getsppos 1,%2,%3
+shakescreen 1000,150
+swfback 1002,20093,%4,%2,%3,0,1,1
+hidespeed
+sound "Bomb"
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/5,0,"idle",%4,1
+	if %1!=2 actspin %1,720,1000:actjump %1,200,1000,1
+next
+moviereset 1
+actjump 1,150,500
+amsp 1,%12,%13,NaN,500,1,1
+wait 1500
+scale 2,100,100
+return
+
+*skill10(20101,20102);太史慈
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-220*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 500
+getsppos 1,%2,%3
+swffront 1001,20101,%4,%2,%3,1,1
+vsp 1,0
+wait 800
+vsp 1,1
+screentarget 2
+wait 1200
+for %10=1 to 8
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,20102,"idle",%4
+	next
+	shakescreen 200,50,20
+	wait 300
+next
+sound "Bomb"
+shakescreen 500,150,50
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/5,20102,"idle",%4
+next
+wait 1500
+screenposition2 %2,%3
+return
+
+*skill11(20111,20112,20113);梅超风
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+moviechange 1 20111
+movielabel 1,"start",1
+wait 500
+lsp 1001,20113,%4,%2,%3,0,2,0,2
+blend 1001,"add"
+scale 1001,200,200
+acteffect 1,1,1
+for %10=1 to 3
+	if (%10)%(2)=1 movielabel 1,"idle1",1:movielabel 1001,"idle1",1
+	if (%10)%(2)=0 movielabel 1,"idle2",1:movielabel 1001,"idle2",1
+	for %1=1 to %5
+		msp %1,%4*100,0,0,200,1,1
+	next
+	msp 1001,%4*100,0,0,200,1,1
+	wait 200
+	for %1=2 to %5
+		getdamage %1,%8:hurt %1,%8/5,20112,"idle",%4,1,-1
+	next
+	shakescreen 200,50
+	wait 500
+next
+movielabel 1,"start2",1
+movielabel 1001,"start2",1
+zoomscreen 150,400
+wait 800
+movielabel 1,"end",1
+movielabel 1001,"end",1
+shakescreen 1000,150
+for %1=1 to %5
+	if %1!=1 getdamage %1,%8:hurt %1,%8/5*2,20112,"idle",%4,1,-1:msp %1,%4*800,0,0,300
+next
+zoomscreen 100,200
+wait 1000
+tasp 1001,0,300
+acteffect 1,1,0
+wait 500
+csp 1001
+screenposition2 %2,%3
+return
+
+*skill12(20121,20122,20123,20124);袁绍
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+msp 1,-100*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 500
+moviechange 1 20121
+movielabel 1,"start",1
+zoomscreen 150,200
+spwait 1
+wait 500
+zoomscreen 100,200
+screentarget 2
+msp 1,-400*%4,0,NaN,500,1,1
+actjump 1,50,500
+movielabel 1,"jump",1
+wait 500
+peoplecreater 20123,%4,1,1000,1000,100
+wait 500
+for %1=2 to %5
+	movielabel %1,"lie",1
+	cell %1,6
+next
+getscreenposition %12,%13
+for %10=1 to 10
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,20124,"idle",%4
+	next
+	rnd %2,760:rnd %3,620
+	lsp 1000+%10,20122,%4,%12+%2,%13+%3,0,4,1,2
+	tasp 1000+%10,0,1000
+wait 100
+next
+peoplecreaterstop
+wait 1000
+movielabel 1,"jump",1
+rnd2 %11,2,%5
+getsppos %11,%2,%3
+amsp 1,%2-50*%4,%3+1,0,500,1,1
+actjump 1,50,500
+zoomscreen 150,200
+wait 500
+movielabel 1,"end",2
+spwait 1
+moviereset 1
+peoplecreater 0
+wait 1000
+return
+
+*skill13(20131,20132,20133,20134);许褚
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%12,%13
+msp 1,-160*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 500
+getsppos 1,%2,%3
+moviechange 1 20131
+movielabel 1,"idle",1
+wait 500
+shakescreen 1000,150
+swffront 1001,20133,%4,%2,%3,0,1,1
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,20134,"idle",%4
+next
+spwait 1
+wait 300
+moviechange 1 20132
+movielabel 1,"idle",-1
+for %1=2 to %5
+	getdamage %1,%8
+	getsppos %1,%2,%3
+	amsp 1,%2-%4*120,%3,0,200,1,1
+	wait 200
+	scale %1,80,25
+	msp %1,0,0,-50
+	shakescreen 400,150,50
+	hurt %1,%8/2,20134,"idle",%4
+	wait 300
+next
+moviereset 1
+wait 100
+amsp 1,%12,%13,NaN,500,1,1
+actjump 1,50,500
+wait 1000
+return
+
+*skill14(20141,20142,20143,20144);灭绝师太
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+getsppos 1,%12,%13
+screentarget 2
+moviechange 1 20141
+movielabel 1,"step1",1
+wait 500
+frontblur 300,75
+for %1=2 to %5
+	getdamage %1,%8
+	msp %1,%4*460,0,NaN,800
+	hurt %1,%8/3,20143,"idle",%4
+	actspin %1,1440,800
+next
+wait 400
+swffront 1001,20142,%4,%2,%3,0,1,1
+wait 200
+frontblur 300,75
+acteffect 1,1,1
+msp 1,%4*740,0,NaN,200,1,1
+movielabel 1,"step2",1
+wait 200
+for %1=2 to %5
+	getdamage %1,%8
+	msp %1,0,0,220,800
+	hurt %1,%8/3,20143,"idle",%4
+	actspin %1,1440,800
+next
+wait 400
+msp 1,0,0,200,220,1,1
+wait 200
+frontblur 300,75
+movielabel 1,"step3",1
+wait 200
+for %1=2 to %5
+	msp %1,(0-%4)*240,0,-220,200
+next
+wait 200
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/3,20143,"idle",%4
+	getsppos %1,%2,%3
+	lsp 1001+%1,20144,%4,%2,%3,0,1,1,2
+	scale 1001+%1,200,200
+	msp 1001+%1,%4*(-50),-80,0
+next
+shakescreen 400,150
+acteffect 1,1,0
+wait 1000
+screenposition2 %12,%13
+return
+
+*skill15(20151,20152,20153);李莫愁
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%12,%13
+msp 1,-160*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 500
+getsppos 1,%2,%3
+moviechange 1,20151
+movielabel 1,"start",1
+spwait 1
+frontblur 800,90,105
+zoomscreen 150,200,1
+movielabel 1,"start2",1
+wait 800
+movielabel 1,"idle",-1
+zoomscreen 100,200
+sound "Bomb"
+randomshakescreen 1200,50,0
+swffront 1001,20152,%4,%2+%4*200,%3,0,1,1
+wait 700
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,20153,"idle",%4
+next
+wait 1000
+movielabel 1,"end",1
+spwait 1
+moviereset 1
+wait 500
+return
+
+*skill16(20161,20162);孙策
+getspfliped 1,%4
+gettargetslen %5
+wait 200
+moviechange 1,20161
+movielabel 1,"start",1
+showspeed %4,250,45,-30
+msp 1,0-%4*1000,0,1000,500
+spwait 1
+hidespeed 250
+movielabel 1,"idle",-1
+wait 500
+getsppos 1,%2,%3
+swffront 1001,20162,%4,%2+70*%4,%3,1000+50,1
+wait 2000
+screentarget 2
+showspeed %4,250,45,-30
+wait 400
+hidespeed 250
+wait 100
+screenswf 1001
+for %10=1 to 2
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/4,0,"idle",%4
+	next
+	shakescreen 400,150
+	wait 500
+next
+wait 300
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,0,"idle",%4
+next
+shakescreen 800,250
+wait 1500
+return
+
+*skill17(20171,20172,20113);典韦
+getspfliped 1,%4
+gettargetslen %5
+moviechange 1,20171
+msp 1,%4*150,0,NaN,500
+wait 500
+getsppos 1,%2,%3
+swffront 1001,20172,%4,%2,%3,0,-1
+for %1=2 to %5
+	msp %1,NaN,NaN,70
+next
+for %10=1 to 4
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/12,20113,"idle",%4
+		actspin %1,360,500
+	next
+	wait 500
+next
+scale 1001,200,200
+for %1=2 to %5
+	msp %1,NaN,NaN,70
+next
+for %10=1 to 8
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/12,20113,"idle",%4
+		actspin %1,360,500
+	next
+	wait 250
+next
+return
+
+*skill18(20181,20182);童姥
+getspfliped 1,%4
+gettargetslen %5
+wait 200
+moviechange 1,20181
+movielabel 1,"start",1
+msp 1,0-%4*700,0,1000,500
+screentargetoffest %4*100,-200
+spwait 1
+getsppos 1,%2,%3
+swffront 1001,20182,%4,%2,%3,1200,1
+movielabel 1,"idle",2
+spwait 1
+wait 200
+movielabel 1,"end",1
+spwait 1
+wait 500
+screenposition2 %2+%4*850,%3-300,500
+randomshakescreen 1300,25,25
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8,0,"idle",%4
+next
+for %1=1 to 5
+	sound "Bomb"
+	wait 300
+next
+return
+
+*skill19(20191,20192,20193);建灵公主
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-160*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 1000
+moviechange 1,20191
+getsppos 1,%2,%3
+getscreenposition %2,%3
+swffront 1001,20192,%4,0,0,1,1
+screenswf 1001
+for %10=1 to 20
+	moviespeed 1,100+%10*40
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/20,20193,"idle",%4
+		msp %1,NaN,NaN,10
+		rnd2 %11,-50,50
+		actspin %1,%11,10
+	next
+	wait 600-%10*30
+next
+return
+
+*skill20(20201,20202,20203);阿珂
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+screentargetoffest %4*200,0
+moviechange 1,20201
+movielabel 1,"idle",1
+wait 1000
+getscreenposition %2,%3
+swffront 1001,20203,%4,0,0,1,1
+sound "Debuff"
+screenswf 1001
+wait 1000
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/20,20202,"idle",%4
+	actspin %1,1080,1000
+	actjump %1,150,1500,1
+	msp %1,50*%4,NaN,NaN,0
+	shakescreen 150
+next
+for %10=1 to 3
+	wait 200
+	shakescreen 150
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/20,20202,"idle",%4
+		msp %1,50*%4,NaN,NaN,0
+	next
+next
+for %1=2 to %5
+	movielabel %1,"lie",1
+next
+wait 1500
+return
+
+
+
+*skill21(20211,20212,20213);张辽
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-160*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 1000
+moviechange 1,20211
+movielabel 1,"start",1
+spwait 1
+vsp 1,0
+getsppos 1,%2,%3
+swffront 1001,20213,%4,%2,%3,0,1,1
+spwait 1001
+vsp 1,1
+movielabel 1,"end",1
+wait 600
+frontblur 2000,85,102
+for %10=1 to 10
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,20212,"idle",%4
+	next
+	wait 200
+next
+wait 1000
+return
+
+*skill22(20221,20222,20223);颜良
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-160*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 1000
+moviechange 1,20221
+movielabel 1,"start",1
+spwait 1
+wait 200
+getsppos 1,%2,%3
+swffront 1001,20223,%4,%2,%3,0,1,1
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,20222,"idle",%4
+next
+wait 1700
+sound "Bomb"
+for %1=2 to %5
+	vsp %1,0
+	getdamage %1,%8
+	hurt %1,%8/2,20222,"idle",%4
+next
+shakescreen 800,150
+wait 1200
+return
+
+*skill23(20231,20232,20233);左冷禅
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-160*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 1000
+moviechange 1,20231:movielabel 1,"idle",1
+wait 200
+getsppos 1,%2,%3
+swffront 1001,20233,%4,%2+%4*200,%3,0,1,1
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,20232,"idle",%4
+next
+wait 500
+for %1=1 to 5
+	rnd %10,400:rnd %11,200:rnd %13,1
+	fsp 1,%13-1:amsp 1,%2+%10*%4,%3,%11,200
+	movielabel 1,"idle",1
+	wait 200
+next
+fsp 1,%4:amsp 1,%2+%4*200,%3,265,300,1,1
+wait 400
+msp 1,0,0,-25,200,1,2
+moviereset 1
+wait 200
+sound "Bomb"
+for %1=2 to %5
+	vsp %1,0
+	getdamage %1,%8
+	hurt %1,%8/2,20232,"idle",%4
+next
+wait 1700
+return
+
+*skill24(20241,20242,20243,20244);周伯通
+getspfliped 1,%4
+gettargetslen %5
+moviechange 1,20241
+movielabel 1,"idle",1
+getsppos 1,%2,%3
+lsp 1001,20241,%4,%2+%4*300,%3,0
+fsp 1001,0-%4
+tasp 1001,0
+tasp 1001,100,200
+movielabel 1,"idle",1
+wait 200
+screentarget 2
+for %10=1 to 3
+	mov %13,%10*%4*300
+	movielabel 1001,"idle",1
+	rnd2 %12,-300,300
+	for %1=2 to %5
+		rnd %11,100
+		actspin %1,%11*5+100,500:actjump %1,80+%11/2,500
+		amsp %1,%2+%4*250+%13,%3-%5*10+%1*20+%12,NaN,500,1,3
+		getdamage %1,%8
+		hurt %1,%8/8,20243,"idle",%4
+	next
+	wait 300
+	acteffect 1001,1,1
+	amsp 1001,%2+%4*300+%13,%3+%12,NaN,200
+	wait 200
+	acteffect 1001,1,0
+	movielabel 1,"idle",1
+	rnd2 %12,-300,300
+	for %1=2 to %5
+		rnd %11,100
+		actspin %1,0-%11*5-100,500:actjump %1,80+%11/2,500
+		amsp %1,%2+%4*70+%13,%3-%5*10+%1*20+%12,NaN,500,1,3
+		getdamage %1,%8
+		hurt %1,%8/8,20243,"idle",%4
+	next
+	wait 300
+	acteffect 1,1,1
+	amsp 1,%2+%13,%3+%12,NaN,200
+	wait 200
+	acteffect 1,1,0
+next
+zoomscreen 150,200,1
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle2",3
+spwait 1
+zoomscreen 100,200
+movielabel 1,"end",1
+sound "Bomb"
+screentargetspeed 100
+frontblur 900,60,100,0,0-%4*10
+lsp 2001,20244,%4,%2-30*%4+%13,%3+%12,0
+msp 2001,%4*4950,0,0,1000
+for %1=2 to %5
+	amsp %1,%2+%4*5000+%13,NaN,NaN,1000
+next
+wait 900
+swffront 1002,20242,%4,%2+%4*5000+%13,%3+%12,0,1
+wait 100
+csp 2001
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/4,20243,"idle",%4
+next
+wait 1000
+for %1=2 to %5
+	msp %1,0,30,0,200
+next
+wait 700
+screenposition2 %2,%3,0
+return
+
+*skill25(20251,20252);李秋水
+getspfliped 1,%4
+gettargetslen %5
+moviechange 1,20251
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle",6
+getsppos 1,%2,%3
+swffront 1001,20252,%4,%2,%3,0,1,1
+blend 1001,"add"
+spwait 1
+movielabel 1,"end",1
+screentargetoffest 400*%4,0
+wait 200
+randomshakescreen 2000,50,50
+for %1=2 to %5
+	msp %1,500*%4,0,0
+next
+for %10=1 to 10
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,0,"idle",%4
+	next
+	wait 200
+next
+wait 1000
+return
+
+*skill26(20261,20262);韦小宝
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-200*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 1000
+moviechange 1,20261
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle",-1
+getsppos 1,%2,%3
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,20262,"idle",%4
+	next
+	wait 500
+next
+movielabel 1,"end",1
+wait 500
+moviereset 1
+fsp 1,0-%4
+wait 500
+actmove 1,-10*%4,0,100
+screentarget 0
+shakescreen 800,150
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,0,"idle",%4
+	getsppos %1,%2,%3
+	lsp 1000+%1,20262,%4,%2,%3,0,1,1
+	scale 1000+%1,200,200
+next
+wait 1000
+return
+
+*skill27(20271,20272,20273);曹操
+getspfliped 1,%4
+gettargetslen %5
+moviechange 1,20271
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle",-1
+getsppos 1,%2,%3
+swffront 1001,20273,%4,%2,%3,0,1,1
+wait 1000
+movielabel 1,"idle2",-1
+wait 1200
+randomshakescreen 2000,40,20
+for %1=2 to %5
+	msp %1,200*%4,0,0
+next
+for %10=1 to 10
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,20272,"idle",%4
+	next
+	wait 200
+next
+for %1=2 to %5
+	movielabel %1,"lie",1
+next
+wait 1000
+return
+
+*skill28(20281,20282);令狐冲
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-100*%4,-50,NaN,500,1,1
+actjump 1,50,500
+wait 1000
+getsppos 1,%2,%3
+zoomscreen 150,200
+frontblur 3000,90,100
+actround 1,%2+%4*100,%3+100,360,2500
+moviechange 1,20281
+movielabel 1,"idle",1
+spwait 1
+moviereset 1
+zoomscreen 100
+wait 500
+shakescreen 800,150,50
+for %1=2 to %5
+	getsppos %1,%2,%3
+	lsp 1000+%1,20282,%4,%2,%3,0,1,1
+	scale 1000+%1,200,200
+next
+for %10=1 to 4
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/4,0,"idle",%4
+	next
+	wait 200
+next
+wait 1000
+return
+
+*skill29(20291,20292,20293);张无忌
+getspfliped 1,%4
+gettargetslen %5
+wait 200
+moviechange 1,20291
+movielabel 1,"start",1
+msp 1,-150*%4,-150,0,1000,1,1
+wait 1000
+getsppos 1,%2,%3
+swffront 1001,20293,%4,%2,%3,0,1,1
+blend 1001,"add"
+for %1=2 to %5
+	rnd %10,1000
+	actround %1,%2,%3,720+%10,3000
+	actspin %1,720+%10,3000
+next
+wait 2500
+sound "Bomb"
+wait 500
+shakescreen 800,150,50
+frontblur 1500,90,101,1
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8,20292,"idle",%4
+next
+wait 1500
+for %1=2 to %5
+	vsp %1,0
+next
+movielabel 1,"end",1
+msp 1,0,150,0,500,3,1
+wait 1000
+return
+
+*skill30(20301,20302,20303);孙权
+getspfliped 1,%4
+gettargetslen %5
+getscreenposition %2,%3
+wait 200
+moviechange 1,20301
+movielabel 1,"start",1
+msp 1,0-%4*300,0,600,500
+spwait 1
+wait 100
+zoomscreen 150,300,1
+movielabel 1,"idle",-1
+wait 1200
+zoomscreen 100,300
+screenposition %2,%3,400
+wait 300
+swffront 1001,20302,%4,0,0,0,1,1
+screenswf 1001
+frontblur 2400,90,100,0,0,-3
+for %10=1 to 4
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,20303,"idle",%4
+	next
+	shakescreen 400,150
+	wait 400
+next
+wait 700
+return
+
+*skill31(20311,20312,20313);无崖子
+getspfliped 1,%4
+gettargetslen %5
+bg2 16777215
+msp 1,-100*%4,-50,NaN,500,1,1
+actjump 1,50,500
+wait 1000
+moviechange 1,20311
+movielabel 1,"step1",1
+zoomscreen 150,500
+getscreenposition %2,%3:screenposition %2+40+%4*100,%3+90,300
+for %1=2 to %5
+	getsppos %1,%2,%3
+	lsp 1000+%1,20312,%4,%2+1,%3,0
+	movielabel 1000+%1,"step1",1
+	scale 1000+%1,200,200
+	getdamage %1,%8
+	hurt %1,%8/8,0,"idle",%4
+next
+wait 500
+movielabel 1,"step2",1
+getscreenposition %2,%3:screenposition %2-45,%3-50,300
+for %1=2 to %5
+	movielabel 1000+%1,"step2",1
+	getdamage %1,%8
+	hurt %1,%8/8,0,"idle",%4
+next
+wait 500
+movielabel 1,"step3",1
+getscreenposition %2,%3:screenposition %2+30,%3+60,300
+for %1=2 to %5
+	movielabel 1000+%1,"step3",1
+	getdamage %1,%8
+	hurt %1,%8/8,0,"idle",%4
+next
+wait 500
+movielabel 1,"step4",1
+getscreenposition %2,%3:screenposition %2-35,%3-100,300
+for %1=2 to %5
+	movielabel 1000+%1,"step4",1
+	getdamage %1,%8
+	hurt %1,%8/8,0,"idle",%4
+next
+wait 1200
+getscreenposition %2,%3
+screenposition %2,%3,400
+zoomscreen 100,150
+wait 200
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,0,"idle",%4
+next
+wait 20
+swffront 1001,20313,%4,0,0,0,1
+screenswf 1001
+frontblur 800,50,101
+shakescreen 800,50,50
+wait 1000
+bg2 0,0
+return
+
+*skill32(20321,20322);任我行
+getsppos 1,%2,%3
+psp 1,%3+1
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-100*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 500
+moviechange 1,20321
+movielabel 1,"idle",1
+spwait 1
+twisteffect 1,%2+70*%4,%3-200
+for %1=2 to %5
+	addtotwistereffect %1
+	msp %1,0,0,150,2500
+next
+wait 1500
+for %10=1 to 4
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,20322,"idle",%4,0
+	next
+	wait 800
+next
+twisteffect 0
+moviereset 1
+wait 2000
+for %1=2 to %5
+	msp %1,0,0,-150,500,3,1
+	movielabel %1,"lie",1
+next
+wait 500
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/5,20322,"idle",%4,1
+next
+wait 500
+msp 1,100*%4,0,NaN,500
+actjump 1,50,500
+wait 1000
+return
+
+*skill33(20331,20332);虚竹
+getsppos 1,%2,%3
+getspfliped 1,%4
+gettargetslen %5
+snow 1
+wait 500
+moviechange 1,20331
+movielabel 1,"start",1
+wait 100
+msp 1,%4*140,0,0,100
+frontblur 800,80,101
+shakescreen 800,50,50
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/5,20332,"idle",%4
+next
+wait 750
+for %1=2 to %5
+	msp %1,%4*400,0,800,1500,1,1
+	actspin %1,2500,500
+next
+acteffect 1,1,1
+msp 1,%4*800,0,0,400
+screentargetoffest 0,-100
+movielabel 1,"start2",1
+spwait 1
+scale 1,-100,100
+movielabel 1,"idle",-1
+wait 250
+acteffect 1,1,0
+zoomscreen 150,200
+wait 1500
+for %1=2 to %5
+	msp %1,%4*400,0,-700,400
+	actspin %1,2500,600
+next
+wait 400
+movielabel 1,"end",1
+frontblur 800,70,101
+shakescreen 800,50,50
+wait 100
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/5,20332,"idle",%4,1
+	msp %1,0,0,500,200
+next
+wait 1200
+snow 0
+return
+
+*skill34(20341,20342,20343);夏侯敦
+getspfliped 1,%4
+gettargetslen %5
+getscreenposition %2,%3
+msp 1,-160*%4,0,NaN,500,1,1
+actjump 1,50,500
+screentargetoffest 200*%4,-200
+wait 1000
+getsppos 1,%2,%3
+swfback 1001,20342,%4,%2,%3,0,1,1
+vsp 1,0
+for %10=1 to 3
+	msp 1,%4*300,NaN,NaN,1000
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/8,20343,"idle",%4
+		actjump %1,150,1000
+		actspin %1,1440,1000
+		msp %1,%4*260,NaN,NaN,1000
+	next
+	wait 900
+next
+vsp 1,1
+wait 300
+for %1=2 to %5
+	movielabel %1,"lie",1
+next
+wait 200
+moviechange 1,20341
+movielabel 1,"idle",1
+wait 1000
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/8,20343,"idle",%4
+	next
+	shakescreen 400,150,50
+	wait 400
+next
+wait 600
+return
+
+*skill35(20351,20352,20353);双儿
+getspfliped 1,%4
+gettargetslen %5
+getscreenposition %2,%3
+wait 200
+zoomscreen 150,200
+moviechange 1,20351
+movielabel 1,"start",1
+spwait 1
+acteffect 1,1,1
+for %10=1 to 6
+	movielabel 1,"idle",1
+	moviespeed 1,50+%10*30
+	spwait 1
+next
+acteffect 1,1,0
+movielabel 1,"start2",1
+spwait 1
+wait 400
+movielabel 1,"idle2",3
+getsppos 1,%2,%3
+swffront 1001,20353,%4,%2,%3,0,1,1
+for %10=1 to 3
+	shakescreen 350,50,50
+	if %10=1 screenposition2 %2+100*%4,%3-100,200
+	if %10=2 screenposition2 %2-10*%4,%3+100,200
+	if %10=3 screenposition2 %2+300*%4,%3+10,200
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/3,20352,"idle",%4,1,-1
+	next
+	wait 400
+next
+screenposition2 %2,%3,200
+zoomscreen 100,200
+frontblur 500,50,101
+randomshakescreen 1000,50,0
+blend 1001,"difference"
+spwait 1
+movielabel 1,"end",1
+wait 1000
+return
+
+
+*skill36(20361,20362,20363);阿紫
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-160*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 500
+getsppos 1,%12,%13
+screenposition2 %12+%4*250,%13-100,500
+movielabel 1,"attack",1
+spwait 1
+movielabel 1,"idle",-1
+frontblur 2000,90,101,0,0
+for %1=2 to %5
+	getsppos %1,%2,%3
+	lsp 1000+%1,20361,%4,%2,%3,0,-1
+next
+for %10=1 to 10
+	rnd2 %14,-50,50:rnd2 %15,-50,50:rnd2 %16,-50,50
+	screenposition2 %12+%4*250+%14,%13-100+%15,0
+	zoomscreen 150+%16,0
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/20,0,"idle",%4,-1,150
+	next
+	wait 200
+next
+getsppos 1,%2,%3
+zoomscreen 100,200
+screenposition2 %12+%4*250,%13-100,0
+swffront 2001,20363,%4,%2,%3,0,1,1
+blend 2001,"add"
+slow 200
+randomshakescreen 350,50,50
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,0,"idle",%4,-1,-1
+	tint %1,0
+	cell %1,1
+next
+wait 500
+slow 100
+for %1=2 to %5
+	moviechange 1000+%1,20362
+	movielabel 1000+%1,"idle",1
+next
+wait 1500
+return
+
+*skill37(20371,20372);周瑜
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-160*%4,0,NaN,500,1,1
+actjump 1,50,500
+wait 500
+moviechange 1,20371
+movielabel 1,"start",1
+getsppos 1,%2,%3
+swfback 1001,20372,%4,%2,%3,0,1
+wait 1300
+screenposition2 %2-%4*500,%3-1150,300
+wait 300
+wait 1500
+screenposition2 %2,%3,0
+showspeed %4,500,45
+screenposition2 %2-%4*550,%3-1150,1000
+actshadow 1,0
+movielabel 1,"start2",1
+moviespeed 1,60
+acteffect 1,1,1
+msp 1,0-%4*480,0,1000,1500,1,1
+wait 500
+acteffect 1,1,0
+wait 1000
+msp 1,%4*250,0,-250,300
+movielabel 1,"end",1
+wait 300
+hidespeed 1
+vsp 1,0
+wait 2700
+screenposition2 %2+%4*300,%3,0
+for %1=2 to %5
+	vsp %1,0
+next
+wait 500
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,0,"idle",%4
+	next
+	shakescreen 150
+	wait 200
+next
+wait 500
+return
+
+*skill38(20381,20382,20383);貂蝉
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*50,0-50,NaN,500,1,1
+actjump 1,10,400
+wait 500
+moviechange 1,20381
+screentarget 2
+getsppos 1,%22,%23
+actround 1,%22+100,%23+100,900,6000,0
+getsppos 2,%22,%23
+swfback 1001,20382,%4,%22,%23,0,1
+wait 1000
+for %10=1 to 3
+	for %1=2 to %5
+		msp %1,0,0,100,100,1,2
+	next
+	wait 100
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/3,20383,"idle",%4
+	next
+	shakescreen 150
+	wait 900
+next
+shakescreen 1000,100,10,10
+for %1=2 to %5
+	rnd2 %10,-180,180
+	rnd2 %11,-80,80
+	rnd2 %12,-20,80
+	if %1=2 mov %11,0
+	if %1=2 mov %12,0
+	actspin %1,%10,200
+	msp %1,%11,%12,200,300,1,1
+next
+wait 300
+for %1=2 to %5
+	msp %1,0,0,100,500
+next
+wait 500
+screentarget 0
+for %1=2 to %5
+	msp %1,0,0,400,300,1,2
+next
+wait 300
+for %1=1 to %5
+	vsp %1,0
+next
+wait 100
+screenposition2 %22,%23,0
+wait 1500
+return
+
+*skill39(20391,20392,20394);小龙女
+getspfliped 1,%4
+gettargetslen %5
+wait 200
+moviechange 1,20391
+movielabel 1,"start",1
+spwait 1
+vsp 1,0
+getsppos 1,%2,%3
+peoplecreater 20391,%4,3,300,1000,100
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,20392,"idle",%4
+	next
+	shakescreen 250
+	wait 700
+next
+peoplecreater 0
+swffront 1001,20394,%4,%2,%3,0,1
+vsp 1,1
+movielabel 1,"end",1
+for %1=2 to %5
+	movielabel %1,"hurt"
+	cell %1,4
+	shakesp %1,750
+next
+wait 1500
+return
+
+*skill40(20401,20402,20403,20404);吕布
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+actjump 1,10,400
+wait 500
+moviechange 1,20401
+movielabel 1,"start",1
+wait 250
+for %1=2 to %5
+	getsppos %1,%2,%3
+	movielabel %1,"hurt",1
+	lsp 1000+%1,20402,%4,%2,%3+1,0,1
+next
+wait 500
+shakescreen 150
+wait 1000
+tasp 1,0,200
+getsppos 1,%2,%3
+screenposition2 %2+%4*250,%3,500
+peoplecreater 20401,%4,2,300,1000,100
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,20403,"idle",%4,1,-1
+	next
+	shakescreen 250
+	wait 500
+next
+peoplecreater 0
+acteffect 1,1,1
+screentarget 1
+msp 1,0-1000*%4,0,0,200
+tasp 1,100,0
+movielabel 1,"start2",1
+wait 1000
+acteffect 1,1,0
+movielabel 1,"start3",1
+getsppos 1,%2,%3
+swffront 1001,20404,%4,%2,%3,0,1
+wait 2000
+movielabel 1,"end",1
+screenposition2 %2+%4*500,%3
+wait 500
+showspeed %4,500,0,-80
+wait 1000
+hidespeed
+wait 500
+screenposition2 %2+%4*1200,%3,0
+wait 100
+frontblur 2500,70,101
+randomshakescreen 2500,20,20
+sound "Bomb"
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,20403,"idle",%4,1,-1
+	next
+	wait 500
+next
+return
+
+*skill41(20411,20412,20413,20414,20415);黄蓉
+getspfliped 1,%4
+gettargetslen %5
+wait 200
+moviechange 1,20411
+getsppos 1,%2,%3
+swfback 2001,20413,%4,%2+100*%4,%3,0,1,1
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle",-1
+sakura 20414,%4
+frontblur 2000,70,101
+zoomscreen 150,200
+wait 2000
+zoomscreen 100,200
+for %1=2 to %5
+	shakescreen 150,50,50
+	screentarget %1
+	getdamage %1,%8
+	rnd2 %11,-200,200:rnd2 %12,-200,200
+	getsppos %1,%2,%3
+	lsp 1000+%1,20415,%4,%2,%3+1,160,1,1
+	scale 1000+%1,200,200
+	msp %1,%4*%11,%12,NaN,200,1,1
+	hurt %1,%8,20412,"idle",%4,0
+	actjump %1,200,1000,1
+	actspin %1,1080,1000
+	movielabel %1,"lie",1
+	wait 500
+next
+wait 2000
+sakura 0
+return
+
+*skill42(20421,20422,20423);黄月英
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*190,0,NaN,500,1,1
+actjump 1,10,400
+wait 500
+moviechange 1,20421
+movielabel 1,"idle",1
+wait 500
+getsppos 1,%2,%3
+swfback 1001,20423,%4,%2,%3,0,1
+wait 1500
+shakescreen 150
+for %1=2 to %5
+	msp %1,%4*750,0,NaN,300
+next
+getscreenposition %12,%13
+screenposition %12+1000*%4,%13,500
+sound "Bomb"
+wait 350
+showspeed %4
+shakescreen 1200,50,10,10
+for %10=1 to 3
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/3,20422,"idle",%4,0
+	next
+	wait 250
+next
+wait 320
+for %1=2 to %5
+	msp %1,%4*750,0,NaN,300,1,1
+next
+wait 230
+screenswf 1001
+for %1=2 to %5
+	vsp %1,0
+next
+wait 1600
+hidespeed 1
+return
+
+*skill43(20431,20432,20433,20434);赵云
+getspfliped 1,%4
+gettargetslen %5
+wait 500
+getsppos 1,%12,%13
+moviechange 1,20431
+movielabel 1,"idle",1
+screenposition2 %12-%4*1000,%13-500,800
+msp 1,0-%4*1000,0,500,1500,1,1
+showspeed %4,500,20,-30
+wait 1500
+hidespeed
+getsppos 1,%2,%3
+swfback 1001,20433,%4,%12-%4*1000,%13,500,1
+wait 2800
+csp 1001
+swffront 1001,20434,%4,%12-%4*1000,%13,500,1
+screenposition2 %12+%4*100,%13,0
+wait 750
+for %1=2 to %5
+	movielabel %1,"lie",1
+next
+for %10=1 to 3
+	for %1=2 to %5
+		actjump %1,100,400
+		rnd %21,2
+		if %21=0 actspin %1,360,400
+		if %21=1 actspin %1,0-360,400
+		rnd2 %21,-30,30:rnd2 %22,-30,30
+		getdamage %1,%8
+		hurt %1,%8/6,20432,"idle",%4,0,-1
+		msp %1,%21,%22,NaN,400
+		shakescreen 200,150,30
+	next
+	wait 400
+next
+wait 500
+screenposition2 %12-%4*800,%13-500,0
+vsp 1,0
+wait 600
+zoomscreen 150,300
+wait 2000
+zoomscreen 100,0
+screenposition2 %12+%4*100,%13,0
+wait 500
+frontblur 2500,90,100,0,0,-3
+sound "Bomb"
+shakescreen 200,150,30
+wait 500
+shakescreen 2000,150,0,10
+for %1=2 to %5
+	tint %1,0
+next
+for %10=1 to 3
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/6,20432,"idle",%4,-1,-1
+		tint %1,0
+	next
+	wait 500
+next
+wait 400
+return
+
+*skill44(20441,20442,20443,20444);东方不败
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*120,0,NaN,500,1,1
+actjump 1,10,400
+wait 500
+getsppos 1,%2,%3
+vsp 1,0
+swffront 1001,20443,%4,%2,%3,0,1
+getscreenposition %12,%13
+screenposition %12+200*%4,%13,500
+wait 500
+shakescreen 4500,50,5,5
+peoplecreater 20441,%4,3,300,1000,100
+for %10=1 to 10
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,20442,"idle",%4,0
+	next
+	rnd2 %15,-50,50:rnd2 %16,-50,50:
+	screenposition %12+200*%4+%15,%13+%16,200
+	wait 250
+next
+screenposition %12+200*%4,%13,200
+wait 2100
+peoplecreater 0
+for %1=2 to %5
+	vsp %1,0
+next
+wait 100
+csp 1001
+vsp 1,1
+swfback 1001,20444,1,0,0,0,1
+screenswf 1001
+msp 1,230*%4,140,0,0
+getsppos 1,%2,%3
+for %1=2 to %5
+	movielabel %1,"lie",1
+	rnd %11,360
+	actspin %1,%11,200
+	rnd2 %11,-150,200
+	amsp %1,%2+%11,%3,600,0
+next
+wait 300
+for %1=2 to %5
+	vsp %1,1
+	msp %1,0,0,-400,100
+	wait 50
+next
+wait 1000
+frontblur 1020,90,102,2
+wait 1000
+return
+
+*skill45(20451,20452,20453);关羽
+getspfliped 1,%4
+gettargetslen %5
+wait 200
+moviechange 1,20451
+movielabel 1,"step1",1
+frontblur 500,80,101
+spwait 1
+shakescreen 300,50,10
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/4,20452,"idle",%4
+next
+wait 500
+movielabel 1,"step2",1
+frontblur 500,80,101
+spwait 1
+shakescreen 300,50,10
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/4,20452,"idle",%4
+next
+wait 500
+movielabel 1,"step3",1
+frontblur 300,80,101
+spwait 1
+shakescreen 300,50,10
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/4,20452,"idle",%4
+next
+wait 500
+movielabel 1,"step4",1
+spwait 1
+getsppos 1,%2,%3
+swfback 1001,20453,%4,%2,%3,0,1
+wait 400
+frontblur 2000,80,101
+shakescreen 500,150,20
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/4,20452,"idle",%4
+	msp %1,0,0,500,200
+	rnd2 %21,-90,90
+	actspin %1,%21,200
+	shakescreen 300,50,10
+next
+wait 200
+for %1=2 to %5
+	msp %1,0,0,50,1300
+next
+screenposition2 %2,%3-500,300
+wait 1350
+for %1=2 to %5
+	msp %1,0,0,500,200
+next
+wait 500
+screenswf 1001
+wait 800
+sound "Bomb"
+randomshakescreen 300,50,0
+wait 1000
+return
+
+*skill46(20461,20462,20463);马超
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*120,0,NaN,500,1,1
+actjump 1,10,400
+wait 500
+bg2 16777215
+moviechange 1,20461
+movielabel 1,"step1",1
+getscreenposition %12,%13
+screenposition %12+135*%4,%13,300
+peoplecreater 20463,%4,1
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/6,20462,"idle",%4
+	next
+	wait 500
+next
+frontblur 2000,80,101
+shakescreen 500,150,20
+peoplecreaterstop
+movielabel 1,"step2",1
+slow 200
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/6,20462,"idle",%4
+	movielabel %1,"lie",1
+	msp %1,%4*100,0,0,500,1,1
+next
+wait 500
+slow 100
+wait 1000
+peoplecreater 0
+bg2 0,0
+return
+
+*skill47(20471,20472,20473,20474,20475);张飞
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*120,0,NaN,500,1,1
+actjump 1,10,400
+wait 500
+moviechange 1,20471
+zoomscreen 200,200
+msp 1,%4*120,0,0,500,1,0
+getscreenposition %12,%13
+screenposition %12+135*%4,%13,300
+movielabel 1,"step1",1
+moviespeed 1,50
+spwait 1
+zoomscreen 100,200
+sound "Bomb"
+movielabel 1,"step2",1
+wait 100
+swffront 1001,20475,1,0,0,0,1,1
+screenswf 1001
+shakescreen 2500,250,10,10
+getsppos 1,%2,%3
+lsp 2001,20474,%4,%2,%3,0,-1,0,2
+scale 2001,200,200
+msp 2001,%4*1000,0,0,200,1,0
+for %1=2 to %5
+	msp %1,%4*1000,0,0,200,1,0
+	getdamage %1,%8
+	hurt %1,%8/2,20472,"idle",%4
+	actspin %1,3600*%4,3000
+next
+wait 200
+showspeed %4,1000,0,-120
+screenposition %12+1135*%4,%13,300
+wait 2000
+hidespeed
+msp 2001,%4*1000,0,0,200,1,0
+for %1=2 to %5
+	msp %1,%4*1000,0,0,200,1,0
+next
+screenswf 1001
+wait 3000
+screenposition %12,%13,0
+moviereset 1
+for %1=2 to %5
+	movielabel %1,"lie",1
+	cell %1,6
+	msp %1,0-%4*2500,0,0,0
+	msp %1,%4*500,0,0,1000,1,1
+next
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,20473,"idle",%4
+	next
+	wait 100
+next
+wait 1500
+return
+
+*skill48(20481,20482,20483,20484);孙尚香
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*100,0,NaN,500,1,1
+actjump 1,10,400
+wait 500
+moviechange 1,20481
+movielabel 1,"step2",1
+spwait 1
+sakura 20483,%4
+wait 1000
+for %10=1 to 4
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,20482,"idle",%4,1,350
+	next
+	shakescreen 150
+	frontblur 250,70,101
+	wait 500
+next
+getscreenposition %2,%3
+screenposition %2+250*%4,%3,400
+zoomscreen 120,200
+wait 400
+frontblur 400,80,101
+movielabel 1,"step1",1
+spwait 1
+randomshakescreen 250,50,50
+frontblur 250,70,101
+for %1=2 to %5
+	getsppos %1,%2,%3
+	vsp %1,0
+	lsp 1000+%1,20484,%4,%2,%3,0,1,1
+	getdamage %1,%8
+	hurt %1,%8/5,20482,"idle",%4
+next
+wait 2000
+sakura 0
+return
+
+*skill49(20491,20492,20493);大乔
+getspfliped 1,%4
+gettargetslen %5
+snow 1
+screentarget 0
+getsppos 1,%12,%13
+actmove 1,0-%4*10,0,100
+wait 1000
+msp 1,0-2000*%4,0,2000,0
+screento 1,500
+scale 1,100,100
+moviechange 1,20491
+getsppos 1,%2,%3,%9
+swffront 1001,20493,%4,%2,%3,%9,1
+wait 4000
+shakescreen 700,150,50
+sound "Bomb"
+wait 500
+screenposition2 %12,%13,0
+amsp 1,%12,%13+1,0,0
+moviereset 1
+movielabel 1,"lie",1
+cell 1,6
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8,20492,"idle",%4
+	movielabel %1,"lie",1
+	cell %1,6
+next
+wait 1000
+movielabel 1,"idle",-1
+wait 200
+scale 1,-100,100
+wait 200
+scale 1,100,100
+wait 200
+actmove 1,%4*7,0,150
+wait 1200
+snow 0
+return
+
+*skill50(20501,20502,20503,20504,20505);小乔
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+actjump 1,10,400
+wait 1000
+moviechange 1,20501
+movielabel 1,"start",1
+getsppos 1,%2,%3
+shakescreen 250
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,20502,"idle",%4
+next
+for %10=1 to 10
+	rnd %12,400:rnd %13,400
+	lsp 1000+%10,20505,%4,%2+(%12-400)*%4,%3-400+%13,0,1,1,2
+	scale 1000+%10,200,200:blend 1000+%10,"add"
+	wait 50
+next
+wait 800
+movielabel 1,"start2",1
+getsppos 2,%2,%3
+screentargetspeed 100
+amsp 1,%2,%3,420,1000,1,2
+lsp 1001,20504,%4,%2,%3,400
+wait 1000
+movielabel 1,"idle",-1
+amsp 1,%2,%3,400,200,1,0
+wait 400
+zoomscreen 150,300
+wait 300
+frontblur -1,70,101
+for %1=2 to %5
+	getsppos %1,%2,%3
+	psp 1001,%3+1:psp 1,%3+1
+	amsp 1001,%2,%3,40,200:amsp 1,%2,%3,40,200:movielabel 1,"end",1
+	wait 200
+	shakescreen 200
+	getdamage %1,%8
+	hurt %1,%8/2,20502,"idle",%4
+	scale %1,25,25
+	msp %1,0,0,-50
+	movielabel %1,"lie",1
+	lsp 2000+%1,20503,%4,%2,%3-1,0,1,1
+	wait 300
+	movielabel 1,"idle",-1
+	if %1!=%5 amsp 1001,%2,%3,200,140:amsp 1,%2,%3,200,140:wait 200
+next
+wait 200
+return
+
+*skill51(20511,20512,20513);任盈盈
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*200,0
+actjump 1,10,400
+wait 1000
+moviechange 1,20511
+getsppos 1,%2,%3
+swffront 2001,20512,%4,%2+%4*250,%3-70,0,-1
+for %10=1 to 8
+	if (%10)%(2)==1 bg2 16777215
+	if (%10)%(2)==0 bg2 0,0
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/8,0,"idle",%4
+	next
+	shakescreen 250
+	fast 20+%10*50
+	wait 700
+next
+fast 100
+csp 2001
+movielabel 1,"end",-1
+moviespeed 1,500
+frontblur 1500,50,101,1
+for %1=2 to %5
+	vsp %1,0
+	getsppos %1,%2,%3
+	lsp 1000+%1,20513,%4,%2,%3,0,1,1
+next
+for %10=1 to 75
+	if (%10)%(2)==1 bg2 16777215
+	if (%10)%(2)==0 bg2 0,0
+	wait 20
+next
+bg2 0,0
+return
+
+*skill52(20521,20522,20523);乔峰
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*200,0
+actjump 1,10,400
+wait 500
+moviechange 1,20521
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle",-1
+swffront 1001,20523,%4,0,0,1,1
+screenswf 1001
+wait 1000
+movielabel 1,"end",1
+spwait 1
+getsppos 1,%2,%3
+screenposition2 %2+%4*1000,%3,300
+for %1=2 to %5
+	msp %1,%4*700,0,0,100
+next
+wait 100
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/18,20522,"idle",%4
+next
+shakescreen 250
+wait 800
+for %10=1 to 17
+	for %1=2 to %5
+		rnd2 %11,-400,400
+		actspin %1,%11,200
+		getdamage %1,%8
+		hurt %1,%8/18,20522,"idle",%4
+	next
+	shakescreen 150
+	if %10>5&&%10<=10 fast 100+(%10-5)*20
+	wait 200
+next
+fast 100
+for %1=2 to %5
+	rnd2 %11,-1000,1000
+	actspin %1,%11,500
+next
+wait 500
+return
+
+*skill501(25011,25012,25013);前田利家
+getspfliped 1,%4
+gettargetslen %5
+wait 500
+moviechange 1,25011
+movielabel 1,"start",1
+wait 800
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,25012,"idle",%4
+	msp %1,%4*700,0,150,100
+	actspin %1,5400,2500
+next
+wait 1000
+showspeed %4
+msp 1,%4*700,0,150,0
+tasp 1,0,0
+getsppos 1,%2,%3
+screenposition2 %2+%4*100,%3,300
+wait 1000
+movielabel 1,"idle",-1
+tasp 1,100,200
+wait 100
+movielabel 1,"start2",1
+wait 250
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/2,25012,"idle",%4
+	movielabel %1,"lie",1
+	msp %1,0,0,-150,100
+next
+shakescreen 250
+swffront 1001,25013,%4,%2+%4*100,%3,1,1
+hidespeed
+wait 500
+movielabel 1,"end",1
+wait 400
+return
+
+*skill502(25021,25022,25023);前田庆次
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*250,0,NaN,500,1,1
+screentargetoffest %4*250,0
+actjump 1,10,400
+wait 500
+moviechange 1,25021
+movielabel 1,"idle",1
+getsppos 1,%2,%3
+wait 500
+swffront 1001,25023,%4,%2,%3,1,1
+screenswf 1001
+wait 500
+movielabel 1,"idle",1
+wait 1000
+movielabel 1,"idle",1
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,25022,"idle",%4
+	next
+	wait 300
+	shakescreen 250
+next
+return
+
+*skill503(25031,25032,25033);立花誾千代
+getspfliped 1,%4
+gettargetslen %5
+wait 500
+moviechange 1,25031
+movielabel 1,"start",1
+wait 250
+screentarget 2
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/3,25032,"idle",%4
+	msp %1,%4*800,0,0,100
+next
+wait 200
+acteffect 1,1,1
+msp 1,%4*800,0,0,200
+wait 200
+acteffect 1,1,0
+movielabel 1,"start2",1
+wait 250
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/3,25032,"idle",%4
+	msp %1,0,0,800,100
+next
+wait 200
+acteffect 1,1,1
+msp 1,0,0,800,200
+wait 200
+acteffect 1,1,0
+movielabel 1,"start3",1
+wait 250
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/3,25032,"idle",%4,1,-1
+	msp %1,0,0,-800,100
+next
+wait 500
+getsppos 1,%2,%3
+slow 400
+swffront 1001,25033,%4,%2,%3,1,1
+shakescreen 250
+wait 500
+slow 100
+return
+
+*skill504(25041,25042,25043);阿国
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*200,-200
+actjump 1,10,400
+wait 500
+moviechange 1,25041
+movielabel 1,"idle",1
+spwait 1
+swfback 1001,25043,%4,0,0,1,1
+screenswf 1001
+for %1=2 to %5
+	msp %1,0,0,200,100
+	rnd2 %11,-400,400
+	actspin %1,5400+%11,3000
+	actshadow %1,0
+next
+for %10=1 to 15
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/15,25042,"idle",%4
+	next
+	wait 200
+next
+return
+
+*skill506(25062,25063);稻姬
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*250,-200
+actjump 1,10,400
+wait 750
+vsp 1,0
+getsppos 1,%2,%3
+swffront 1001,25063,%4,%2,%3,1,1
+wait 2200
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8,25062,"idle",%4
+next
+shakescreen 250
+wait 1000
+return
+
+*skill510(25101,25102,25103);浅井长政
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*50,0,NaN,500,1,1
+screentargetoffest %4*250,0
+actjump 1,10,400
+wait 500
+moviechange 1,25101
+movielabel 1,"idle",3
+getsppos 1,%2,%3
+wait 500
+swffront 1001,25103,%4,%2,%3,1,1
+for %10=1 to 10
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,25102,"idle",%4
+	next
+	wait 300
+	shakescreen 250
+next
+return
+
+*skill513(25132,25133);伊达政宗
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*250,0
+actjump 1,10,400
+wait 750
+vsp 1,0
+swffront 1001,25133,%4,0,0,1,1
+screenswf 1001
+for %10=1 to 17
+	for %1=2 to %5
+		rnd2 %11,-400,400
+		actspin %1,%11,400
+		getdamage %1,%8
+		hurt %1,%8/18,25132,"idle",%4
+	next
+	shakescreen 250
+	if %10>5&&%10<=10 fast 100+(%10-5)*20
+	wait 400
+next
+fast 100
+for %1=2 to %5
+	rnd2 %11,-1000,1000
+	actspin %1,%11,500
+next
+wait 500
+return
+
+*skill515(25151,25153);武田信玄
+getspfliped 1,%4
+gettargetslen %5
+wait 200
+moviechange 1,25151
+movielabel 1,"start",1
+msp 1,-150*%4,-150,0,1000,1,1
+wait 1000
+getsppos 1,%2,%3
+actshadow 1,0
+swfback 1001,25153,%4,%2,%3,0,1,1
+screenswf 1001
+blend 1001,"add"
+for %1=2 to %5
+	rnd %10,1000
+	actround %1,%2,%3,720+%10,3000
+	actspin %1,720+%10,3000
+next
+wait 2500
+sound "Bomb"
+wait 500
+shakescreen 800,150,50
+frontblur 1500,90,101,1
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8,0,"idle",%4
+next
+wait 1500
+return
+
+*skill516(25161,25162);宫本武藏
+getspfliped 1,%4
+gettargetslen %5
+wait 500
+moviechange 1,25161
+movielabel 1,"start",1
+wait 400
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/18,25162,"start",%4
+	msp %1,0,0,1000,100
+next
+wait 500
+tasp 1,0,0
+showspeed %4,500,90,-90
+msp 1,0,0,1000,0
+getsppos 1,%2,%3
+screenposition2 %2,%3-1000,300
+wait 1000
+movielabel 1,"idle",-1,1,2
+tasp 1,100,200
+wait 250
+for %10=1 to 17
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/18,25162,"idle",%4
+	next
+	shakescreen 250
+	wait 300
+next
+hidespeed 0
+return
+
+*skill517(25172);服部半藏
+getsppos 1,%2,%3
+getspfliped 1,%4
+gettargetslen %5
+shadoweffect 1
+for %1=1 to %5
+	clonesp %1,%1+100
+	vsp %1+100,0
+	addtoshadoweffect %1+100
+next
+tasp 1,0
+wait 1000
+for %1=2 to %5
+	getsppos %1+100,%9,%10
+	actjump 101,20,200
+	amsp 101,%9-70*%4,%10,0,200
+	movielabel 101,"attack",1,1,2
+	wait 200
+	shakesp %1+100
+ 	shakescreen 200
+	movielabel %1+100,"lie",1
+	spwait 101
+	movielabel 101,"idle"
+next
+amsp 101,%2,%3,NaN,200
+actjump 101,20,200
+wait 1000
+shadoweffect 0
+tasp 1,100,200
+randomshakescreen 800,150,0
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8,25172,"idle",%4
+next
+wait 1500
+shadoweffect 0
+cspall 1
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*250,0
+actjump 1,10,400
+wait 500
+twisteffect 1,%2+70*%4,%3-200
+for %1=2 to %5
+	addtotwistereffect %1
+	msp %1,0,0,150,2500
+next
+wait 1500
+for %10=1 to 4
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,25172,"idle",%4,0
+	next
+	wait 800
+next
+twisteffect 0
+wait 2000
+for %1=2 to %5
+	msp %1,0,0,-150,500,3,1
+	movielabel %1,"lie",1
+next
+wait 500
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/5,25172,"idle",%4,1
+next
+wait 1000
+return
+
+*skill518(25181,25182,25183);直江兼续
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*250,0
+actjump 1,10,400
+wait 500
+moviechange 1,25181
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle",-1
+swffront 1001,25183,%4,0,0,1,1
+screenswf 1001
+for %10=1 to 12
+	for %1=2 to %5
+		rnd2 %11,-400,400
+		actspin %1,%11,400
+		getdamage %1,%8
+		hurt %1,%8/12,25182,"idle",%4
+	next
+	wait 400
+next
+return
+
+*skill519(25191,25192,25193);德川家康
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*50,0,NaN,500,1,1
+screentargetoffest %4*250,0
+actjump 1,10,400
+wait 500
+moviechange 1,25191
+movielabel 1,"idle",1
+wait 250
+getsppos 1,%2,%3
+swfback 1001,25193,%4,%2+%4*200,%3,1,1
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/3,25192,"idle",%4
+next
+shakescreen 500
+wait 1100
+movielabel 1,"idle",1
+wait 250
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/3,25192,"idle",%4
+next
+shakescreen 500
+wait 1100
+movielabel 1,"idle",1
+wait 250
+zoomscreen 50,200
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/3,25192,"idle",%4
+next
+randomshakescreen 3000,10,20
+wait 1500
+frontblur 1500,90,102
+wait 1500
+return
+
+*skill520(25202,25203);上杉谦信
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*250,0
+actjump 1,10,400
+wait 750
+tasp 1,0,500
+swffront 1001,25203,%4,0,0,1,1
+screenswf 1001
+for %10=1 to 17
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/18,25202,"idle",%4
+	next
+	shakescreen 250
+	if %10>5&&%10<=10 fast 100+(%10-5)*20
+	wait 400
+next
+fast 100
+frontblur 1000,90,101
+for %1=2 to %5
+	movielabel %1,"lie",1
+next
+wait 1000
+return
+
+
+*skill521(25212,25213);浓姬
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*200,0,NaN,500,1,1
+screentargetoffest %4*250,0
+actjump 1,10,400
+wait 750
+vsp 1,0
+getsppos 1,%2,%3
+swffront 1001,25213,%4,%2,%3,1,1
+wait 1000
+randomshakescreen 4000,20,20
+for %10=1 to 10
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,25212,"idle",%4
+		msp %1,%4*15,0,0,0,1,1
+	next
+	wait 400
+next
+return
+
+*skill522(25221,25222,25223);宁宁
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*250,0
+actjump 1,10,400
+wait 500
+moviechange 1,25221
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle",-1
+wait 100
+getsppos 1,%2,%3
+swfback 1001,25223,%4,%2,%3,1,1
+for %1=2 to %5
+	msp %1,%4*150,0,0,0,1,1
+next
+for %10=1 to 10
+	for %1=2 to %5
+		rnd2 %11,-400,400
+		actspin %1,%11,400
+		getdamage %1,%8
+		hurt %1,%8/10,25222,"idle",%4,0
+	next
+	shakescreen 250	
+	wait 400
+next
+movielabel 1,"end",1
+wait 500
+return
+
+*skill523(25231,25232,25233);阿市
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*250,-250
+actjump 1,10,400
+wait 500
+moviechange 1,25231
+movielabel 1,"idle",-1
+for %1=2 to %5
+	msp %1,0,0,200,500,1,1
+next
+wait 500
+swfback 1001,25233,%4,0,0,1,1
+screenswf 1001
+for %10=1 to 11
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/11,25232,"idle",%4
+	next
+	shakescreen 250	
+	wait 400
+next
+return
+
+*skill524(25241,25242,25243);织田信长
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*250,0
+actjump 1,10,400
+wait 500
+moviechange 1,25241
+movielabel 1,"idle",1
+spwait 1
+moviereset 1
+wait 500
+swffront 1001,25243,%4,0,0,1,1
+screenswf 1001
+wait 3000
+randomshakescreen 4400,20,20
+for %10=1 to 11
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/11,25242,"idle",%4
+	next
+	wait 400
+next
+return
+
+*skill525(25252,25253);秀吉
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*275,-200
+actjump 1,10,400
+wait 750
+vsp 1,0
+getsppos 1,%2,%3
+swffront 1001,25253,%4,0,0,1,1
+screenswf 1001
+wait 1500
+for %10=1 to 7
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,25252,"idle",%4
+		msp %1,0,0,25,100
+	next
+	shakescreen 250	
+	wait 400
+next
+for %1=2 to %5
+	rnd2 %11,-1000,1000
+	rnd2 %12,-1000,1000
+	msp %1,%11,%12,0,200
+next
+wait 200
+for %1=2 to %5
+	vsp %1,0
+next
+screentargetoffest %4*275,-300
+wait 2000
+return
+
+*skill526(25261,25262,25263);真田幸村
+getspfliped 1,%4
+gettargetslen %5
+wait 500
+screentarget 0
+moviechange 1,25261
+movielabel 1,"start",1
+wait 1000
+for %1=2 to %5
+	vsp %1,0
+next
+actshadow 1,0
+swfback 1001,25263,%4,0,0,1,1
+screenswf 1001
+msp 1,0,550,0,0
+movielabel 1,"idle",-1
+msp 1,0,-550,0,500,1,1
+wait 1000
+msp 1,0,550,0,500,1,0
+movielabel 1,"end",1
+wait 1000
+showspeed %4,0,90
+hidespeed 500
+msp 1,0,-550,0,0
+for %1=2 to %5
+	vsp %1,1
+next
+actshadow 1,-1
+cell 1,8
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8,25262,"idle",%4
+next
+randomshakescreen 500,0,50
+wait 1000
+return
+
+*skill527(25271,25273,25274);本多忠胜
+getspfliped 1,%4
+gettargetslen %5
+wait 500
+getsppos 1,%2,%3
+for %1=2 to %5
+	rnd2 %11,-100,100
+	rnd2 %12,-50,50
+	amsp %1,%11+%2,%12+%3,0,200
+	movielabel %1,"attack",-1,1,2
+	if %11>0 fsp %1,-%4
+next
+wait 1000
+swffront 1001,25274,%4,%2,%3,1,1
+sound "Bomb"
+for %1=2 to %5
+	rnd2 %11,-1000,1000
+	rnd2 %12,-1000,1000
+	msp %1,%11,%12,0,200
+	movielabel %1,"lie",1
+next
+moviechange 1,25271
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle",-1,1,2
+wait 2000
+for %1=2 to %5
+	screento %1,500
+	wait 250
+	getsppos %1,%2,%3
+	swffront 1001,25273,%4,%2,%3,1,1
+	wait 200
+	getdamage %1,%8
+	hurt %1,%8,0,"idle",%4
+	randomshakescreen 500,0,50
+	wait 500
+next
+return
+
+*skill528(25282);明智光秀
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-100*%4,-50,NaN,500,1,1
+actjump 1,50,500
+wait 1000
+getsppos 1,%2,%3
+zoomscreen 150,200
+frontblur 3000,90,100
+actround 1,%2+%4*100,%3+100,360,2500
+movielabel 1,"attack",3
+spwait 1
+zoomscreen 100
+wait 500
+shakescreen 800,150,50
+for %1=2 to %5
+	getsppos %1,%2,%3
+	lsp 1000+%1,25282,%4,%2,%3,0,1,1
+	scale 1000+%1,200,200
+next
+for %10=1 to 4
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/4,0,"idle",%4
+	next
+	wait 200
+next
+wait 1000
+return
+
+*skill2007(220071,220072,220073,220074,220075);香儿
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*200,0
+actjump 1,10,400
+wait 500
+moviechange 1,220071
+movielabel 1,"idle",1
+spwait 1
+tasp 1,0,1000
+swfback 1001,220074,%4,0,0,0,1
+swffront 1002,220075,%4,0,0,0,1
+screenswf 1001:screenswf 1002
+spwait 1001
+thresholdLayer 500
+csp 1001:csp 1002
+tasp 1,100,0
+moviereset 1
+for %1=2 to %5
+	movielabel %1,"lie",1
+	cell %1,6
+	getsppos %1,%2,%3
+	lsp 2000+%1,220072,%4,%2,%3,0
+next
+wait 250
+shakescreen 500,100,50
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8,220073,"idle",%4
+next
+wait 2000
+return
+
+*skill2008(220081,220082);摩呼罗迦王
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*600,0,NaN,500,1,1
+screentargetoffest %4*150,0
+actjump 1,10,400
+wait 500
+vsp 1,0
+swffront 1001,220081,%4,0,0,0,1
+screenswf 1001
+wait 1000
+screentargetoffest %4*700,0
+wait 500
+for %10=1 to 10
+for %1=2 to %5
+	movielabel %1,"lie",1
+	cell %1,6
+	getdamage %1,%8
+	hurt %1,%8/10,220082,"idle",%4
+next
+frontblur 500,50,101
+shakescreen 200,100,50
+wait 350
+next
+return
+
+*skill2006(220061,220062,220063);紧那罗王
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*250,0,200,500,1,1
+screentargetoffest %4*200,0
+actjump 1,10,400
+wait 500
+moviechange 1,220061
+movielabel 1,"start",1
+getsppos 1,%2,%3
+swffront 1001,220063,%4,%2,%3,0,1,1
+spwait 1
+for %10=1 to 3
+	movielabel 1,"idle",1
+	spwait 1
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/100,220062,"idle",%4,0,0
+	next
+next
+movielabel 1,"start",1
+cell 1,3
+emote 1,6
+wait 1000
+emote 1,0
+movielabel 1,"idle",1
+spwait 1
+moviereset 1
+wait 1300
+shakescreen 500,100,50
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/100*97,220062,"idle",%4
+	movielabel %1,"lie",1
+next
+wait 2000
+return
+
+*skill2005(220051,220052,220053);夜叉
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*150,0,NaN,500,1,1
+screentargetoffest %4*200,0
+actjump 1,10,400
+wait 500
+getsppos 1,%2,%3
+swfback 1001,220053,%4,%2,%3,0,1
+moviechange 1,220051
+movielabel 1,"idle",1
+wait 400
+msp 1,150*%4,0,0,200,1,1
+shakescreen 500,100,50
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/100*97,220052,"idle",%4
+	msp %1,700*%4,0,0,200
+	actspin %1,7200,5500
+next
+wait 500
+screenposition2 %2+%4*1000,%3,500
+for %10=1 to 10
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,220052,"idle",%4,0,0
+		tint %1,0
+	next
+	wait 500
+next
+return
+
+*skill5101(251011);BOSS1
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+getscreenposition %12,%13
+wait 500
+movielabel 1,"jump",1
+showspeed %4,500,90
+acteffect 1,1,1
+actshadow 1,0
+msp 1,NaN,NaN,800,500
+screenposition %12,%13-1000,500
+wait 500
+acteffect 1,1,0
+wait 1000
+acteffect 1,1,1
+msp 1,NaN,NaN,1200,500
+wait 500
+acteffect 1,1,0
+hidespeed
+swffront 1001,251011,%4,0,0,0,1,1
+screenswf 1001
+wait 1000
+msp 1,0-200*%4,NaN,-1000,0
+screenposition %12,%13-1000,0
+screenswf 1001
+movielabel 1,"magic",1
+wait 2000
+vsp 1,0
+screenposition %12+150*%4,%13-100,0
+swfchangelayer 1001,1
+screenswf 1001
+wait 1000
+randomshakescreen 3500,0,50
+for %1=2 to %5
+	actshadow %1,0
+next
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,0,"idle",%4
+		cell %1,4
+		tint %1,0
+	next
+	wait 500
+next
+for %1=2 to %5
+	vsp %1,0
+	tint2 %1,0
+next
+wait 1800
+return
+
+*skill5102(251021,20083,20092);BOSS2
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*220,0,NaN,500,1,1
+actjump 1,10,400
+wait 500
+getscreenposition %12,%13
+movielabel 1,"magic",1
+spwait 1
+movielabel 1,"idle",-1
+wait 500
+movielabel 1,"run",-1
+showspeed %4,500
+getsppos 1,%2,%3
+screentarget 0
+lsp 1001,20092,%4,%2+100*%4,%3
+psp 1001,10000:scale 1001,200,200:actspin 1001,0-90*%4:blend 1001,"add"
+tasp 1001,0:tasp 1001,100,500
+amsp 1,%2+%4*900,%3,NaN,500
+amsp 1001,%2+%4*900+100*%4,%3,NaN,500
+wait 200
+for %1=2 to %5
+	amsp %1,%2+%4*1000,%3,NaN,300
+next
+screenposition %12+900*%4,%13,300
+for %10=1 to 3
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/3,20083,"idle",%4
+	next
+	shakescreen 200,100,20
+	wait 500
+next
+msp 1,%4*1000,0,NaN,700,1,2
+msp 1001,%4*1000,0,NaN,700,1,2
+for %1=2 to %5
+	msp %1,%4*1000,0,NaN,700,1,2
+next
+wait 500
+hidespeed
+wait 1000
+csp 1001
+swffront 1001,251021,%4,0,0,0,1
+screenswf 1001
+wait 3500
+return
+
+*skill5104(251041);BOSS4
+getspfliped 1,%4
+gettargetslen %5
+;msp 1,0-%4*220,0,NaN,500,1,1
+;actjump 1,10,400
+wait 500
+getscreenposition %12,%13
+screenposition %12,%13-50,500
+getsppos 1,%2,%3
+wait 900
+for %10=1 to 8
+	if %10!=1 zoomscreen 1,0:wait 50:zoomscreen 100,500:wait 500
+	movielabel 1,"magic",1
+	for %1=2 to %5
+		actshadow %1,0
+		amsp %1,%2,%3,0,2000,1,2
+		scale %1,2,2,2000
+	next
+	wait 1800
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/8,0,"idle",%4
+	next
+	shakescreen 200,100,20
+	wait 500
+	swffront 1001,251041,%4,%2,%3,0,1
+	screenswf 1001
+	zoomscreen 2000,500
+	tasp 1,0,500
+	wait 500
+	csp 1001
+	for %1=1 to %5
+		vsp %1,0
+	next
+	wait 250
+	vsp 1,1
+	for %1=2 to %5
+		vsp %1,1
+		actreset %1
+		actresetpos %1
+	next
+	tasp 1,100,0
+	fast 100+%10*%10*20
+next
+fast 100
+return
+
+*skill5105(251051,20373);BOSS5
+getspfliped 1,%4
+gettargetslen %5
+wait 500
+getscreenposition %12,%13
+screenposition %12+235*%4,%13-100,300
+movielabel 1,"magic",1
+spwait 1
+wait 500
+swffront 1001,251051,%4,0,0,0,1
+screenswf 1001
+frontblur 7000,40,100
+wait 3000
+tasp 1,0,200
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,20373,"idle",%4
+	next
+	shakescreen 200,100,20
+	wait 400
+next
+wait 4000
+return
+
+*skill5106(251061,20113);BOSS6
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*220,0,NaN,500,1,1
+actjump 1,10,400
+wait 500
+getscreenposition %12,%13
+screenposition %12+235*%4,%13-100,300
+movielabel 1,"magic",1
+wait 900
+swffront 1001,251061,%4,0,0,0,1,1
+screenswf 1001
+for %10=1 to 10
+	for %1=2 to %5
+		if %10=1 msp %1,NaN,NaN,100
+		if %10!=1 msp %1,NaN,NaN,20
+		getdamage %1,%8
+		hurt %1,%8/10,20113,"idle",%4
+		actspin %1,360,500
+	next
+	shakescreen 200,100,20
+	wait 500
+next
+wait 2400
+return
+
+*skill5108(251081,20343);BOSS8
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*220,0,NaN,500,1,1
+actjump 1,10,400
+wait 500
+getscreenposition %12,%13
+screenposition %12+235*%4,%13-100,300
+movielabel 1,"magic",4
+wait 300
+hoteffect 2,0,10000,20
+swffront 1001,251081,%4,0,0,0,1
+screenswf 1001
+for %10=1 to 18
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/18,20343,"idle",%4
+	next
+	shakescreen 200,100,20
+	wait 500
+next
+hoteffect 0
+wait 3500
+return
+
+*skill5110(251101);BOSS10
+getspfliped 1,%4
+gettargetslen %5
+msp 1,0-%4*220,0,NaN,500,1,1
+actjump 1,10,400
+wait 500
+getscreenposition %12,%13
+screenposition %12+235*%4,%13-100,300
+movielabel 1,"magic",4
+wait 1000
+zoomscreen 5,1000
+wait 1000
+for %1=2 to %5
+	vsp %1,0
+next
+wait 100
+zoomscreen 100,0
+screenposition %12-600*%4,%13-100,0
+swfback 1001,251101,%4,0,0,0,1
+screenswf 1001
+msp 1,0-900*%4,0,0
+tasp 1,0,0:tasp 1,100,500
+movielabel 1,"idle",-1
+wait 500
+movielabel 1,"attack",1
+wait 850
+screenposition %12+335*%4,%13-100,1000
+showspeed %4,500,0,-125
+frontblur 3000,50,100,0,0-%4
+for %10=1 to 6
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8,0,"idle",%4
+	next
+	shakescreen 200,100,20
+	wait 500
+next
+hidespeed
+return
+
+*skill5111(251111);BOSS11
+getspfliped 1,%4
+gettargetslen %5
+wait 500
+getscreenposition %12,%13
+screenposition %12+200*%4,%13-100,1000
+movielabel 1,"magic",1
+spwait 1
+movielabel 1,"idle",-1
+swfback 1001,251111,1,0,0,0,1
+screenswf 1001
+for %10=1 to 6
+	for %1=2 to %5
+		getdamage %1,%8
+		rnd2 %7,-100,100
+		rnd2 %8,-100,100
+		msp %1,%7,%8,0,50
+		hurt %1,%8/6,0,"idle",%4
+	next
+	hoteffect (%10)%(4),100
+	shakescreen 200,100,20
+	wait 500
+next
+hoteffect 0
+tasp 1,0,2500
+for %1=2 to %5
+	vsp %1,0
+next
+wait 5000
+return
+
+*skill53(20532,20533);郭靖
+getspfliped 1,%4
+gettargetslen %5
+wait 500
+zoomscreen 150,200,1
+movielabel 1,"attack",1
+tasp 1,0,500
+spwait 1
+movielabel 1,"idle",-1
+getsppos 1,%2,%3
+swfback 1001,20533,%4,%2,%3,1,1
+wait 2800
+zoomscreen 60,200,1
+wait 200
+frontblur 4000,90,100,0,0,-3
+for %10=1 to 10
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/10,20532,"idle",%4
+	next
+	shakescreen 200,100,20
+	wait 400
+next
+return
+
+*skill55(20552,20553);杨过
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+screentarget 0
+getscreenposition %12,%13
+msp 1,0,0,600,500,1,1
+wait 700
+vsp 1,0
+swffront 1001,20553,%4,%2,%3,1,1
+screenposition %12,%13-800,500
+wait 1800
+screenposition %12,%13,200
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/6,20552,"idle",%4
+	next
+	shakescreen 200,100,25
+	wait 550
+next
+wait 800
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/6,20552,"idle",%4
+next
+shakescreen 400,100,70
+wait 1000
+return
+
+*skill57(20572,20573);刘备
+getspfliped 1,%4
+gettargetslen %5
+screentargetoffest %4*50,0-150
+wait 500
+tasp 1,0,500
+swffront 1001,20573,%4,0,0,1,1
+screenswf 1001
+wait 3500
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8,20572,"idle",%4
+next
+shakescreen 200,100,50
+wait 1000
+return
+
+*skill58(20582,20583);诸葛亮
+getspfliped 1,%4
+gettargetslen %5
+msp 1,-160*%4,0,NaN,500,1,1
+screentargetoffest %4*250,0-150
+actjump 1,50,500
+wait 500
+swffront 1001,20583,%4,0,0,1,1
+screenswf 1001
+wait 1500
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,20582,"idle",%4
+	next
+	shakescreen 200,100,50
+	wait 600
+next
+return
+
+*skill72(20722,20723);熊猫
+getspfliped 1,%4
+gettargetslen %5
+screentargetoffest %4*150,0
+wait 500
+vsp 1,0
+swffront 1001,20723,%4,0,0,1,1
+screenswf 1001
+wait 1500
+showspeed %4,500,0,120
+getscreenposition %12,%13
+screenposition %12+1600*%4,%13,500
+for %1=2 to %5
+	msp %1,1600*%4,0,NaN,500,1,1
+next
+wait 200
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,20722,"idle",%4
+	next
+	shakescreen 200,100,50
+	wait 600
+next
+hidespeed
+return
+
+*skill68(20681,20682,20683);小昭
+getspfliped 1,%4
+gettargetslen %5
+screentargetoffest %4*150,0
+moviechange 1,20681
+movielabel 1,"idle",1
+wait 500
+for %1=1 to %5
+	tasp %1,0,500
+next
+wait 500
+getsppos 1,%2,%3
+swfback 1001,20683,%4,%2,%3,1,1
+screentargetoffest 0,0
+screentargetspeed 100
+msp 1,0-%4*1400,0,0
+moviereset 1
+movielabel 1,"run",-1
+for %1=1 to %5
+	tasp %1,100,500
+next
+msp 1,%4*1700,0,0,3500
+wait 500
+showspeed 0-%4,500,0,0
+wait 3000
+hidespeed
+frontblur 3100,90,101,1
+movielabel 1,"attack",1
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,20682,"idle",%4
+	next
+	shakescreen 200,100,50
+	wait 600
+next
+return
+
+*skill72(20722,20723);熊猫
+getspfliped 1,%4
+gettargetslen %5
+screentargetoffest %4*150,0
+wait 500
+vsp 1,0
+swffront 1001,20723,%4,0,0,1,1
+screenswf 1001
+wait 1500
+showspeed %4,500,0,120
+getscreenposition %12,%13
+screenposition %12+1600*%4,%13,500
+for %1=2 to %5
+	msp %1,1600*%4,0,NaN,500,1,1
+next
+wait 200
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,20722,"idle",%4
+	next
+	shakescreen 200,100,50
+	wait 600
+next
+hidespeed
+return
+
+*skill73(20732,20733,20734);紫云
+getspfliped 1,%4
+gettargetslen %5
+wait 500
+getsppos 1,%2,%3
+swfback 1001,20733,%4,%2,%3,1,1
+moviespeed 1001,50
+wait 2500
+hoteffect 1,0,100,5
+for %1=2 to %5
+	getsppos %1,%2,%3
+	lsp 1000+%1,20734,%4,%2,%3,0,1,1
+next
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/5,20732,"idle",%4
+	next
+	wait 600
+next
+wait 500
+hoteffect 0	
+return
+
+*skill54(20542,20543);段誉
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+msp 1,-100*%4,0,NaN,500,1,1
+actjump 1,100,500
+wait 750
+getsppos 1,%22,%33
+tasp 1,0 100
+swffront 1001,20543,%4,%22,%33,1,1
+screentarget 2
+wait 1000
+zoomscreen 150, 500
+for %10=1 to 7
+	for %1=2 to %5
+		getdamage %1, %8
+		hurt %1, %8/10, 20542, "idle",%4
+		movielabel %1,"lie",1
+	next
+	shakescreen 200,100,20
+	wait 200
+next
+wait 400
+zoomscreen 100
+for %10=1 to 2
+	for %1=2 to %5
+		getdamage %1, %8
+		movielabel %1,"idle",1
+		hurt %1, %8/10, 20542, "idle",%4		
+		msp %1,%4*60,0,NAN,200,1,1
+	next
+	wait 200
+next
+screenposition2 %22,%33
+screentargetspeed 20
+wait 1500
+for %1=2 to %5
+	msp %1,%4*350,0,NAN,500,1,1
+	getdamage %1, %8
+	hurt %1, %8/10, 20542, "idle",%4
+next
+wait 500
+for %1=2 to %5
+	vsp %1,0
+next
+wait 1600
+return
+
+*skill67(20672,20673);祝融
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+msp 1,-100*%4,0,NaN,500,1,1
+actjump 1,100,500
+wait 750
+moviechange 1,20673
+screentarget 2
+acteffect 1
+for %100=1 to 3
+	movielabel 1,"step1",1
+	getsppos 2, %22, %33
+	amsp 1,%22-200*%4,%33,NaN,500,1,1
+	wait 200	
+	movielabel 1,"step2",1
+	moviespeed 1,60
+	spwait 1
+	;frontblur 1100,90,100	
+	for %1=2 to %5
+		msp %1,%4*500,0,NAN,200,1,1
+		rnd2 %11,-400,400
+		actspin %1,%11,200
+		getdamage %1,%8
+		hurt %1,%8/3,20672,"idle",%4 
+	next
+	wait 500
+next
+return
+
+*skill61(20611,20612,20613);黄忠
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+getsppos 2,%222,%333;
+acteffect 1,1,1
+msp 1,-1000*%4,0,NaN,500,1,1
+wait 750
+acteffect 1,1,0
+moviechange 1,20611
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle",-1
+getsppos 1,%22,%33
+swffront 1001,20613,%4,%22,%33,1,1
+wait 2500
+movielabel 1,"end",1
+wait 1000
+;screentarget 2
+showspeed %4
+swfposition 1001,%22+%4*200,%33
+screenposition2 %22+%4*500,%3,500
+wait 500
+hidespeed
+swfposition 1001, %22+%4*800,%33
+screenposition2 %22+%4*1100,%3,500
+wait 500
+for %10=1 to 6
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/6,20612,"idle",%4
+	next
+	shakescreen 400,100,50
+	wait 500
+next
+return
+
+*skill56(20561,20562,20563);司马懿
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+msp 1,-500*%4,100,NaN,500,1,1
+actjump 1,100,500
+wait 750
+getsppos 1, %22,%33
+moviechange 1,20561
+movielabel 1,"start",1
+spwait 1
+movielabel 1,"idle"
+swffront 1001,20563,%4,%22,%3,0,1
+wait 2500
+showspeed %4
+screenposition2 %2+%4*200,%3,1500
+wait 1500
+for %1=2 to %5
+	getdamage %1, %8
+	movielabel %1,"idle",1
+	hurt %1, %8, 20562, "idle",%4
+	msp %1,%4*1000,0,NAN,1000,1,1
+next
+wait 1400
+hidespeed
+return
+
+*skill59(20591,20592);魏延
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+msp 1,-400*%4,0,NaN,500,1,1
+screentargetoffest %4*300,0
+actjump 1,100,500
+wait 750
+getsppos 1,%22,%33
+tasp 1,0 100
+swffront 1001,20591,%4,%22,%33,1,1
+wait 2000
+for %10=1 to 3
+	for %1=2 to %5
+		msp %1,%4*150,0,NAN,500,1,1
+		getdamage %1, %8
+		hurt %1, %8/3, 20592, "idle",%4
+	next
+	wait 200
+next
+for %1=2 to %5
+	vsp %1,0
+next
+wait 300
+screenposition2 %22,%33
+screentargetspeed 20
+wait 2000
+return
+
+*skill60(20601,20602,20603,20604);郭嘉
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+msp 1,-100*%4,-200,NaN,500,1,1
+actjump 1,100,500
+wait 750
+moviechange 1,20601
+getsppos 1 %22,%33
+wait 500
+screentarget 2
+lsp 1001,20603,%4,%22,%33,0,3,1,1
+for %10=1 to 5
+	for %1=2 to %5
+		getdamage %1,%8
+		hurt %1,%8/6,20602,"idle",%4
+	next
+	shakescreen 200,100,20
+	wait 500
+next
+lsp 1002,20604,%4,%22,%33,0,1,0,2
+moviespeed 1002, 50
+movielabel 1002,"start",1
+spwait 1002
+movielabel 1002,"idle",-1
+hoteffect 1,0,100,5
+wait 500
+for %1=2 to %5
+	getdamage %1,%8
+	hurt %1,%8/6,20602,"idle",%4
+	shakescreen 200,100,20
+next
+wait 1000
+hoteffect 0
+movielabel 1002,"end",1
+wait 500
+return
+
+*skill62(20621,20622);魏延
+getspfliped 1,%4
+gettargetslen %5
+getsppos 1,%2,%3
+msp 1,-400*%4,0,NaN,500,1,1
+screentargetoffest %4*300,0
+actjump 1,100,500
+wait 750
+return

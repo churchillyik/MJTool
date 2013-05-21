@@ -123,7 +123,15 @@ namespace MJTool
 		
 		void BtRefreshGeneral(object sender, EventArgs e)
 		{
-			sInsMgr.SendCommand(new RfsGenCmdArg(CmdIDs.USER_REFRESH_GENERAL, curAcc, 1));
+			DateTime dt;
+			if (curAcc.CheckGeneralRefreshAvailable(1, out dt))
+			{
+				sInsMgr.SendCommand(new RfsGenCmdArg(CmdIDs.USER_REFRESH_GENERAL, curAcc, 1));
+			}
+			else
+			{
+				sInsMgr.DebugLog("武将刷新在CD结束时刻为：" + dt.ToString());
+			}
 		}
 		
 		void BtEmployGeneral(object sender, EventArgs e)

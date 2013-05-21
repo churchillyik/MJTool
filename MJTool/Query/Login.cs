@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Threading;
+using System.IO;
 
 namespace MJTool
 {
@@ -25,6 +26,16 @@ namespace MJTool
 			}
 			curAcc.bIsLogined = false;
 
+			string fpath = "D:\\ZLib\\offzip\\FormatDemo.cwm";
+			if (!File.Exists(fpath))
+				return;
+			byte[] bs_f = File.ReadAllBytes(fpath);
+			Print("guidereport", bs_f);
+			
+			fpath = "dat\\guidereport.dat";
+			bs_f = File.ReadAllBytes(fpath);
+			Print("guidereport_raw", bs_f);
+			return;
 			// 组装包发到登陆服务器
 			Dictionary<string, string> data = new Dictionary<string, string>();
 			data.Add("entry", "sso");

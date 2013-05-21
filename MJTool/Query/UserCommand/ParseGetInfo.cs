@@ -136,25 +136,38 @@ namespace MJTool
 					SetMapArrayObjects(dic_userSigin, "lastAwardInfo", root.userData.userSigin.lastAwardInfo);
 				}
 				
-				StringBuilder sb = new StringBuilder();
-				sb.AppendLine("--------------userSoul---------------");
-				foreach (entityUserSoul soul in root.userData.userSoul)
-				{
-					sb.AppendLine("generalType/number: " + soul.generalType + "\t" + soul.number);
-				}
-				sb.AppendLine("--------------userTavern---------------");
-				sb.AppendLine("id_1: " + root.userData.userTavern.id_1);
-				sb.AppendLine("id_2: " + root.userData.userTavern.id_2);
-				sb.AppendLine("id_3: " + root.userData.userTavern.id_3);
-				sb.AppendLine("ct: " + QueryManager.SecondsToDateTime(root.userData.userTavern.ct));
-				sb.AppendLine("nomalRefreshTimes: " + root.userData.userTavern.nomalRefreshTimes);
-				sb.AppendLine("nomalRefreshTime: " + QueryManager.SecondsToDateTime(root.userData.userTavern.nomalRefreshTime));
-				upCall.DebugLog(sb.ToString());
+				PrintTavern();
 			}
 			catch (Exception e)
 			{
 				upCall.DebugLog(e.StackTrace);
 			}
+		}
+		
+		private void PrintTavern()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.AppendLine("--------------user---------------");
+			sb.AppendLine("tavernG: " + root.userData.user.tavernG);
+			sb.AppendLine("tavernCdEndTime_1: " + QueryManager.SecondsToDateTime(root.userData.user.tavernCdEndTime_1));
+			sb.AppendLine("tavernCdEndTime_2: " + QueryManager.SecondsToDateTime(root.userData.user.tavernCdEndTime_2));
+			sb.AppendLine("tavernCdEndTime_3: " + QueryManager.SecondsToDateTime(root.userData.user.tavernCdEndTime_3));
+			sb.AppendLine("tavernCdEndTime_4: " + QueryManager.SecondsToDateTime(root.userData.user.tavernCdEndTime_4));
+			sb.AppendLine("tavernTotalP: " + root.userData.user.tavernTotalP);
+			
+			sb.AppendLine("--------------userSoul---------------");
+			foreach (entityUserSoul soul in root.userData.userSoul)
+			{
+				sb.AppendLine("generalType/number: " + soul.generalType + "\t" + soul.number);
+			}
+			sb.AppendLine("--------------userTavern---------------");
+			sb.AppendLine("id_1: " + root.userData.userTavern.id_1);
+			sb.AppendLine("id_2: " + root.userData.userTavern.id_2);
+			sb.AppendLine("id_3: " + root.userData.userTavern.id_3);
+			sb.AppendLine("ct: " + QueryManager.SecondsToDateTime(root.userData.userTavern.ct));
+			sb.AppendLine("nomalRefreshTimes: " + root.userData.userTavern.nomalRefreshTimes);
+			sb.AppendLine("nomalRefreshTime: " + QueryManager.SecondsToDateTime(root.userData.userTavern.nomalRefreshTime));
+			upCall.DebugLog(sb.ToString());
 		}
 		
 		private Dictionary<string, object> GetRootDic(byte[] bs_result)
