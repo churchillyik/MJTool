@@ -39,6 +39,7 @@ namespace MJTool
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.btEmployGeneral = new System.Windows.Forms.Button();
+			this.button1 = new System.Windows.Forms.Button();
 			this.btRefreshGeneral = new System.Windows.Forms.Button();
 			this.btGetLuckInfo = new System.Windows.Forms.Button();
 			this.btGetLoginAward = new System.Windows.Forms.Button();
@@ -55,10 +56,14 @@ namespace MJTool
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.tbLog = new System.Windows.Forms.TextBox();
-			this.button1 = new System.Windows.Forms.Button();
+			this.lsvGenerals = new System.Windows.Forms.ListView();
+			this.chGenName = new System.Windows.Forms.ColumnHeader();
+			this.chNum = new System.Windows.Forms.ColumnHeader();
+			this.chQuality = new System.Windows.Forms.ColumnHeader();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			this.tabPage2.SuspendLayout();
 			this.tabPage3.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -103,6 +108,16 @@ namespace MJTool
 			this.btEmployGeneral.Text = "雇佣武将";
 			this.btEmployGeneral.UseVisualStyleBackColor = true;
 			this.btEmployGeneral.Click += new System.EventHandler(this.BtEmployGeneral);
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(28, 143);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(164, 23);
+			this.button1.TabIndex = 2;
+			this.button1.Text = "解析本地数据包";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.BtParseLocalDataClick);
 			// 
 			// btRefreshGeneral
 			// 
@@ -242,6 +257,7 @@ namespace MJTool
 			// 
 			// tabPage2
 			// 
+			this.tabPage2.Controls.Add(this.lsvGenerals);
 			this.tabPage2.Location = new System.Drawing.Point(4, 21);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -271,15 +287,35 @@ namespace MJTool
 			this.tbLog.Size = new System.Drawing.Size(653, 328);
 			this.tbLog.TabIndex = 0;
 			// 
-			// button1
+			// lsvGenerals
 			// 
-			this.button1.Location = new System.Drawing.Point(28, 143);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(164, 23);
-			this.button1.TabIndex = 2;
-			this.button1.Text = "解析本地数据包";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.BtParseLocalDataClick);
+			this.lsvGenerals.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+									this.chQuality,
+									this.chGenName,
+									this.chNum});
+			this.lsvGenerals.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lsvGenerals.FullRowSelect = true;
+			this.lsvGenerals.GridLines = true;
+			this.lsvGenerals.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lsvGenerals.Location = new System.Drawing.Point(3, 3);
+			this.lsvGenerals.Name = "lsvGenerals";
+			this.lsvGenerals.Size = new System.Drawing.Size(653, 328);
+			this.lsvGenerals.TabIndex = 0;
+			this.lsvGenerals.UseCompatibleStateImageBehavior = false;
+			this.lsvGenerals.View = System.Windows.Forms.View.Details;
+			// 
+			// chGenName
+			// 
+			this.chGenName.Text = "将魂名称";
+			this.chGenName.Width = 120;
+			// 
+			// chNum
+			// 
+			this.chNum.Text = "将魂数量";
+			// 
+			// chQuality
+			// 
+			this.chQuality.Text = "将魂品质";
 			// 
 			// MainForm
 			// 
@@ -295,10 +331,15 @@ namespace MJTool
 			this.tabPage1.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			this.tabPage2.ResumeLayout(false);
 			this.tabPage3.ResumeLayout(false);
 			this.tabPage3.PerformLayout();
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.ColumnHeader chNum;
+		private System.Windows.Forms.ColumnHeader chGenName;
+		private System.Windows.Forms.ColumnHeader chQuality;
+		public System.Windows.Forms.ListView lsvGenerals;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button btEmployGeneral;
 		private System.Windows.Forms.Button btRefreshGeneral;
