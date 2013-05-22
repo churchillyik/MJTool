@@ -8,19 +8,19 @@ namespace MJTool
 		public void ParseGetGift(byte[] bs_result)
 		{
 			upCall.Print("ParseGetGift", bs_result);
-			Dictionary<string, object> dic_root = GetRootDic(bs_result);
+			Dictionary<string, object> dic_root = upCall.GetRootDic(bs_result);
 			
 			recvGetGift pkg = new recvGetGift();
-			SetSingleObject(dic_root, null, pkg);
+			upCall.SetSingleObject(dic_root, null, pkg);
 		}
 		
 		public void ParseGetMessage(byte[] bs_result)
 		{
 			upCall.Print("ParseGetMessage", bs_result);
-			Dictionary<string, object> dic_root = GetRootDic(bs_result);
+			Dictionary<string, object> dic_root = upCall.GetRootDic(bs_result);
 			
 			recvGetMessage pkg = new recvGetMessage();
-			SetSingleObject(dic_root, null, pkg);
+			upCall.SetSingleObject(dic_root, null, pkg);
 			
 			if (!dic_root.ContainsKey("userData"))
 			{
@@ -28,25 +28,25 @@ namespace MJTool
 				return;
 			}
 			Dictionary<string, object> dic_userData = (Dictionary<string, object>) dic_root["userData"];
-			SetArrayObjects(dic_userData, "message", pkg.userData.message);
-			SetArrayObjects(dic_userData, "announcement", pkg.userData.announcement);
+			upCall.SetArrayObjects(dic_userData, "message", pkg.userData.message);
+			upCall.SetArrayObjects(dic_userData, "announcement", pkg.userData.announcement);
 		}
 		
 		public void ParseMsgBox(byte[] bs_result)
 		{
 			upCall.Print("ParseMsgBox", bs_result);
-			Dictionary<string, object> dic_root = GetRootDic(bs_result);
+			Dictionary<string, object> dic_root = upCall.GetRootDic(bs_result);
 			
 			recvMsgBox pkg = new recvMsgBox();
-			SetSingleObject(dic_root, null, pkg);
+			upCall.SetSingleObject(dic_root, null, pkg);
 			
-			SetArrayObjects(dic_root, "userData", pkg.userData);
+			upCall.SetArrayObjects(dic_root, "userData", pkg.userData);
 		}
 		
 		public void ParseGetLoginAward(byte[] bs_result)
 		{
 			upCall.Print("ParseGetLoginAward", bs_result);
-			Dictionary<string, object> dic_root = GetRootDic(bs_result);
+			Dictionary<string, object> dic_root = upCall.GetRootDic(bs_result);
 			
 			if (dic_root.ContainsKey("className") && Convert.ToString(dic_root["className"]) == "Exception"
 			    && dic_root.ContainsKey("message") && Convert.ToString(dic_root["message"]) == "awardTimeError")
@@ -55,7 +55,7 @@ namespace MJTool
 				return;
 			}
 			recvGetLoginAward pkg = new recvGetLoginAward();
-			SetSingleObject(dic_root, null, pkg);
+			upCall.SetSingleObject(dic_root, null, pkg);
 			
 			if (!dic_root.ContainsKey("userData"))
 			{
@@ -63,20 +63,20 @@ namespace MJTool
 				return;
 			}
 			Dictionary<string, object> dic_userData = (Dictionary<string, object>) dic_root["userData"];
-			SetSingleObject(dic_root, "userData", pkg.userData);
+			upCall.SetSingleObject(dic_root, "userData", pkg.userData);
 			
-			SetArrayArrayObjects(dic_userData, "award", pkg.userData.award);
+			upCall.SetArrayArrayObjects(dic_userData, "award", pkg.userData.award);
 		}
 		
 		public void ParseGetLuckInfo(byte[] bs_result)
 		{
 			upCall.Print("ParseGetLuckInfo", bs_result);
-			Dictionary<string, object> dic_root = GetRootDic(bs_result);
+			Dictionary<string, object> dic_root = upCall.GetRootDic(bs_result);
 			
 			recvGetLuckInfo pkg = new recvGetLuckInfo();
-			SetSingleObject(dic_root, null, pkg);
+			upCall.SetSingleObject(dic_root, null, pkg);
 			
-			SetSingleObject(dic_root, "userData", pkg.userData);
+			upCall.SetSingleObject(dic_root, "userData", pkg.userData);
 		}
 		
 		public bool CheckGeneralRefreshAvailable(int type, out DateTime dt)
@@ -131,10 +131,10 @@ namespace MJTool
 		public void ParseRefreshGeneral(byte[] bs_result, CmdOperation cmdOprt)
 		{
 			upCall.Print("ParseRefreshGeneral", bs_result);
-			Dictionary<string, object> dic_root = GetRootDic(bs_result);
+			Dictionary<string, object> dic_root = upCall.GetRootDic(bs_result);
 			
 			recvRefreshGeneral pkg = new recvRefreshGeneral();
-			SetSingleObject(dic_root, null, pkg);
+			upCall.SetSingleObject(dic_root, null, pkg);
 			
 			if (!dic_root.ContainsKey("userData"))
 			{
@@ -142,9 +142,9 @@ namespace MJTool
 				return;
 			}
 			Dictionary<string, object> dic_userData = (Dictionary<string, object>) dic_root["userData"];
-			SetSingleObject(dic_root, "userData", pkg.userData);
-			SetSingleObject(dic_userData, "userTavern", pkg.userData.userTavern);
-			SetArrayObjects(dic_userData, "userSoul", pkg.userData.userSoul);
+			upCall.SetSingleObject(dic_root, "userData", pkg.userData);
+			upCall.SetSingleObject(dic_userData, "userTavern", pkg.userData.userTavern);
+			upCall.SetArrayObjects(dic_userData, "userSoul", pkg.userData.userSoul);
 			
 			// 同步到角色数据中
 			UpdateGeneralRefreshData(pkg, cmdOprt.nGenRefType);

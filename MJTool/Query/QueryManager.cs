@@ -14,7 +14,12 @@ namespace MJTool
 		public QueryManager()
 		{
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+		}
+		
+		public void init()
+		{
 			init_cmd();
+			init_db();
 		}
 		
 		public void DebugLog(string log)
@@ -56,6 +61,13 @@ namespace MJTool
 			Thread t = new Thread(new ParameterizedThreadStart(doUserCommand));
 			t.Name = "SendCommand";
 			t.Start(arg);
+		}
+		
+		public void ParseLocalData()
+		{
+			Thread t = new Thread(new ThreadStart(PrintGameDB));
+			t.Name = "SendCommand";
+			t.Start();
 		}
 	}
 	

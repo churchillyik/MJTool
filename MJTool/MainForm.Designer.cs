@@ -55,6 +55,7 @@ namespace MJTool
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.tbLog = new System.Windows.Forms.TextBox();
+			this.button1 = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
@@ -76,6 +77,7 @@ namespace MJTool
 			// tabPage1
 			// 
 			this.tabPage1.Controls.Add(this.btEmployGeneral);
+			this.tabPage1.Controls.Add(this.button1);
 			this.tabPage1.Controls.Add(this.btRefreshGeneral);
 			this.tabPage1.Controls.Add(this.btGetLuckInfo);
 			this.tabPage1.Controls.Add(this.btGetLoginAward);
@@ -116,7 +118,7 @@ namespace MJTool
 			// btGetLuckInfo
 			// 
 			this.btGetLuckInfo.Enabled = false;
-			this.btGetLuckInfo.Location = new System.Drawing.Point(28, 277);
+			this.btGetLuckInfo.Location = new System.Drawing.Point(28, 300);
 			this.btGetLuckInfo.Name = "btGetLuckInfo";
 			this.btGetLuckInfo.Size = new System.Drawing.Size(164, 23);
 			this.btGetLuckInfo.TabIndex = 2;
@@ -127,7 +129,7 @@ namespace MJTool
 			// btGetLoginAward
 			// 
 			this.btGetLoginAward.Enabled = false;
-			this.btGetLoginAward.Location = new System.Drawing.Point(28, 248);
+			this.btGetLoginAward.Location = new System.Drawing.Point(28, 271);
 			this.btGetLoginAward.Name = "btGetLoginAward";
 			this.btGetLoginAward.Size = new System.Drawing.Size(164, 23);
 			this.btGetLoginAward.TabIndex = 2;
@@ -138,7 +140,7 @@ namespace MJTool
 			// btMsgBox
 			// 
 			this.btMsgBox.Enabled = false;
-			this.btMsgBox.Location = new System.Drawing.Point(28, 219);
+			this.btMsgBox.Location = new System.Drawing.Point(28, 242);
 			this.btMsgBox.Name = "btMsgBox";
 			this.btMsgBox.Size = new System.Drawing.Size(164, 23);
 			this.btMsgBox.TabIndex = 2;
@@ -149,7 +151,7 @@ namespace MJTool
 			// btGetMessage
 			// 
 			this.btGetMessage.Enabled = false;
-			this.btGetMessage.Location = new System.Drawing.Point(28, 190);
+			this.btGetMessage.Location = new System.Drawing.Point(28, 213);
 			this.btGetMessage.Name = "btGetMessage";
 			this.btGetMessage.Size = new System.Drawing.Size(164, 23);
 			this.btGetMessage.TabIndex = 2;
@@ -160,7 +162,7 @@ namespace MJTool
 			// btGetGift
 			// 
 			this.btGetGift.Enabled = false;
-			this.btGetGift.Location = new System.Drawing.Point(28, 161);
+			this.btGetGift.Location = new System.Drawing.Point(28, 184);
 			this.btGetGift.Name = "btGetGift";
 			this.btGetGift.Size = new System.Drawing.Size(164, 23);
 			this.btGetGift.TabIndex = 2;
@@ -269,6 +271,16 @@ namespace MJTool
 			this.tbLog.Size = new System.Drawing.Size(653, 328);
 			this.tbLog.TabIndex = 0;
 			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(28, 143);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(164, 23);
+			this.button1.TabIndex = 2;
+			this.button1.Text = "解析本地数据包";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.BtParseLocalDataClick);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -287,6 +299,7 @@ namespace MJTool
 			this.tabPage3.PerformLayout();
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button btEmployGeneral;
 		private System.Windows.Forms.Button btRefreshGeneral;
 		private System.Windows.Forms.Button btGetLuckInfo;

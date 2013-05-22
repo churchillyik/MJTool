@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\GameData\GameDatabase.cs" />
     <Compile Include="Query\Login.cs" />
     <Compile Include="Query\Logout.cs" />
     <Compile Include="Query\QueryManager.cs" />
@@ -87,6 +88,7 @@
   <ItemGroup>
     <Folder Include="Query\Util" />
     <Folder Include="Query\UserCommand" />
+    <Folder Include="Query\GameData" />
     <Folder Include="SpAlg" />
     <Folder Include="Query" />
   </ItemGroup>

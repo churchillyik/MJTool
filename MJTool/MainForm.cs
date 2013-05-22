@@ -28,6 +28,7 @@ namespace MJTool
 		void MainFormLoad(object sender, EventArgs e)
 		{
 			sInsMgr.OnUIUpdate += new EventHandler<UIUpdateArgs>(CallBack_UIUpdate);
+			sInsMgr.init();
 		}
 		
 		void CallBack_UIUpdate(object sender, UIUpdateArgs e)
@@ -137,6 +138,11 @@ namespace MJTool
 		void BtEmployGeneral(object sender, EventArgs e)
 		{
 			sInsMgr.SendCommand(new EplGenCmdArg(CmdIDs.USER_EMPLOY_GENERAL, curAcc, 0, 1));
+		}
+		
+		void BtParseLocalDataClick(object sender, EventArgs e)
+		{
+			sInsMgr.ParseLocalData();
 		}
 	}
 }

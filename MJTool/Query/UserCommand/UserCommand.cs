@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Reflection;
+using FluorineFx;
 using FluorineFx.AMF3;
 
 namespace MJTool
@@ -268,7 +270,7 @@ namespace MJTool
 				else
 				{
 					if (i + 2 < bs.Length &&
-					    bs[i] == 0x0A && bs[i + 1] == 0x0B)
+					    bs[i] == 0x09 && ((int)bs[i + 1] % 2 == 1) && bs[i + 2] == 0x01)
 					{
 						sb.Append("\r\n");
 					}
@@ -323,6 +325,264 @@ namespace MJTool
 				return default(T);
 			}
 			return (T)obj;
+		}
+		
+		public Dictionary<string, object> GetRootDic(byte[] bs_result)
+		{
+			List<byte> lst_byte_res = new List<byte>();
+			for (int i = 1; i < bs_result.Length; i++)
+			{
+				lst_byte_res.Add(bs_result[i]);
+			}
+			
+			byte[] b_res = lst_byte_res.ToArray();
+			return AMF_Deserializer<Dictionary<string, object>>(b_res, b_res.Length);
+		}
+		
+		private static Dictionary<string, string> dicValidFieldName = new Dictionary<string, string>()
+		{
+			{"intel", "int"},
+			{"nEvent", "event"},
+			{"groupId", "groupId "},
+			{"nValue", "value"},
+			{"nDouble", "double"},
+			{"nGet", "get"},
+			{"nClass", "class"},
+		};
+		
+		public string GetVaildFieldName(string field_name)
+		{
+			if (dicValidFieldName.ContainsKey(field_name))
+			{
+				return dicValidFieldName[field_name];
+			}
+			else
+			{
+				return field_name;
+			}
+		}
+		
+		public void SetSingleObject<T>(Dictionary<string, object> dic_parent, string key, T t_obj)
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (key == null)
+			{
+				SetSingleObject(dic_parent, t_obj);
+			}
+			else
+			{
+				if (!dic_parent.ContainsKey(key))
+				{
+					DebugLog(t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+					return;
+				}
+				Dictionary<string, object> dic = (Dictionary<string, object>)dic_parent[key];
+				SetSingleObject(dic, t_obj);
+			}
+		}
+		
+		public void SetSingleObject<T>(Dictionary<string, object> dic, T t_obj)
+		{
+			if (dic == null)
+			{
+				return;
+			}
+			FieldInfo[] field_info = t_obj.GetType().GetFields();
+			if (field_info == null)
+			{
+				return;
+			}
+			foreach (FieldInfo f in field_info)
+			{
+				string valid_name = GetVaildFieldName(f.Name);
+				if (dic.ContainsKey(valid_name))
+				{
+					if (!f.FieldType.IsGenericType && f.FieldType.Namespace == "System")
+					{
+						if (f.FieldType.Name == "Int32")
+						{
+							f.SetValue(t_obj, Convert.ToInt32(dic[valid_name]));
+						}
+						else if (f.FieldType.Name == "Double")
+						{
+							f.SetValue(t_obj, Convert.ToDouble(dic[valid_name]));
+						}
+						else if (f.FieldType.Name == "String")
+						{
+							f.SetValue(t_obj, Convert.ToString(dic[valid_name]));
+						}
+						else if (f.FieldType.Name == "Boolean")
+						{
+							f.SetValue(t_obj, Convert.ToBoolean(dic[valid_name]));
+						}
+						else
+						{
+							DebugLog("无法设定" + f.FieldType.Name + "类型的数据");
+						}
+					}
+				}
+				else
+				{
+					DebugLog(t_obj.ToString() + "无法从字典中获取 " + valid_name + " 值");
+				}
+			}
+		}
+		
+		public void SetArrayObjects<T>(Dictionary<string, object> dic_parent, string key, List<T> lst_t_obj) where T : new()
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (!dic_parent.ContainsKey(key))
+			{
+				DebugLog(lst_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+				return;
+			}
+			lst_t_obj.Clear();
+			if (dic_parent[key] == null || !dic_parent[key].GetType().IsArray)
+			{
+				return;
+			}
+			object[] arr_obj = (object[])dic_parent[key];
+			foreach (object o in arr_obj)
+			{
+				Dictionary<string, object> dic = (Dictionary<string, object>) o;
+				T obj = new T();
+				SetSingleObject(dic, obj);
+				lst_t_obj.Add(obj);
+			}
+		}
+		
+		public void SetMapObjects<T>(Dictionary<string, object> dic_parent, string key, Dictionary<string, T> dic_t_obj) where T : new()
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (!dic_parent.ContainsKey(key))
+			{
+				DebugLog(dic_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+				return;
+			}
+			dic_t_obj.Clear();
+			if (dic_parent[key] == null || !(dic_parent[key] is ASObject))
+			{
+				return;
+			}
+			Dictionary<string, object> dic = (Dictionary<string, object>)dic_parent[key];
+			foreach (KeyValuePair<string, object> pair in dic)
+			{
+				Dictionary<string, object> val = (Dictionary<string, object>)pair.Value;
+				T obj = new T();
+				SetSingleObject(val, obj);
+				dic_t_obj.Add(pair.Key, obj);
+			}
+		}
+		
+		public void SetBaseArrayObjects<T>(Dictionary<string, object> dic_parent, string key, List<T> lst_t_obj)
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (!dic_parent.ContainsKey(key))
+			{
+				DebugLog(lst_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+				return;
+			}
+			lst_t_obj.Clear();
+			if (dic_parent[key] == null || !dic_parent[key].GetType().IsArray)
+			{
+				return;
+			}
+			object[] arr_obj = (object[])dic_parent[key];
+			foreach (T t in arr_obj)
+			{
+				lst_t_obj.Add(t);
+			}
+		}
+		
+		public void SetBaseMapObjects<T>(Dictionary<string, object> dic_parent, string key, Dictionary<string, T> dic_t_obj)
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (!dic_parent.ContainsKey(key))
+			{
+				DebugLog(dic_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+				return;
+			}
+			dic_t_obj.Clear();
+			if (dic_parent[key] == null || !(dic_parent[key] is ASObject))
+			{
+				return;
+			}
+			Dictionary<string, T> dic = (Dictionary<string, T>)dic_parent[key];
+			foreach (KeyValuePair<string, T> pair in dic)
+			{
+				dic_t_obj.Add(pair.Key, pair.Value);
+			}
+		}
+		
+		public void SetMapArrayObjects<T>(Dictionary<string, object> dic_parent, string key, Dictionary<string, List<T>> dic_arr_t_obj) where T : new()
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (!dic_parent.ContainsKey(key))
+			{
+				DebugLog(dic_arr_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+				return;
+			}
+			dic_arr_t_obj.Clear();
+			if (dic_parent[key] == null || !(dic_parent[key] is ASObject))
+			{
+				return;
+			}
+			Dictionary<string, object> dic = (Dictionary<string, object>)dic_parent[key];
+			foreach (KeyValuePair<string, object> pair in dic)
+			{
+				List<T> lst = new List<T>();
+				SetArrayObjects(dic, pair.Key, lst);
+				dic_arr_t_obj.Add(pair.Key, lst);
+			}
+		}
+		
+		public void SetArrayArrayObjects<T>(Dictionary<string, object> dic_parent, string key, List<List<T>> lst_lst_t_obj) where T : new()
+		{
+			if (dic_parent == null)
+			{
+				return;
+			}
+			if (!dic_parent.ContainsKey(key))
+			{
+				DebugLog(lst_lst_t_obj.ToString() + "无法从字典中获取 " + key + " 值");
+				return;
+			}
+			lst_lst_t_obj.Clear();
+			if (dic_parent[key] == null || !dic_parent[key].GetType().IsArray)
+			{
+				return;
+			}
+			object[] arr_arr = (object[])dic_parent[key];
+			foreach (object[] arr_obj in arr_arr)
+			{
+				List<T> lst_t_obj = new List<T>();
+				foreach (object o in arr_obj)
+				{
+					Dictionary<string, object> dic = (Dictionary<string, object>) o;
+					T obj = new T();
+					SetSingleObject(dic, obj);
+					lst_t_obj.Add(obj);
+				}
+				lst_lst_t_obj.Add(lst_t_obj);
+			}
 		}
 	}
 	
