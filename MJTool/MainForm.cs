@@ -23,12 +23,14 @@ namespace MJTool
 		private delegate void dlgClearLog();
 		
 		private QueryManager sInsMgr = new QueryManager();
+		private List<Account> lstAccs = null;
 		private Account curAcc= null;
 		
 		void MainFormLoad(object sender, EventArgs e)
 		{
 			sInsMgr.OnUIUpdate += new EventHandler<UIUpdateArgs>(CallBack_UIUpdate);
 			sInsMgr.init();
+			sInsMgr.LoadAccounts(lstAccs);
 		}
 		
 		void CallBack_UIUpdate(object sender, UIUpdateArgs e)
@@ -68,10 +70,7 @@ namespace MJTool
 		}
 		
 		private void Buttonbehaviour(bool bLogined)
-		{
-			this.btLogin.Enabled = (!bLogined);
-			this.btLogout.Enabled = bLogined;
-			
+		{			
 			this.btGetGift.Enabled = bLogined;
 			this.btGetMessage.Enabled = bLogined;
 			this.btMsgBox.Enabled = bLogined;
@@ -79,22 +78,6 @@ namespace MJTool
 			this.btGetLuckInfo.Enabled = bLogined;
 			this.btRefreshGeneral.Enabled = bLogined;
 			this.btEmployGeneral.Enabled = bLogined;
-		}
-		
-		void BtLoginClick(object sender, EventArgs e)
-		{
-			curAcc = new Account(this.tbAccount.Text, this.tbPassword.Text);
-			curAcc.upCall = sInsMgr;
-			sInsMgr.Login(curAcc);
-			
-			Buttonbehaviour(true);
-		}
-		
-		void BtLogoutClick(object sender, EventArgs e)
-		{
-			sInsMgr.Logout(curAcc);
-			
-			Buttonbehaviour(false);
 		}
 		
 		void BtGetGift(object sender, EventArgs e)
@@ -143,6 +126,87 @@ namespace MJTool
 		void BtParseLocalDataClick(object sender, EventArgs e)
 		{
 			sInsMgr.ParseLocalData();
+		}
+		
+		void BtOneKeyForSoulClick(object sender, EventArgs e)
+		{
+			
+		}
+		
+		private void RefreshAccounts()
+		{
+			if (this.lstAccs == null)
+			{
+				return;
+			}
+			this.lvAccount.Items.Clear();
+			for (int  i = 0; i < this.lstAccs.Count; i++)
+			{
+				this.lvAccount.Items.Add(this.lstAccs[i].strUserName);
+			}
+		}
+		
+		void LoginAccToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			if (this.lvAccount.SelectedIndices.Count < 1)
+			{
+				return;
+			}
+			curAcc = this.lstAccs[this.lvAccount.SelectedIndices[0]];
+			curAcc.upCall = sInsMgr;
+			this.Text = "MJTool - " + "焦点帐号[" + curAcc.strUserName + "]";
+			sInsMgr.Login(curAcc);
+			
+			Buttonbehaviour(true);
+		}
+		
+				
+		void LogoutToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			if (this.lvAccount.SelectedIndices.Count < 1)
+			{
+				return;
+			}
+			sInsMgr.Logout(this.lstAccs[this.lvAccount.SelectedIndices[0]]);
+			
+			Buttonbehaviour(false);
+		}
+		
+		void AddAccToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			AccEditForm acc_form = new AccEditForm();
+			if (acc_form.ShowDialog() == DialogResult.OK && acc_form.accResult != null)
+			{
+				this.lstAccs.Add(acc_form.accResult);
+				RefreshAccounts();
+				sInsMgr.SaveAccounts(this.lstAccs);
+			}
+		}
+		
+		void DelAccToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			if (this.lvAccount.SelectedIndices.Count < 1)
+			{
+				return;
+			}
+			this.lstAccs.RemoveAt(this.lvAccount.SelectedIndices[0]);
+			RefreshAccounts();
+			sInsMgr.SaveAccounts(this.lstAccs);
+		}
+		
+		void EditAccToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			if (this.lvAccount.SelectedIndices.Count < 1)
+			{
+				return;
+			}
+			AccEditForm acc_form = new AccEditForm();
+			acc_form.accResult = this.lstAccs[this.lvAccount.SelectedIndices[0]];
+			if (acc_form.ShowDialog() == DialogResult.OK)
+			{
+				RefreshAccounts();
+				sInsMgr.SaveAccounts(this.lstAccs);
+			}
 		}
 	}
 }

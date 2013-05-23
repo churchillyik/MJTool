@@ -406,6 +406,10 @@ namespace MJTool
 						{
 							f.SetValue(t_obj, Convert.ToInt32(dic[valid_name]));
 						}
+						else if (f.FieldType.Name == "Int64")
+						{
+							f.SetValue(t_obj, Convert.ToInt64(dic[valid_name]));
+						}
 						else if (f.FieldType.Name == "Double")
 						{
 							f.SetValue(t_obj, Convert.ToDouble(dic[valid_name]));

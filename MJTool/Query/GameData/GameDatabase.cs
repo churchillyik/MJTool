@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Reflection;
 
 namespace MJTool
 {
@@ -56,26 +57,50 @@ namespace MJTool
 						if (obj.GetType().Name == "ASObject")
 						{
 							Dictionary<string, object> sub_dic = (Dictionary<string, object>) obj;
+							int idx = 1;
 							if (cnt == 0)
 							{
 								foreach(string key in sub_dic.Keys)
 								{
-									sb.Append(key + "\t");
+									if (idx == sub_dic.Count)
+									{
+										sb.Append(key + "\r\n");
+									}
+									else
+									{
+										sb.Append(key + "\t");
+									}
+									idx++;
 								}
-								sb.Append("\r\n");
 							}
+							idx = 1;
 							foreach (KeyValuePair<string, object> sub_pair in sub_dic)
 							{
-								if (sub_pair.Value == null)
+								if (idx == sub_dic.Count)
 								{
-									sb.Append("\t");
+									if (sub_pair.Value == null)
+									{
+										sb.Append("\r\n");
+									}
+									else
+									{
+										sb.Append(sub_pair.Value.ToString() + "\r\n");
+									}
 								}
 								else
 								{
-									sb.Append(sub_pair.Value.ToString() + "\t");
+									if (sub_pair.Value == null)
+									{
+										sb.Append("\t");
+									}
+									else
+									{
+										sb.Append(sub_pair.Value.ToString() + "\t");
+									}
 								}
+								idx++;
 							}
-							sb.Append("\r\n");
+							
 							cnt++;
 						}
 						else
@@ -95,20 +120,87 @@ namespace MJTool
 		
 		private void init_db()
 		{
-			if (!File.Exists(gUnpackFilePath))
+			LoadTable(gGameDB.general, @"Database\general");
+		}
+		
+		private void LoadTable<T>(List<T> lst_objs, string file_path) where T : new()
+		{
+			if (!File.Exists(file_path))
 			{
-				DebugLog("找不到amf表" + gUnpackFilePath);
+				DebugLog("找不到数据表" + file_path);
 				return;
 			}
-			byte[] bs_f = File.ReadAllBytes(gUnpackFilePath);
-			Dictionary<string, object> root = AMF_Deserializer<Dictionary<string, object>>(bs_f, bs_f.Length);
-			SetArrayObjects(root, "general", gGameDB.general);
+			
+			lst_objs.Clear();
+			string[] lines = File.ReadAllLines(file_path);
+			for (int i = 1; i < lines.Length; i++)
+			{
+				string[] fields = lines[i].Split(new char[]{'\t'});
+				T t_obj = new T();
+				FieldInfo[] field_info = t_obj.GetType().GetFields();
+				if (fields.Length != field_info.Length)
+				{
+					DebugLog("数据表" + file_path + "的第" + i + "行与数据结构字段数不匹配！");
+					break;
+				}
+				for (int j = 1; j < field_info.Length; j++)
+				{
+					try
+					{
+						if (field_info[j].FieldType.Name == "Int32")
+						{
+							field_info[j].SetValue(t_obj, Convert.ToInt32(fields[j]));
+						}
+						else if (field_info[j].FieldType.Name == "Int64")
+						{
+							field_info[j].SetValue(t_obj, Convert.ToInt64(fields[j]));
+						}
+						else if (field_info[j].FieldType.Name == "Double")
+						{
+							field_info[j].SetValue(t_obj, Convert.ToDouble(fields[j]));
+						}
+						else if (field_info[j].FieldType.Name == "String")
+						{
+							field_info[j].SetValue(t_obj, Convert.ToString(fields[j]));
+						}
+						else if (field_info[j].FieldType.Name == "Boolean")
+						{
+							field_info[j].SetValue(t_obj, Convert.ToBoolean(fields[j]));
+						}
+						else
+						{
+							DebugLog("无法设定" + field_info[j].FieldType.Name + "类型的数据");
+						}
+					}
+					catch (FormatException)
+					{
+						DebugLog("无法把表[" + file_path + "]的[" + field_info[j].Name + "]字段转化为成员变量值");
+					}
+					catch (Exception e)
+					{
+						DebugLog(e.StackTrace);
+					}
+				}
+				lst_objs.Add(t_obj);
+			}
 		}
 	}
 	
 	public class GameDatabase
 	{
 		public List<DBGeneral> general = new List<DBGeneral>();
+		
+		public DBGeneral GetGeneralByID(int id)
+		{
+			foreach (DBGeneral gen in general)
+			{
+				if (gen.id == id)
+				{
+					return gen;
+				}
+			}
+			return null;
+		}
 	}
 	
 	public class DBGeneral

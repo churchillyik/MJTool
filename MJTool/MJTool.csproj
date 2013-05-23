@@ -53,6 +53,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccEditForm.cs" />
+    <Compile Include="AccEditForm.Designer.cs">
+      <DependentUpon>AccEditForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs" />
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -78,6 +82,9 @@
     <Compile Include="SpAlg\Montgomery.cs" />
     <Compile Include="SpAlg\RSAKey.cs" />
     <Compile Include="SpAlg\SecureRandom.cs" />
+    <EmbeddedResource Include="AccEditForm.resx">
+      <DependentUpon>AccEditForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
