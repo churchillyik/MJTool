@@ -37,6 +37,13 @@ namespace MJTool
 			OnUIUpdate(this, arg);
 		}
 		
+		public void RefreshAll()
+		{
+			UIUpdateArgs arg = new UIUpdateArgs();
+			arg.uiType = UIUpdateTypes.RefreshAll;
+			OnUIUpdate(this, arg);
+		}
+		
 		void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
 			Exception ex = e.ExceptionObject as Exception;
@@ -76,6 +83,7 @@ namespace MJTool
 		None,
 		LogAppending,
 		LogClear,
+		RefreshAll,
 	};
 	
 	public class UIUpdateArgs : EventArgs

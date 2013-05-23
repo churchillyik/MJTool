@@ -69,7 +69,7 @@ namespace MJTool
 			this.tbPswd.Location = new System.Drawing.Point(124, 78);
 			this.tbPswd.Name = "tbPswd";
 			this.tbPswd.Size = new System.Drawing.Size(148, 21);
-			this.tbPswd.TabIndex = 1;
+			this.tbPswd.TabIndex = 2;
 			// 
 			// btnSave
 			// 
@@ -88,7 +88,7 @@ namespace MJTool
 			this.btnCancel.Location = new System.Drawing.Point(187, 128);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(75, 23);
-			this.btnCancel.TabIndex = 2;
+			this.btnCancel.TabIndex = 3;
 			this.btnCancel.Text = "取消";
 			this.btnCancel.UseVisualStyleBackColor = true;
 			// 

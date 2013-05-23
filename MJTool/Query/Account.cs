@@ -8,11 +8,11 @@ namespace MJTool
 	public partial class QueryManager
 	{
 		public static string gAccountFilePath = "Account";
-		public  void LoadAccounts(List<Account> lstAccs)
+		public void LoadAccounts(List<Account> lstAccs)
 		{
 			if (lstAccs == null)
 			{
-				lstAccs = new List<Account>();
+				return;
 			}
 			else
 			{
@@ -34,6 +34,7 @@ namespace MJTool
 				}
 				
 				Account acc = new Account(pair[0], pair[1]);
+				acc.upCall = this;
 				lstAccs.Add(acc);
 			}
 		}

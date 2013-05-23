@@ -134,6 +134,8 @@ namespace MJTool
 					upCall.SetMapArrayObjects(dic_userSigin, "lastAwardInfo", root.userData.userSigin.lastAwardInfo);
 				}
 				
+				upCall.RefreshAll();
+				
 				PrintTavern();
 			}
 			catch (Exception e)
@@ -167,7 +169,5 @@ namespace MJTool
 			sb.AppendLine("nomalRefreshTime: " + QueryManager.SecondsToDateTime(root.userData.userTavern.nomalRefreshTime));
 			upCall.DebugLog(sb.ToString());
 		}
-		
-		
 	}
 }

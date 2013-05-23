@@ -46,9 +46,18 @@ namespace MJTool
 			this.btGetMessage = new System.Windows.Forms.Button();
 			this.btGetGift = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.lvAccount = new System.Windows.Forms.ListView();
+			this.chLoginAccount = new System.Windows.Forms.ColumnHeader();
+			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.loginAccToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.addAccToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.delAccToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.editAccToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.tbLog = new System.Windows.Forms.TextBox();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.btClearLog = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.lvGenSoul = new System.Windows.Forms.ListView();
@@ -62,16 +71,8 @@ namespace MJTool
 			this.lbTavern = new System.Windows.Forms.ListBox();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
-			this.panel4 = new System.Windows.Forms.Panel();
-			this.lvAccount = new System.Windows.Forms.ListView();
-			this.chLoginAccount = new System.Windows.Forms.ColumnHeader();
-			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.loginAccToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.addAccToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.delAccToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.editAccToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tableLayoutPanel1.SuspendLayout();
+			this.contextMenuStrip1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -79,8 +80,6 @@ namespace MJTool
 			this.panel2.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
 			this.panel3.SuspendLayout();
-			this.panel4.SuspendLayout();
-			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btEmployGeneral
@@ -96,7 +95,7 @@ namespace MJTool
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(9, 8);
+			this.button1.Location = new System.Drawing.Point(9, 4);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(71, 23);
 			this.button1.TabIndex = 2;
@@ -118,7 +117,7 @@ namespace MJTool
 			// btGetLuckInfo
 			// 
 			this.btGetLuckInfo.Enabled = false;
-			this.btGetLuckInfo.Location = new System.Drawing.Point(383, 8);
+			this.btGetLuckInfo.Location = new System.Drawing.Point(383, 4);
 			this.btGetLuckInfo.Name = "btGetLuckInfo";
 			this.btGetLuckInfo.Size = new System.Drawing.Size(71, 23);
 			this.btGetLuckInfo.TabIndex = 2;
@@ -129,7 +128,7 @@ namespace MJTool
 			// btGetLoginAward
 			// 
 			this.btGetLoginAward.Enabled = false;
-			this.btGetLoginAward.Location = new System.Drawing.Point(306, 8);
+			this.btGetLoginAward.Location = new System.Drawing.Point(306, 4);
 			this.btGetLoginAward.Name = "btGetLoginAward";
 			this.btGetLoginAward.Size = new System.Drawing.Size(71, 23);
 			this.btGetLoginAward.TabIndex = 2;
@@ -140,7 +139,7 @@ namespace MJTool
 			// btMsgBox
 			// 
 			this.btMsgBox.Enabled = false;
-			this.btMsgBox.Location = new System.Drawing.Point(537, 8);
+			this.btMsgBox.Location = new System.Drawing.Point(537, 4);
 			this.btMsgBox.Name = "btMsgBox";
 			this.btMsgBox.Size = new System.Drawing.Size(71, 23);
 			this.btMsgBox.TabIndex = 2;
@@ -151,7 +150,7 @@ namespace MJTool
 			// btGetMessage
 			// 
 			this.btGetMessage.Enabled = false;
-			this.btGetMessage.Location = new System.Drawing.Point(460, 8);
+			this.btGetMessage.Location = new System.Drawing.Point(460, 4);
 			this.btGetMessage.Name = "btGetMessage";
 			this.btGetMessage.Size = new System.Drawing.Size(71, 23);
 			this.btGetMessage.TabIndex = 2;
@@ -162,7 +161,7 @@ namespace MJTool
 			// btGetGift
 			// 
 			this.btGetGift.Enabled = false;
-			this.btGetGift.Location = new System.Drawing.Point(229, 8);
+			this.btGetGift.Location = new System.Drawing.Point(229, 4);
 			this.btGetGift.Name = "btGetGift";
 			this.btGetGift.Size = new System.Drawing.Size(71, 23);
 			this.btGetGift.TabIndex = 2;
@@ -176,8 +175,8 @@ namespace MJTool
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.5F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 82.5F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel1.Controls.Add(this.lvAccount, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 0);
-			this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -185,6 +184,76 @@ namespace MJTool
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(941, 463);
 			this.tableLayoutPanel1.TabIndex = 3;
+			// 
+			// lvAccount
+			// 
+			this.lvAccount.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+									this.chLoginAccount});
+			this.lvAccount.ContextMenuStrip = this.contextMenuStrip1;
+			this.lvAccount.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lvAccount.FullRowSelect = true;
+			this.lvAccount.GridLines = true;
+			this.lvAccount.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lvAccount.Location = new System.Drawing.Point(3, 3);
+			this.lvAccount.MultiSelect = false;
+			this.lvAccount.Name = "lvAccount";
+			this.lvAccount.Size = new System.Drawing.Size(158, 457);
+			this.lvAccount.TabIndex = 0;
+			this.lvAccount.UseCompatibleStateImageBehavior = false;
+			this.lvAccount.View = System.Windows.Forms.View.Details;
+			this.lvAccount.DoubleClick += new System.EventHandler(this.LvAccountDoubleClick);
+			// 
+			// chLoginAccount
+			// 
+			this.chLoginAccount.Text = "新浪微博账号";
+			this.chLoginAccount.Width = 150;
+			// 
+			// contextMenuStrip1
+			// 
+			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+									this.loginAccToolStripMenuItem,
+									this.logoutToolStripMenuItem,
+									this.addAccToolStripMenuItem,
+									this.delAccToolStripMenuItem,
+									this.editAccToolStripMenuItem});
+			this.contextMenuStrip1.Name = "contextMenuStrip1";
+			this.contextMenuStrip1.Size = new System.Drawing.Size(153, 136);
+			this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1Opening);
+			// 
+			// loginAccToolStripMenuItem
+			// 
+			this.loginAccToolStripMenuItem.Name = "loginAccToolStripMenuItem";
+			this.loginAccToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.loginAccToolStripMenuItem.Text = "&L. 登录帐号";
+			this.loginAccToolStripMenuItem.Click += new System.EventHandler(this.LoginAccToolStripMenuItemClick);
+			// 
+			// logoutToolStripMenuItem
+			// 
+			this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
+			this.logoutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.logoutToolStripMenuItem.Text = "&O. 登出帐号";
+			this.logoutToolStripMenuItem.Click += new System.EventHandler(this.LogoutToolStripMenuItemClick);
+			// 
+			// addAccToolStripMenuItem
+			// 
+			this.addAccToolStripMenuItem.Name = "addAccToolStripMenuItem";
+			this.addAccToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.addAccToolStripMenuItem.Text = "&A. 添加帐号";
+			this.addAccToolStripMenuItem.Click += new System.EventHandler(this.AddAccToolStripMenuItemClick);
+			// 
+			// delAccToolStripMenuItem
+			// 
+			this.delAccToolStripMenuItem.Name = "delAccToolStripMenuItem";
+			this.delAccToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.delAccToolStripMenuItem.Text = "&D. 删除帐号";
+			this.delAccToolStripMenuItem.Click += new System.EventHandler(this.DelAccToolStripMenuItemClick);
+			// 
+			// editAccToolStripMenuItem
+			// 
+			this.editAccToolStripMenuItem.Name = "editAccToolStripMenuItem";
+			this.editAccToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.editAccToolStripMenuItem.Text = "E. 编辑帐号";
+			this.editAccToolStripMenuItem.Click += new System.EventHandler(this.EditAccToolStripMenuItemClick);
 			// 
 			// tableLayoutPanel2
 			// 
@@ -198,24 +267,25 @@ namespace MJTool
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 3;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 22F));
 			this.tableLayoutPanel2.Size = new System.Drawing.Size(771, 457);
 			this.tableLayoutPanel2.TabIndex = 2;
 			// 
 			// tbLog
 			// 
 			this.tbLog.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tbLog.Location = new System.Drawing.Point(3, 367);
+			this.tbLog.Location = new System.Drawing.Point(3, 358);
 			this.tbLog.Multiline = true;
 			this.tbLog.Name = "tbLog";
 			this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.tbLog.Size = new System.Drawing.Size(765, 87);
+			this.tbLog.Size = new System.Drawing.Size(765, 96);
 			this.tbLog.TabIndex = 2;
 			// 
 			// panel1
 			// 
 			this.panel1.Controls.Add(this.btGetLoginAward);
+			this.panel1.Controls.Add(this.btClearLog);
 			this.panel1.Controls.Add(this.button1);
 			this.panel1.Controls.Add(this.btGetLuckInfo);
 			this.panel1.Controls.Add(this.btGetGift);
@@ -223,8 +293,18 @@ namespace MJTool
 			this.panel1.Controls.Add(this.btMsgBox);
 			this.panel1.Location = new System.Drawing.Point(3, 322);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(765, 39);
+			this.panel1.Size = new System.Drawing.Size(765, 30);
 			this.panel1.TabIndex = 1;
+			// 
+			// btClearLog
+			// 
+			this.btClearLog.Location = new System.Drawing.Point(92, 4);
+			this.btClearLog.Name = "btClearLog";
+			this.btClearLog.Size = new System.Drawing.Size(71, 23);
+			this.btClearLog.TabIndex = 2;
+			this.btClearLog.Text = "清空日志";
+			this.btClearLog.UseVisualStyleBackColor = true;
+			this.btClearLog.Click += new System.EventHandler(this.BtClearLogClick);
 			// 
 			// tabControl1
 			// 
@@ -358,82 +438,6 @@ namespace MJTool
 			this.tabPage3.Text = "种植";
 			this.tabPage3.UseVisualStyleBackColor = true;
 			// 
-			// panel4
-			// 
-			this.panel4.Controls.Add(this.lvAccount);
-			this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel4.Location = new System.Drawing.Point(3, 3);
-			this.panel4.Name = "panel4";
-			this.panel4.Size = new System.Drawing.Size(158, 457);
-			this.panel4.TabIndex = 3;
-			// 
-			// lvAccount
-			// 
-			this.lvAccount.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-									this.chLoginAccount});
-			this.lvAccount.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lvAccount.FullRowSelect = true;
-			this.lvAccount.GridLines = true;
-			this.lvAccount.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-			this.lvAccount.Location = new System.Drawing.Point(0, 0);
-			this.lvAccount.MultiSelect = false;
-			this.lvAccount.Name = "lvAccount";
-			this.lvAccount.Size = new System.Drawing.Size(158, 457);
-			this.lvAccount.TabIndex = 0;
-			this.lvAccount.UseCompatibleStateImageBehavior = false;
-			this.lvAccount.View = System.Windows.Forms.View.Details;
-			// 
-			// chLoginAccount
-			// 
-			this.chLoginAccount.Text = "新浪微博账号";
-			this.chLoginAccount.Width = 150;
-			// 
-			// contextMenuStrip1
-			// 
-			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.loginAccToolStripMenuItem,
-									this.logoutToolStripMenuItem,
-									this.addAccToolStripMenuItem,
-									this.delAccToolStripMenuItem,
-									this.editAccToolStripMenuItem});
-			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(153, 136);
-			// 
-			// loginAccToolStripMenuItem
-			// 
-			this.loginAccToolStripMenuItem.Name = "loginAccToolStripMenuItem";
-			this.loginAccToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.loginAccToolStripMenuItem.Text = "&L. 登录帐号";
-			this.loginAccToolStripMenuItem.Click += new System.EventHandler(this.LoginAccToolStripMenuItemClick);
-			// 
-			// addAccToolStripMenuItem
-			// 
-			this.addAccToolStripMenuItem.Name = "addAccToolStripMenuItem";
-			this.addAccToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.addAccToolStripMenuItem.Text = "&A. 添加帐号";
-			this.addAccToolStripMenuItem.Click += new System.EventHandler(this.AddAccToolStripMenuItemClick);
-			// 
-			// delAccToolStripMenuItem
-			// 
-			this.delAccToolStripMenuItem.Name = "delAccToolStripMenuItem";
-			this.delAccToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.delAccToolStripMenuItem.Text = "&D. 删除帐号";
-			this.delAccToolStripMenuItem.Click += new System.EventHandler(this.DelAccToolStripMenuItemClick);
-			// 
-			// editAccToolStripMenuItem
-			// 
-			this.editAccToolStripMenuItem.Name = "editAccToolStripMenuItem";
-			this.editAccToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.editAccToolStripMenuItem.Text = "E. 编辑帐号";
-			this.editAccToolStripMenuItem.Click += new System.EventHandler(this.EditAccToolStripMenuItemClick);
-			// 
-			// logoutToolStripMenuItem
-			// 
-			this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-			this.logoutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.logoutToolStripMenuItem.Text = "&O. 登出帐号";
-			this.logoutToolStripMenuItem.Click += new System.EventHandler(this.LogoutToolStripMenuItemClick);
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -445,6 +449,7 @@ namespace MJTool
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.Load += new System.EventHandler(this.MainFormLoad);
 			this.tableLayoutPanel1.ResumeLayout(false);
+			this.contextMenuStrip1.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
 			this.panel1.ResumeLayout(false);
@@ -453,16 +458,14 @@ namespace MJTool
 			this.panel2.ResumeLayout(false);
 			this.tableLayoutPanel3.ResumeLayout(false);
 			this.panel3.ResumeLayout(false);
-			this.panel4.ResumeLayout(false);
-			this.contextMenuStrip1.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Button btClearLog;
 		private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem editAccToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem delAccToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem addAccToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem loginAccToolStripMenuItem;
-		private System.Windows.Forms.Panel panel4;
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
 		private System.Windows.Forms.Button btOneKeyForSoul;
 		private System.Windows.Forms.ListBox lbTavern;

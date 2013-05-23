@@ -84,7 +84,7 @@ namespace MJTool
 									}
 									else
 									{
-										sb.Append(sub_pair.Value.ToString() + "\r\n");
+										sb.Append(sub_pair.Value.ToString().Trim() + "\r\n");
 									}
 								}
 								else
@@ -95,7 +95,7 @@ namespace MJTool
 									}
 									else
 									{
-										sb.Append(sub_pair.Value.ToString() + "\t");
+										sb.Append(sub_pair.Value.ToString().Trim() + "\t");
 									}
 								}
 								idx++;
@@ -121,6 +121,7 @@ namespace MJTool
 		private void init_db()
 		{
 			LoadTable(gGameDB.general, @"Database\general");
+			LoadTable(gGameDB.generalType, @"Database\generalType");
 		}
 		
 		private void LoadTable<T>(List<T> lst_objs, string file_path) where T : new()
@@ -189,14 +190,15 @@ namespace MJTool
 	public class GameDatabase
 	{
 		public List<DBGeneral> general = new List<DBGeneral>();
+		public List<DBGeneralType> generalType = new List<DBGeneralType>();
 		
-		public DBGeneral GetGeneralByID(int id)
+		public DBGeneralType GetGeneralType(int type)
 		{
-			foreach (DBGeneral gen in general)
+			foreach (DBGeneralType gen_type in generalType)
 			{
-				if (gen.id == id)
+				if (gen_type.id == type)
 				{
-					return gen;
+					return gen_type;
 				}
 			}
 			return null;
@@ -248,5 +250,16 @@ namespace MJTool
 		public int sex;
 		public int pSkill1;
 		public int mentality;
+	}
+	
+	public class DBGeneralType
+	{
+		public string desc;
+		public int quality;
+		public string name;
+		public int id;
+		public string tips;
+		public int generalId;
+		public string verse;
 	}
 }
