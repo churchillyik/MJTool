@@ -22,5 +22,8 @@ namespace MJTool
 		
 		// 通过回合信息从游戏服务器获得的游戏版本号
 		public static string strVersion = "";
+		
+		// 游戏服务器和本地的时间差（秒）
+		public static double secDiff = 0;
 	}
 }

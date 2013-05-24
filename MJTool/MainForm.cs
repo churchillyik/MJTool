@@ -51,7 +51,15 @@ namespace MJTool
 				}
 				else if (e.uiType == UIUpdateTypes.RefreshAll)
 				{
-					Invoke(new dlgRefreshAll(RefreshAll));
+					Invoke(new dlgRefreshAll(UIUpdateRefreshAll));
+				}
+				else if (e.uiType == UIUpdateTypes.RefreshGeneral)
+				{
+					Invoke(new dlgRefreshAll(UIUpdateRefreshGeneral));
+				}
+				else if (e.uiType == UIUpdateTypes.EmployGeneral)
+				{
+					Invoke(new dlgRefreshAll(UIUpdateEmployGeneral));
 				}
 			}
 			catch (Exception)
@@ -75,7 +83,18 @@ namespace MJTool
 			this.tbLog.Text = "";
 		}
 		
-		private void RefreshAll()
+		private void UIUpdateRefreshAll()
+		{
+			RefreshGenSouls();
+			RefreshTavern();
+		}
+		
+		private void UIUpdateRefreshGeneral()
+		{
+			RefreshTavern();
+		}
+		
+		private void UIUpdateEmployGeneral()
 		{
 			RefreshGenSouls();
 			RefreshTavern();
@@ -118,22 +137,51 @@ namespace MJTool
 			sInsMgr.SendCommand(new CmdArg(CmdIDs.USER_GET_LUCK_INFO, curAcc));
 		}
 		
+		private static string[] strRefreshQuality = new string[] {"普通", "中级", "高级", "完美", };
 		void BtRefreshGeneral(object sender, EventArgs e)
 		{
-			DateTime dt;
-			if (curAcc.CheckGeneralRefreshAvailable(1, out dt))
+			bool bRefreshDone = false;
+			for (int type = 1; type <= 4; type++)
 			{
-				sInsMgr.SendCommand(new RfsGenCmdArg(CmdIDs.USER_REFRESH_GENERAL, curAcc, 1));
+				if (curAcc.CheckGeneralRefreshAvailable(type))
+				{
+					sInsMgr.DebugLog("执行" + strRefreshQuality[type - 1] + "刷新");
+					sInsMgr.SendCommand(new RfsGenCmdArg(CmdIDs.USER_REFRESH_GENERAL, curAcc, type));
+					break;
+				}
 			}
-			else
+			if (!bRefreshDone)
 			{
-				sInsMgr.DebugLog("武将刷新在CD结束时刻为：" + dt.ToString());
+				sInsMgr.DebugLog("所有刷新都在CD中！");
 			}
 		}
 		
 		void BtEmployGeneral(object sender, EventArgs e)
 		{
-			sInsMgr.SendCommand(new EplGenCmdArg(CmdIDs.USER_EMPLOY_GENERAL, curAcc, 0, 1));
+			bool bGot = false;
+			bGot = bGot || GetGenSoul(curAcc.root.userData.userTavern.id_1);
+			bGot = bGot || GetGenSoul(curAcc.root.userData.userTavern.id_2);
+			bGot = bGot || GetGenSoul(curAcc.root.userData.userTavern.id_3);
+			if (!bGot)
+			{
+				sInsMgr.DebugLog("没有看的上的将魂！");
+			}
+		}
+		
+		private bool GetGenSoul(int gen_id)
+		{
+			DBGeneral gen = QueryManager.gGameDB.GetGeneral(gen_id);
+			if (gen != null)
+			{
+				DBGeneralType gen_type = QueryManager.gGameDB.GetGeneralType(gen.type);
+				if (gen_type != null && gen_type.quality >= 1)
+				{
+					sInsMgr.DebugLog("获得 " + strQualityNames[gen_type.quality] + " - " + gen.name + "将魂" + gen.soul + "个");
+					sInsMgr.SendCommand(new EplGenCmdArg(CmdIDs.USER_EMPLOY_GENERAL, curAcc, gen.id, gen.soul));
+					return true;
+				}
+			}
+			return false;
 		}
 		
 		void BtParseLocalDataClick(object sender, EventArgs e)
@@ -156,7 +204,7 @@ namespace MJTool
 			}
 			else
 			{
-				RefreshAll();
+				UIUpdateRefreshAll();
 			}
 			Buttonbehaviour(true);
 		}
@@ -179,7 +227,7 @@ namespace MJTool
 				if (i == this.lvAccount.SelectedIndices[0])
 				{
 					ListViewItem lvi = this.lvAccount.Items[i];
-					lvi.BackColor = Color.Blue;
+					lvi.BackColor = Color.LightBlue;
 				}
 				else
 				{
@@ -292,84 +340,62 @@ namespace MJTool
 			
 			this.lbTavern.Items.Clear();
 			this.lbTavern.Items.Add("酒馆将魂：");
-			DBGeneral gen_1 = QueryManager.gGameDB.GetGeneral(curAcc.root.userData.userTavern.id_1);
-			if (gen_1 != null)
-			{
-				DBGeneralType gen_type = QueryManager.gGameDB.GetGeneralType(gen_1.type);
-				this.lbTavern.Items.Add(strQualityNames[gen_type.quality] + "\t" + gen_1.name + "\t" + gen_1.soul + "个");
-			}
-			else
-			{
-				this.lbTavern.Items.Add("将魂已招募");
-			}
-			
-			DBGeneral gen_2 = QueryManager.gGameDB.GetGeneral(curAcc.root.userData.userTavern.id_2);
-			if (gen_2 != null)
-			{
-				DBGeneralType gen_type = QueryManager.gGameDB.GetGeneralType(gen_2.type);
-				this.lbTavern.Items.Add(strQualityNames[gen_type.quality] + "\t" + gen_2.name + "\t" + gen_2.soul + "个");
-			}
-			else
-			{
-				this.lbTavern.Items.Add("将魂已招募");
-			}
-			
-			DBGeneral gen_3 = QueryManager.gGameDB.GetGeneral(curAcc.root.userData.userTavern.id_2);
-			if (gen_3 != null)
-			{
-				DBGeneralType gen_type = QueryManager.gGameDB.GetGeneralType(gen_3.type);
-				this.lbTavern.Items.Add(strQualityNames[gen_type.quality] + "\t" + gen_3.name + "\t" + gen_3.soul + "个");
-			}
-			else
-			{
-				this.lbTavern.Items.Add("将魂已招募");
-			}
+			DisplayTavernSoul(curAcc.root.userData.userTavern.id_1);
+			DisplayTavernSoul(curAcc.root.userData.userTavern.id_2);
+			DisplayTavernSoul(curAcc.root.userData.userTavern.id_3);
 			
 			this.lbTavern.Items.Add("--------------------");
 			this.lbTavern.Items.Add("酒馆刷新冷却：");
-			DateTime cd_dt_1 = QueryManager.SecondsToDateTime(curAcc.root.userData.user.tavernCdEndTime_1);
-			if (cd_dt_1 < DateTime.Now)
-			{
-				this.lbTavern.Items.Add("普通刷新：冷却完毕！\t次数：" + curAcc.root.userData.userTavern.nomalRefreshTimes + "/10");
-			}
-			else
-			{
-				TimeSpan ts = cd_dt_1.Subtract(DateTime.Now);
-				this.lbTavern.Items.Add(String.Format("普通刷新：{0}:{1}:{2} 后冷却", ts.Hours , ts.Minutes, ts.Seconds) 
-				                        + "\t次数：" + curAcc.root.userData.userTavern.nomalRefreshTimes + "/10");
-			}
+			DateTime svr_time = DateTime.Now.AddSeconds(ServerParam.secDiff);
 			
-			DateTime cd_dt_2 = QueryManager.SecondsToDateTime(curAcc.root.userData.user.tavernCdEndTime_2);
-			if (cd_dt_2 < DateTime.Now)
+			DisplayTavernRefreshTime(curAcc.root.userData.user.tavernCdEndTime_1, 1);
+			DisplayTavernRefreshTime(curAcc.root.userData.user.tavernCdEndTime_2, 2);
+			DisplayTavernRefreshTime(curAcc.root.userData.user.tavernCdEndTime_3, 3);
+			DisplayTavernRefreshTime(curAcc.root.userData.user.tavernCdEndTime_4, 4);
+		}
+		
+		private void DisplayTavernSoul(int gen_id)
+		{
+			DBGeneral gen = QueryManager.gGameDB.GetGeneral(gen_id);
+			if (gen != null)
 			{
-				this.lbTavern.Items.Add("中级刷新：冷却完毕！");
+				DBGeneralType gen_type = QueryManager.gGameDB.GetGeneralType(gen.type);
+				this.lbTavern.Items.Add(strQualityNames[gen_type.quality] + "\t" + gen.name + "\t" + gen.soul + "个");
 			}
 			else
 			{
-				TimeSpan ts = cd_dt_2.Subtract(DateTime.Now);
-				this.lbTavern.Items.Add(String.Format("中级刷新：{0}:{1}:{2} 后冷却", ts.Hours , ts.Minutes, ts.Seconds));
+				this.lbTavern.Items.Add("--\t--\t--");
 			}
-			
-			DateTime cd_dt_3 = QueryManager.SecondsToDateTime(curAcc.root.userData.user.tavernCdEndTime_3);
-			if (cd_dt_3 < DateTime.Now)
+		}
+		
+		private void DisplayTavernRefreshTime(double cd_time, int type)
+		{
+			DateTime svr_time = DateTime.Now.AddSeconds(ServerParam.secDiff);
+			DateTime cd_dt = QueryManager.SecondsToDateTime(cd_time);
+			if (type == 1 && curAcc.root.userData.userTavern.nomalRefreshTimes == 10)
 			{
-				this.lbTavern.Items.Add("高级刷新：冷却完毕！");
+				this.lbTavern.Items.Add(strRefreshQuality[type - 1] + "刷新：本日刷新次数已耗尽");
+				return;
+			}
+			if (cd_dt < svr_time)
+			{
+				string strTimes = "";
+				if (type == 1)
+				{
+					strTimes = "\t次数：" + curAcc.root.userData.userTavern.nomalRefreshTimes + "/10";
+				}
+				this.lbTavern.Items.Add(strRefreshQuality[type - 1] + "刷新：冷却完毕！" + strTimes);
 			}
 			else
 			{
-				TimeSpan ts = cd_dt_3.Subtract(DateTime.Now);
-				this.lbTavern.Items.Add(String.Format("高级刷新：{0}:{1}:{2} 后冷却", ts.Hours , ts.Minutes, ts.Seconds));
-			}
-			
-			DateTime cd_dt_4 = QueryManager.SecondsToDateTime(curAcc.root.userData.user.tavernCdEndTime_4);
-			if (cd_dt_4 < DateTime.Now)
-			{
-				this.lbTavern.Items.Add("完美刷新：冷却完毕！");
-			}
-			else
-			{
-				TimeSpan ts = cd_dt_4.Subtract(DateTime.Now);
-				this.lbTavern.Items.Add(String.Format("完美刷新：{0}:{1}:{2} 后冷却", ts.Hours , ts.Minutes, ts.Seconds));
+				string strTimes = "";
+				if (type == 1)
+				{
+					strTimes = "\t次数：" + curAcc.root.userData.userTavern.nomalRefreshTimes + "/10";
+				}
+				TimeSpan ts = cd_dt.Subtract(svr_time);
+				this.lbTavern.Items.Add(String.Format(strRefreshQuality[type - 1] + "刷新：{0}:{1}:{2} 后冷却", Math.Floor(ts.TotalHours) , ts.Minutes, ts.Seconds)
+				                        + strTimes);
 			}
 		}
 		
@@ -428,6 +454,11 @@ namespace MJTool
 		void Timer1Tick(object sender, EventArgs e)
 		{
 			this.RefreshTavern();
+		}
+		
+		void BtSigin(object sender, EventArgs e)
+		{
+			sInsMgr.SendCommand(new CmdArg(CmdIDs.USER_SIGIN, curAcc));
 		}
 	}
 }

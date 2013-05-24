@@ -91,6 +91,16 @@ namespace MJTool
 				((ulong)1<<(int)CmdParam.SOUL)|
 				((ulong)1<<(int)CmdParam.IS_AMF)
 			));
+			
+			gDicCmd.Add(CmdIDs.USER_SIGIN, new UserCommand(
+				"User.sigin",
+				((ulong)1<<(int)CmdParam.CT)|
+				((ulong)1<<(int)CmdParam.VERSION)|
+				((ulong)1<<(int)CmdParam.CLIENT_TIME)|
+				((ulong)1<<(int)CmdParam.SINGLE)|
+				((ulong)1<<(int)CmdParam.FINISH_GUIDE)|
+				((ulong)1<<(int)CmdParam.IS_AMF)
+			));
 		}
 		
 		public void doUserCommand(object o)
@@ -253,6 +263,10 @@ namespace MJTool
 					
 				case CmdIDs.USER_REFRESH_GENERAL:
 					acc.ParseRefreshGeneral(bs_result, cmdOprt);
+					break;
+					
+				case CmdIDs.USER_EMPLOY_GENERAL:
+					acc.ParseEmployGeneral(bs_result);
 					break;
 			}
 		}
@@ -643,6 +657,7 @@ namespace MJTool
 		USER_GET_LUCK_INFO, // 获取幸运值
 		USER_REFRESH_GENERAL, // 刷将魂
 		USER_EMPLOY_GENERAL, // 获取将魂
+		USER_SIGIN, // 玩家签到
 	}
 	
 	public enum CmdParam : int

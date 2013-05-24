@@ -37,10 +37,24 @@ namespace MJTool
 			OnUIUpdate(this, arg);
 		}
 		
-		public void RefreshAll()
+		public void UIUpdateRefreshAll()
 		{
 			UIUpdateArgs arg = new UIUpdateArgs();
 			arg.uiType = UIUpdateTypes.RefreshAll;
+			OnUIUpdate(this, arg);
+		}
+		
+		public void UIUpdateRefreshGeneral()
+		{
+			UIUpdateArgs arg = new UIUpdateArgs();
+			arg.uiType = UIUpdateTypes.RefreshGeneral;
+			OnUIUpdate(this, arg);
+		}
+		
+		public void UIUpdateEmployGeneral()
+		{
+			UIUpdateArgs arg = new UIUpdateArgs();
+			arg.uiType = UIUpdateTypes.EmployGeneral;
 			OnUIUpdate(this, arg);
 		}
 		
@@ -84,6 +98,8 @@ namespace MJTool
 		LogAppending,
 		LogClear,
 		RefreshAll,
+		RefreshGeneral,
+		EmployGeneral,
 	};
 	
 	public class UIUpdateArgs : EventArgs
