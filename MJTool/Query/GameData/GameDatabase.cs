@@ -192,6 +192,21 @@ namespace MJTool
 		public List<DBGeneral> general = new List<DBGeneral>();
 		public List<DBGeneralType> generalType = new List<DBGeneralType>();
 		
+		public DBGeneral GetGeneral(int id)
+		{
+			if (id == 0)
+			{
+				return null;
+			}
+			foreach (DBGeneral gen in general)
+			{
+				if (gen.id == id)
+				{
+					return gen;
+				}
+			}
+			return null;
+		}
 		public DBGeneralType GetGeneralType(int type)
 		{
 			foreach (DBGeneralType gen_type in generalType)

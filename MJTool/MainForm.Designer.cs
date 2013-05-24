@@ -71,6 +71,7 @@ namespace MJTool
 			this.lbTavern = new System.Windows.Forms.ListBox();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this.tableLayoutPanel1.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
@@ -438,6 +439,11 @@ namespace MJTool
 			this.tabPage3.Text = "种植";
 			this.tabPage3.UseVisualStyleBackColor = true;
 			// 
+			// timer1
+			// 
+			this.timer1.Interval = 5;
+			this.timer1.Tick += new System.EventHandler(this.Timer1Tick);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -460,6 +466,7 @@ namespace MJTool
 			this.panel3.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Timer timer1;
 		private System.Windows.Forms.Button btClearLog;
 		private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem editAccToolStripMenuItem;

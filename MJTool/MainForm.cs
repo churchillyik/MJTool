@@ -78,10 +78,11 @@ namespace MJTool
 		private void RefreshAll()
 		{
 			RefreshGenSouls();
+			RefreshTavern();
 		}
 		
 		private void Buttonbehaviour(bool bLogined)
-		{			
+		{
 			this.btGetGift.Enabled = bLogined;
 			this.btGetMessage.Enabled = bLogined;
 			this.btMsgBox.Enabled = bLogined;
@@ -145,12 +146,18 @@ namespace MJTool
 			
 		}
 		
-		private void LoginAccount(Account acc)
+		private void LoginOrFocusAccount(Account acc)
 		{
 			curAcc = acc;
 			this.Text = "MJTool - " + "焦点帐号[" + curAcc.strUserName + "]";
-			sInsMgr.Login(curAcc);
-			
+			if (!curAcc.bIsLogined)
+			{
+				sInsMgr.Login(curAcc);
+			}
+			else
+			{
+				RefreshAll();
+			}
 			Buttonbehaviour(true);
 		}
 		
@@ -167,10 +174,23 @@ namespace MJTool
 			{
 				return;
 			}
-			LoginAccount(this.lstAccs[this.lvAccount.SelectedIndices[0]]);
+			for (int i = 0; i < this.lvAccount.Items.Count; i++)
+			{
+				if (i == this.lvAccount.SelectedIndices[0])
+				{
+					ListViewItem lvi = this.lvAccount.Items[i];
+					lvi.BackColor = Color.Blue;
+				}
+				else
+				{
+					ListViewItem lvi = this.lvAccount.Items[i];
+					lvi.BackColor = SystemColors.Window;
+				}
+			}
+			LoginOrFocusAccount(this.lstAccs[this.lvAccount.SelectedIndices[0]]);
 		}
 		
-				
+		
 		void LogoutToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			if (this.lvAccount.SelectedIndices.Count < 1)
@@ -236,6 +256,7 @@ namespace MJTool
 			}
 		}
 		
+		private static string[] strQualityNames = new string[] {"杂兵", "普通", "优秀", "稀有", "完美", };
 		private void RefreshGenSouls()
 		{
 			if (curAcc == null)
@@ -252,7 +273,7 @@ namespace MJTool
 				{
 					continue;
 				}
-				ListViewItem lvi = this.lvGenSoul.Items.Add(gen_type.quality.ToString());
+				ListViewItem lvi = this.lvGenSoul.Items.Add(strQualityNames[gen_type.quality]);
 				lvi.SubItems.Add(gen_type.name);
 				lvi.SubItems.Add(soul.number.ToString());
 				if (gen_type.quality == 4)
@@ -262,22 +283,122 @@ namespace MJTool
 			}
 		}
 		
+		private void RefreshTavern()
+		{
+			if (curAcc == null)
+			{
+				return;
+			}
+			
+			this.lbTavern.Items.Clear();
+			this.lbTavern.Items.Add("酒馆将魂：");
+			DBGeneral gen_1 = QueryManager.gGameDB.GetGeneral(curAcc.root.userData.userTavern.id_1);
+			if (gen_1 != null)
+			{
+				DBGeneralType gen_type = QueryManager.gGameDB.GetGeneralType(gen_1.type);
+				this.lbTavern.Items.Add(strQualityNames[gen_type.quality] + "\t" + gen_1.name + "\t" + gen_1.soul + "个");
+			}
+			else
+			{
+				this.lbTavern.Items.Add("将魂已招募");
+			}
+			
+			DBGeneral gen_2 = QueryManager.gGameDB.GetGeneral(curAcc.root.userData.userTavern.id_2);
+			if (gen_2 != null)
+			{
+				DBGeneralType gen_type = QueryManager.gGameDB.GetGeneralType(gen_2.type);
+				this.lbTavern.Items.Add(strQualityNames[gen_type.quality] + "\t" + gen_2.name + "\t" + gen_2.soul + "个");
+			}
+			else
+			{
+				this.lbTavern.Items.Add("将魂已招募");
+			}
+			
+			DBGeneral gen_3 = QueryManager.gGameDB.GetGeneral(curAcc.root.userData.userTavern.id_2);
+			if (gen_3 != null)
+			{
+				DBGeneralType gen_type = QueryManager.gGameDB.GetGeneralType(gen_3.type);
+				this.lbTavern.Items.Add(strQualityNames[gen_type.quality] + "\t" + gen_3.name + "\t" + gen_3.soul + "个");
+			}
+			else
+			{
+				this.lbTavern.Items.Add("将魂已招募");
+			}
+			
+			this.lbTavern.Items.Add("--------------------");
+			this.lbTavern.Items.Add("酒馆刷新冷却：");
+			DateTime cd_dt_1 = QueryManager.SecondsToDateTime(curAcc.root.userData.user.tavernCdEndTime_1);
+			if (cd_dt_1 < DateTime.Now)
+			{
+				this.lbTavern.Items.Add("普通刷新：冷却完毕！\t次数：" + curAcc.root.userData.userTavern.nomalRefreshTimes + "/10");
+			}
+			else
+			{
+				TimeSpan ts = cd_dt_1.Subtract(DateTime.Now);
+				this.lbTavern.Items.Add(String.Format("普通刷新：{0}:{1}:{2} 后冷却", ts.Hours , ts.Minutes, ts.Seconds) 
+				                        + "\t次数：" + curAcc.root.userData.userTavern.nomalRefreshTimes + "/10");
+			}
+			
+			DateTime cd_dt_2 = QueryManager.SecondsToDateTime(curAcc.root.userData.user.tavernCdEndTime_2);
+			if (cd_dt_2 < DateTime.Now)
+			{
+				this.lbTavern.Items.Add("中级刷新：冷却完毕！");
+			}
+			else
+			{
+				TimeSpan ts = cd_dt_2.Subtract(DateTime.Now);
+				this.lbTavern.Items.Add(String.Format("中级刷新：{0}:{1}:{2} 后冷却", ts.Hours , ts.Minutes, ts.Seconds));
+			}
+			
+			DateTime cd_dt_3 = QueryManager.SecondsToDateTime(curAcc.root.userData.user.tavernCdEndTime_3);
+			if (cd_dt_3 < DateTime.Now)
+			{
+				this.lbTavern.Items.Add("高级刷新：冷却完毕！");
+			}
+			else
+			{
+				TimeSpan ts = cd_dt_3.Subtract(DateTime.Now);
+				this.lbTavern.Items.Add(String.Format("高级刷新：{0}:{1}:{2} 后冷却", ts.Hours , ts.Minutes, ts.Seconds));
+			}
+			
+			DateTime cd_dt_4 = QueryManager.SecondsToDateTime(curAcc.root.userData.user.tavernCdEndTime_4);
+			if (cd_dt_4 < DateTime.Now)
+			{
+				this.lbTavern.Items.Add("完美刷新：冷却完毕！");
+			}
+			else
+			{
+				TimeSpan ts = cd_dt_4.Subtract(DateTime.Now);
+				this.lbTavern.Items.Add(String.Format("完美刷新：{0}:{1}:{2} 后冷却", ts.Hours , ts.Minutes, ts.Seconds));
+			}
+		}
+		
 		void ContextMenuStrip1Opening(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (this.lvAccount.SelectedIndices.Count < 1)
 			{
+				this.loginAccToolStripMenuItem.Enabled = false;
+				this.logoutToolStripMenuItem.Enabled = false;
+				this.delAccToolStripMenuItem.Enabled = false;
+				this.editAccToolStripMenuItem.Enabled = false;
 				return;
 			}
 			Account acc = this.lstAccs[this.lvAccount.SelectedIndices[0]];
 			if (acc.bIsLogined)
 			{
-				this.loginAccToolStripMenuItem.Enabled = false;
+				this.loginAccToolStripMenuItem.Text = "&S. 切换帐号";
+				this.loginAccToolStripMenuItem.Enabled = true;
 				this.logoutToolStripMenuItem.Enabled = true;
+				this.delAccToolStripMenuItem.Enabled = true;
+				this.editAccToolStripMenuItem.Enabled = true;
 			}
 			else
 			{
+				this.loginAccToolStripMenuItem.Text = "&L. 登录帐号";
 				this.loginAccToolStripMenuItem.Enabled = true;
 				this.logoutToolStripMenuItem.Enabled = false;
+				this.delAccToolStripMenuItem.Enabled = true;
+				this.editAccToolStripMenuItem.Enabled = true;
 			}
 		}
 		
@@ -288,14 +409,25 @@ namespace MJTool
 				return;
 			}
 			Account acc = this.lstAccs[this.lvAccount.SelectedIndices[0]];
-			if (acc.bIsLogined)
+			for (int i = 0; i < this.lvAccount.Items.Count; i++)
 			{
-				this.LogoutAccount(acc);
+				if (i == this.lvAccount.SelectedIndices[0])
+				{
+					ListViewItem lvi = this.lvAccount.Items[i];
+					lvi.BackColor = Color.LightBlue;
+				}
+				else
+				{
+					ListViewItem lvi = this.lvAccount.Items[i];
+					lvi.BackColor = SystemColors.Window;
+				}
 			}
-			else
-			{
-				this.LoginAccount(acc);
-			}
+			this.LoginOrFocusAccount(acc);
+		}
+		
+		void Timer1Tick(object sender, EventArgs e)
+		{
+			this.RefreshTavern();
 		}
 	}
 }
