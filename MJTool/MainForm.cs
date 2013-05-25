@@ -110,6 +110,7 @@ namespace MJTool
 			this.btRefreshGeneral.Enabled = bLogined;
 			this.btEmployGeneral.Enabled = bLogined;
 			this.btOneKeyForSoul.Enabled = bLogined;
+			this.btSigin.Enabled = bLogined;
 		}
 		
 		void BtGetGift(object sender, EventArgs e)
@@ -352,6 +353,30 @@ namespace MJTool
 			DisplayTavernRefreshTime(curAcc.root.userData.user.tavernCdEndTime_2, 2);
 			DisplayTavernRefreshTime(curAcc.root.userData.user.tavernCdEndTime_3, 3);
 			DisplayTavernRefreshTime(curAcc.root.userData.user.tavernCdEndTime_4, 4);
+			
+			this.lbTavern.Items.Add("--------------------");
+			this.lbTavern.Items.Add("在线礼包：");
+			this.lbTavern.Items.Add("timeId：" + curAcc.root.userData.userTimeAward.timerId);
+			
+			DateTime next_dt = QueryManager.SecondsToDateTime(
+				curAcc.root.userData.userTimeAward.lastModify
+				+ (double)90 * 60);
+			if (next_dt > svr_time)
+			{
+				TimeSpan ts = next_dt.Subtract(svr_time);
+				this.lbTavern.Items.Add(String.Format("下次领奖还差：{0}:{1}:{2}"
+				                                      , Math.Floor(ts.TotalHours)
+				                                      , ts.Minutes
+				                                      , ts.Seconds));
+			}
+			else
+			{
+				this.lbTavern.Items.Add("领奖时间已到");
+			}
+			
+			this.lbTavern.Items.Add("接下来的奖品：" + curAcc.root.userData.userTimeAward.nowItemId);
+			this.lbTavern.Items.Add("再下次的奖品：" + curAcc.root.userData.userTimeAward.nextItemId);
+			this.lbTavern.Items.Add("本日已领取次数：" + curAcc.root.userData.userTimeAward.dayReceiveTimes);
 		}
 		
 		private void DisplayTavernSoul(int gen_id)

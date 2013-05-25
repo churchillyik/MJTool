@@ -260,7 +260,9 @@ namespace MJTool
 				case CmdIDs.USER_GET_LUCK_INFO:
 					acc.ParseGetLuckInfo(bs_result);
 					break;
-					
+				case CmdIDs.USER_SIGIN:
+					acc.ParseUserSigin(bs_result);
+					break;
 				case CmdIDs.USER_REFRESH_GENERAL:
 					acc.ParseRefreshGeneral(bs_result, cmdOprt);
 					break;
@@ -540,10 +542,10 @@ namespace MJTool
 			{
 				return;
 			}
-			Dictionary<string, T> dic = (Dictionary<string, T>)dic_parent[key];
-			foreach (KeyValuePair<string, T> pair in dic)
+			Dictionary<string, object> dic = (Dictionary<string, object>)dic_parent[key];
+			foreach (KeyValuePair<string, object> pair in dic)
 			{
-				dic_t_obj.Add(pair.Key, pair.Value);
+				dic_t_obj.Add(pair.Key, (T) pair.Value);
 			}
 		}
 		
