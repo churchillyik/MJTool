@@ -58,6 +58,7 @@ namespace MJTool
 			this.tbLog = new System.Windows.Forms.TextBox();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.btClearLog = new System.Windows.Forms.Button();
+			this.btSigin = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.lvGenSoul = new System.Windows.Forms.ListView();
@@ -72,7 +73,7 @@ namespace MJTool
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
-			this.btSigin = new System.Windows.Forms.Button();
+			this.btGetTimeAward = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
@@ -87,7 +88,7 @@ namespace MJTool
 			// btEmployGeneral
 			// 
 			this.btEmployGeneral.Enabled = false;
-			this.btEmployGeneral.Location = new System.Drawing.Point(97, 12);
+			this.btEmployGeneral.Location = new System.Drawing.Point(97, 6);
 			this.btEmployGeneral.Name = "btEmployGeneral";
 			this.btEmployGeneral.Size = new System.Drawing.Size(75, 30);
 			this.btEmployGeneral.TabIndex = 2;
@@ -108,7 +109,7 @@ namespace MJTool
 			// btRefreshGeneral
 			// 
 			this.btRefreshGeneral.Enabled = false;
-			this.btRefreshGeneral.Location = new System.Drawing.Point(12, 12);
+			this.btRefreshGeneral.Location = new System.Drawing.Point(12, 6);
 			this.btRefreshGeneral.Name = "btRefreshGeneral";
 			this.btRefreshGeneral.Size = new System.Drawing.Size(75, 30);
 			this.btRefreshGeneral.TabIndex = 2;
@@ -119,7 +120,7 @@ namespace MJTool
 			// btGetLuckInfo
 			// 
 			this.btGetLuckInfo.Enabled = false;
-			this.btGetLuckInfo.Location = new System.Drawing.Point(383, 4);
+			this.btGetLuckInfo.Location = new System.Drawing.Point(356, 4);
 			this.btGetLuckInfo.Name = "btGetLuckInfo";
 			this.btGetLuckInfo.Size = new System.Drawing.Size(71, 23);
 			this.btGetLuckInfo.TabIndex = 2;
@@ -130,7 +131,7 @@ namespace MJTool
 			// btGetLoginAward
 			// 
 			this.btGetLoginAward.Enabled = false;
-			this.btGetLoginAward.Location = new System.Drawing.Point(306, 4);
+			this.btGetLoginAward.Location = new System.Drawing.Point(279, 4);
 			this.btGetLoginAward.Name = "btGetLoginAward";
 			this.btGetLoginAward.Size = new System.Drawing.Size(71, 23);
 			this.btGetLoginAward.TabIndex = 2;
@@ -141,7 +142,7 @@ namespace MJTool
 			// btMsgBox
 			// 
 			this.btMsgBox.Enabled = false;
-			this.btMsgBox.Location = new System.Drawing.Point(537, 4);
+			this.btMsgBox.Location = new System.Drawing.Point(510, 4);
 			this.btMsgBox.Name = "btMsgBox";
 			this.btMsgBox.Size = new System.Drawing.Size(71, 23);
 			this.btMsgBox.TabIndex = 2;
@@ -152,7 +153,7 @@ namespace MJTool
 			// btGetMessage
 			// 
 			this.btGetMessage.Enabled = false;
-			this.btGetMessage.Location = new System.Drawing.Point(460, 4);
+			this.btGetMessage.Location = new System.Drawing.Point(433, 4);
 			this.btGetMessage.Name = "btGetMessage";
 			this.btGetMessage.Size = new System.Drawing.Size(71, 23);
 			this.btGetMessage.TabIndex = 2;
@@ -163,7 +164,7 @@ namespace MJTool
 			// btGetGift
 			// 
 			this.btGetGift.Enabled = false;
-			this.btGetGift.Location = new System.Drawing.Point(229, 4);
+			this.btGetGift.Location = new System.Drawing.Point(202, 4);
 			this.btGetGift.Name = "btGetGift";
 			this.btGetGift.Size = new System.Drawing.Size(71, 23);
 			this.btGetGift.TabIndex = 2;
@@ -184,7 +185,7 @@ namespace MJTool
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 1;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(941, 517);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(941, 640);
 			this.tableLayoutPanel1.TabIndex = 3;
 			// 
 			// lvAccount
@@ -199,7 +200,7 @@ namespace MJTool
 			this.lvAccount.Location = new System.Drawing.Point(3, 3);
 			this.lvAccount.MultiSelect = false;
 			this.lvAccount.Name = "lvAccount";
-			this.lvAccount.Size = new System.Drawing.Size(158, 511);
+			this.lvAccount.Size = new System.Drawing.Size(158, 634);
 			this.lvAccount.TabIndex = 0;
 			this.lvAccount.UseCompatibleStateImageBehavior = false;
 			this.lvAccount.View = System.Windows.Forms.View.Details;
@@ -271,17 +272,17 @@ namespace MJTool
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(771, 511);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(771, 634);
 			this.tableLayoutPanel2.TabIndex = 2;
 			// 
 			// tbLog
 			// 
 			this.tbLog.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tbLog.Location = new System.Drawing.Point(3, 395);
+			this.tbLog.Location = new System.Drawing.Point(3, 490);
 			this.tbLog.Multiline = true;
 			this.tbLog.Name = "tbLog";
 			this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.tbLog.Size = new System.Drawing.Size(765, 113);
+			this.tbLog.Size = new System.Drawing.Size(765, 141);
 			this.tbLog.TabIndex = 2;
 			// 
 			// panel1
@@ -295,9 +296,9 @@ namespace MJTool
 			this.panel1.Controls.Add(this.btSigin);
 			this.panel1.Controls.Add(this.btMsgBox);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(3, 360);
+			this.panel1.Location = new System.Drawing.Point(3, 446);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(765, 29);
+			this.panel1.Size = new System.Drawing.Size(765, 38);
 			this.panel1.TabIndex = 1;
 			// 
 			// btClearLog
@@ -310,6 +311,17 @@ namespace MJTool
 			this.btClearLog.UseVisualStyleBackColor = true;
 			this.btClearLog.Click += new System.EventHandler(this.BtClearLogClick);
 			// 
+			// btSigin
+			// 
+			this.btSigin.Enabled = false;
+			this.btSigin.Location = new System.Drawing.Point(587, 4);
+			this.btSigin.Name = "btSigin";
+			this.btSigin.Size = new System.Drawing.Size(71, 23);
+			this.btSigin.TabIndex = 2;
+			this.btSigin.Text = "每日签到";
+			this.btSigin.UseVisualStyleBackColor = true;
+			this.btSigin.Click += new System.EventHandler(this.BtSigin);
+			// 
 			// tabControl1
 			// 
 			this.tabControl1.Controls.Add(this.tabPage1);
@@ -319,7 +331,7 @@ namespace MJTool
 			this.tabControl1.Location = new System.Drawing.Point(3, 3);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(765, 351);
+			this.tabControl1.Size = new System.Drawing.Size(765, 437);
 			this.tabControl1.TabIndex = 3;
 			// 
 			// tabPage1
@@ -329,7 +341,7 @@ namespace MJTool
 			this.tabPage1.Location = new System.Drawing.Point(4, 21);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(757, 326);
+			this.tabPage1.Size = new System.Drawing.Size(757, 412);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "将魂";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -347,7 +359,7 @@ namespace MJTool
 			this.lvGenSoul.Location = new System.Drawing.Point(3, 3);
 			this.lvGenSoul.MultiSelect = false;
 			this.lvGenSoul.Name = "lvGenSoul";
-			this.lvGenSoul.Size = new System.Drawing.Size(442, 320);
+			this.lvGenSoul.Size = new System.Drawing.Size(442, 406);
 			this.lvGenSoul.TabIndex = 1;
 			this.lvGenSoul.UseCompatibleStateImageBehavior = false;
 			this.lvGenSoul.View = System.Windows.Forms.View.Details;
@@ -373,7 +385,7 @@ namespace MJTool
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
 			this.panel2.Location = new System.Drawing.Point(445, 3);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(309, 320);
+			this.panel2.Size = new System.Drawing.Size(309, 406);
 			this.panel2.TabIndex = 0;
 			// 
 			// tableLayoutPanel3
@@ -388,7 +400,7 @@ namespace MJTool
 			this.tableLayoutPanel3.RowCount = 2;
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.tableLayoutPanel3.Size = new System.Drawing.Size(309, 320);
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(309, 406);
 			this.tableLayoutPanel3.TabIndex = 3;
 			// 
 			// panel3
@@ -396,15 +408,16 @@ namespace MJTool
 			this.panel3.Controls.Add(this.btOneKeyForSoul);
 			this.panel3.Controls.Add(this.btEmployGeneral);
 			this.panel3.Controls.Add(this.btRefreshGeneral);
+			this.panel3.Controls.Add(this.btGetTimeAward);
 			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel3.Location = new System.Drawing.Point(3, 259);
+			this.panel3.Location = new System.Drawing.Point(3, 327);
 			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(303, 58);
+			this.panel3.Size = new System.Drawing.Size(303, 76);
 			this.panel3.TabIndex = 0;
 			// 
 			// btOneKeyForSoul
 			// 
-			this.btOneKeyForSoul.Location = new System.Drawing.Point(197, 12);
+			this.btOneKeyForSoul.Location = new System.Drawing.Point(197, 6);
 			this.btOneKeyForSoul.Name = "btOneKeyForSoul";
 			this.btOneKeyForSoul.Size = new System.Drawing.Size(97, 30);
 			this.btOneKeyForSoul.TabIndex = 3;
@@ -419,7 +432,7 @@ namespace MJTool
 			this.lbTavern.ItemHeight = 12;
 			this.lbTavern.Location = new System.Drawing.Point(3, 3);
 			this.lbTavern.Name = "lbTavern";
-			this.lbTavern.Size = new System.Drawing.Size(303, 250);
+			this.lbTavern.Size = new System.Drawing.Size(303, 318);
 			this.lbTavern.TabIndex = 1;
 			// 
 			// tabPage2
@@ -448,22 +461,22 @@ namespace MJTool
 			this.timer1.Interval = 5000;
 			this.timer1.Tick += new System.EventHandler(this.Timer1Tick);
 			// 
-			// btSigin
+			// btGetTimeAward
 			// 
-			this.btSigin.Enabled = false;
-			this.btSigin.Location = new System.Drawing.Point(614, 4);
-			this.btSigin.Name = "btSigin";
-			this.btSigin.Size = new System.Drawing.Size(71, 23);
-			this.btSigin.TabIndex = 2;
-			this.btSigin.Text = "每日签到";
-			this.btSigin.UseVisualStyleBackColor = true;
-			this.btSigin.Click += new System.EventHandler(this.BtSigin);
+			this.btGetTimeAward.Enabled = false;
+			this.btGetTimeAward.Location = new System.Drawing.Point(197, 42);
+			this.btGetTimeAward.Name = "btGetTimeAward";
+			this.btGetTimeAward.Size = new System.Drawing.Size(97, 30);
+			this.btGetTimeAward.TabIndex = 2;
+			this.btGetTimeAward.Text = "在线礼包";
+			this.btGetTimeAward.UseVisualStyleBackColor = true;
+			this.btGetTimeAward.Click += new System.EventHandler(this.BtGetTimeAwardClick);
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(941, 517);
+			this.ClientSize = new System.Drawing.Size(941, 640);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Name = "MainForm";
 			this.Text = "MJTool";
@@ -481,6 +494,7 @@ namespace MJTool
 			this.panel3.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Button btGetTimeAward;
 		private System.Windows.Forms.Button btSigin;
 		private System.Windows.Forms.Timer timer1;
 		private System.Windows.Forms.Button btClearLog;

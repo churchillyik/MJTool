@@ -25,5 +25,13 @@ namespace MJTool
 		
 		// 游戏服务器和本地的时间差（秒）
 		public static double secDiff = 0;
+		
+		public static DateTime serverTime
+		{
+			get
+			{
+				return DateTime.Now.AddSeconds(secDiff);
+			}
+		}
 	}
 }

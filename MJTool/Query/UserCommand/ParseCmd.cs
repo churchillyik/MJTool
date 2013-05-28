@@ -10,7 +10,9 @@ namespace MJTool
 			switch (type)
 			{
 				case 1:
-					if (root.userData.userTavern.nomalRefreshTimes >= 10)
+					DateTime svr_time = ServerParam.serverTime;
+					DateTime nomalRefreshTime = QueryManager.SecondsToDateTime(root.userData.userTavern.nomalRefreshTime);
+					if (root.userData.userTavern.nomalRefreshTimes == 10 && nomalRefreshTime.Date == svr_time.Date)
 					{
 						return false;
 					}
@@ -209,6 +211,19 @@ namespace MJTool
 			}
 			
 			recvSigin pkg = new recvSigin();
+			upCall.SetSingleObject(dic_root, null, pkg);
+		}
+		
+		public void ParseUserGetTimeAward(byte[] bs_result)
+		{
+			upCall.Print("ParseUserGetTimeAward", bs_result);
+			Dictionary<string, object> dic_root = upCall.GetRootDic(bs_result);
+			if (CheckForException(dic_root))
+			{
+				return;
+			}
+			
+			recvGetTimeAward pkg = new recvGetTimeAward();
 			upCall.SetSingleObject(dic_root, null, pkg);
 		}
 		
@@ -430,19 +445,38 @@ namespace MJTool
 		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
+	public class recvUserDataEmployGeneral
+	{
+		public entityUserSoul userSoul = new entityUserSoul();
+	}
+	
 	public class recvSigin
 	{
 		public double serverTime;
 		public int onlineX;
-//		public recvUserDataEmployGeneral userData = new recvUserDataEmployGeneral();
+		public recvUserDataSigin userData = new recvUserDataSigin();
 		public int newMailNumber;
 		public int finishGuide;
 		public List<object> message = new List<object>();
 		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
-	public class recvUserDataEmployGeneral
+	public class recvUserDataSigin
 	{
-		public entityUserSoul userSoul = new entityUserSoul();
+	}
+
+	public class recvGetTimeAward
+	{
+		public double serverTime;
+		public int onlineX;
+		public recvUserDataGetTimeAward userData = new recvUserDataGetTimeAward();
+		public int newMailNumber;
+		public int finishGuide;
+		public List<object> message = new List<object>();
+		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
+	}
+	
+	public class recvUserDataGetTimeAward
+	{
 	}
 }

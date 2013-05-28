@@ -111,6 +111,7 @@ namespace MJTool
 			this.btEmployGeneral.Enabled = bLogined;
 			this.btOneKeyForSoul.Enabled = bLogined;
 			this.btSigin.Enabled = bLogined;
+			this.btGetTimeAward.Enabled = bLogined;
 		}
 		
 		void BtGetGift(object sender, EventArgs e)
@@ -160,9 +161,9 @@ namespace MJTool
 		void BtEmployGeneral(object sender, EventArgs e)
 		{
 			bool bGot = false;
-			bGot = bGot || GetGenSoul(curAcc.root.userData.userTavern.id_1);
-			bGot = bGot || GetGenSoul(curAcc.root.userData.userTavern.id_2);
-			bGot = bGot || GetGenSoul(curAcc.root.userData.userTavern.id_3);
+			bGot = GetGenSoul(curAcc.root.userData.userTavern.id_1) || bGot;
+			bGot = GetGenSoul(curAcc.root.userData.userTavern.id_2) || bGot;
+			bGot = GetGenSoul(curAcc.root.userData.userTavern.id_3) || bGot;
 			if (!bGot)
 			{
 				sInsMgr.DebugLog("没有看的上的将魂！");
@@ -347,7 +348,7 @@ namespace MJTool
 			
 			this.lbTavern.Items.Add("--------------------");
 			this.lbTavern.Items.Add("酒馆刷新冷却：");
-			DateTime svr_time = DateTime.Now.AddSeconds(ServerParam.secDiff);
+			DateTime svr_time = ServerParam.serverTime;
 			
 			DisplayTavernRefreshTime(curAcc.root.userData.user.tavernCdEndTime_1, 1);
 			DisplayTavernRefreshTime(curAcc.root.userData.user.tavernCdEndTime_2, 2);
@@ -395,9 +396,12 @@ namespace MJTool
 		
 		private void DisplayTavernRefreshTime(double cd_time, int type)
 		{
-			DateTime svr_time = DateTime.Now.AddSeconds(ServerParam.secDiff);
+			DateTime svr_time = ServerParam.serverTime;
 			DateTime cd_dt = QueryManager.SecondsToDateTime(cd_time);
-			if (type == 1 && curAcc.root.userData.userTavern.nomalRefreshTimes == 10)
+			
+			DateTime nomalRefreshTime = QueryManager.SecondsToDateTime(curAcc.root.userData.userTavern.nomalRefreshTime);
+			if (type == 1 && curAcc.root.userData.userTavern.nomalRefreshTimes == 10 
+			    && nomalRefreshTime.Date == svr_time.Date)
 			{
 				this.lbTavern.Items.Add(strRefreshQuality[type - 1] + "刷新：本日刷新次数已耗尽");
 				return;
@@ -407,7 +411,7 @@ namespace MJTool
 				string strTimes = "";
 				if (type == 1)
 				{
-					strTimes = "\t次数：" + curAcc.root.userData.userTavern.nomalRefreshTimes + "/10";
+					strTimes = "\t次数：" + (curAcc.root.userData.userTavern.nomalRefreshTimes % 10) + "/10";
 				}
 				this.lbTavern.Items.Add(strRefreshQuality[type - 1] + "刷新：冷却完毕！" + strTimes);
 			}
@@ -416,7 +420,7 @@ namespace MJTool
 				string strTimes = "";
 				if (type == 1)
 				{
-					strTimes = "\t次数：" + curAcc.root.userData.userTavern.nomalRefreshTimes + "/10";
+					strTimes = "\t次数：" + (curAcc.root.userData.userTavern.nomalRefreshTimes % 10) + "/10";
 				}
 				TimeSpan ts = cd_dt.Subtract(svr_time);
 				this.lbTavern.Items.Add(String.Format(strRefreshQuality[type - 1] + "刷新：{0}:{1}:{2} 后冷却", Math.Floor(ts.TotalHours) , ts.Minutes, ts.Seconds)
@@ -484,6 +488,12 @@ namespace MJTool
 		void BtSigin(object sender, EventArgs e)
 		{
 			sInsMgr.SendCommand(new CmdArg(CmdIDs.USER_SIGIN, curAcc));
+		}
+		
+		void BtGetTimeAwardClick(object sender, EventArgs e)
+		{
+			sInsMgr.SendCommand(new GetTimeAwardCmdArg(CmdIDs.USER_GET_TIME_AWARD, curAcc
+			                                           , curAcc.root.userData.userTimeAward.timerId));
 		}
 	}
 }

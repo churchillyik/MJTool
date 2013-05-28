@@ -101,6 +101,17 @@ namespace MJTool
 				((ulong)1<<(int)CmdParam.FINISH_GUIDE)|
 				((ulong)1<<(int)CmdParam.IS_AMF)
 			));
+			
+			gDicCmd.Add(CmdIDs.USER_GET_TIME_AWARD, new UserCommand(
+				"User.getTimeAward",
+				((ulong)1<<(int)CmdParam.CT)|
+				((ulong)1<<(int)CmdParam.VERSION)|
+				((ulong)1<<(int)CmdParam.CLIENT_TIME)|
+				((ulong)1<<(int)CmdParam.SINGLE)|
+				((ulong)1<<(int)CmdParam.FINISH_GUIDE)|
+				((ulong)1<<(int)CmdParam.TIMER_ID)|
+				((ulong)1<<(int)CmdParam.IS_AMF)
+			));
 		}
 		
 		public void doUserCommand(object o)
@@ -159,7 +170,7 @@ namespace MJTool
 			// ct => <double>ms
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.CT)) != (ulong)0)
 			{
-				double ct = (double)UnixTimeStamp(DateTime.Now);
+				double ct = (double)UnixTimeStamp(ServerParam.serverTime);
 				dic_pck.Add("ct", ct);
 			}
 			
@@ -178,7 +189,7 @@ namespace MJTool
 			// clientTime => <double> s
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.CLIENT_TIME)) != (ulong)0)
 			{
-				double cl_tm = (double)(UnixTimeStamp(DateTime.Now) / 1000);
+				double cl_tm = (double)(UnixTimeStamp(ServerParam.serverTime) / 1000);
 				dic_pck.Add("clientTime", cl_tm);
 			}
 			
@@ -204,6 +215,18 @@ namespace MJTool
 					return;
 				}
 				dic_pck.Add("soul", arg.nSoul);
+			}
+			
+			// timerId => <int>
+			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.TIMER_ID)) != (ulong)0)
+			{
+				GetTimeAwardCmdArg arg = (GetTimeAwardCmdArg) o;
+				if (arg == null)
+				{
+					DebugLog("错误地使用了命令参数[TIMER_ID]");
+					return;
+				}
+				dic_pck.Add("timerId", arg.nTimerID);
 			}
 			
 			// isAMF => <int>
@@ -263,10 +286,13 @@ namespace MJTool
 				case CmdIDs.USER_SIGIN:
 					acc.ParseUserSigin(bs_result);
 					break;
+				case CmdIDs.USER_GET_TIME_AWARD:
+					acc.ParseUserGetTimeAward(bs_result);
+					break;
+
 				case CmdIDs.USER_REFRESH_GENERAL:
 					acc.ParseRefreshGeneral(bs_result, cmdOprt);
 					break;
-					
 				case CmdIDs.USER_EMPLOY_GENERAL:
 					acc.ParseEmployGeneral(bs_result);
 					break;
@@ -648,6 +674,15 @@ namespace MJTool
 		}
 	}
 	
+	public class GetTimeAwardCmdArg : CmdArg
+	{
+		public int nTimerID;
+		public GetTimeAwardCmdArg(CmdIDs id, Account acc, int tid) : base(id, acc)
+		{
+			this.nTimerID = tid;
+		}
+	}
+	
 	public enum CmdIDs : int
 	{
 		NONE,
@@ -660,6 +695,7 @@ namespace MJTool
 		USER_REFRESH_GENERAL, // 刷将魂
 		USER_EMPLOY_GENERAL, // 获取将魂
 		USER_SIGIN, // 玩家签到
+		USER_GET_TIME_AWARD, // 在线礼包
 	}
 	
 	public enum CmdParam : int
@@ -673,6 +709,7 @@ namespace MJTool
 		SINGLE, // 账号的唯一ID
 		FINISH_GUIDE, // 新手指引的完成情况
 		SOUL, // 将魂获取数量
+		TIMER_ID, // 计时器编号
 		IS_AMF, // 是否为AMF包
 		
 		CMD_PARAM_END,

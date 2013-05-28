@@ -139,7 +139,7 @@ namespace MJTool
 					
 				upCall.UIUpdateRefreshAll();
 				
-//				PrintTavern();
+				PrintTavern();
 			}
 			catch (Exception e)
 			{
