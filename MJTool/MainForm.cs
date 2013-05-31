@@ -139,7 +139,7 @@ namespace MJTool
 			sInsMgr.SendCommand(new CmdArg(CmdIDs.USER_GET_LUCK_INFO, curAcc));
 		}
 		
-		private static string[] strRefreshQuality = new string[] {"普通", "中级", "高级", "完美", };
+		public static string[] strRefreshQuality = new string[] {"普通", "中级", "高级", "完美", };
 		void BtRefreshGeneral(object sender, EventArgs e)
 		{
 			bool bRefreshDone = false;
@@ -160,17 +160,27 @@ namespace MJTool
 		
 		void BtEmployGeneral(object sender, EventArgs e)
 		{
-			bool bGot = false;
-			bGot = GetGenSoul(curAcc.root.userData.userTavern.id_1) || bGot;
-			bGot = GetGenSoul(curAcc.root.userData.userTavern.id_2) || bGot;
-			bGot = GetGenSoul(curAcc.root.userData.userTavern.id_3) || bGot;
-			if (!bGot)
+			List<DBGeneral> lstGens = new List<DBGeneral>();
+			curAcc.nEplGenReqCnt = 0;
+			
+			AddValuableGen(curAcc.root.userData.userTavern.id_1, lstGens);
+			AddValuableGen(curAcc.root.userData.userTavern.id_2, lstGens);
+			AddValuableGen(curAcc.root.userData.userTavern.id_3, lstGens);
+			
+			if (lstGens.Count == 0)
 			{
 				sInsMgr.DebugLog("没有看的上的将魂！");
 			}
+			else
+			{
+				foreach (DBGeneral gen in lstGens)
+				{
+					sInsMgr.SendCommand(new EplGenCmdArg(CmdIDs.USER_EMPLOY_GENERAL, curAcc, gen.id, gen.soul));
+				}
+			}
 		}
 		
-		private bool GetGenSoul(int gen_id)
+		private void AddValuableGen(int gen_id, List<DBGeneral> lstGens)
 		{
 			DBGeneral gen = QueryManager.gGameDB.GetGeneral(gen_id);
 			if (gen != null)
@@ -178,12 +188,10 @@ namespace MJTool
 				DBGeneralType gen_type = QueryManager.gGameDB.GetGeneralType(gen.type);
 				if (gen_type != null && gen_type.quality >= 1)
 				{
-					sInsMgr.DebugLog("获得 " + strQualityNames[gen_type.quality] + " - " + gen.name + "将魂" + gen.soul + "个");
-					sInsMgr.SendCommand(new EplGenCmdArg(CmdIDs.USER_EMPLOY_GENERAL, curAcc, gen.id, gen.soul));
-					return true;
+					curAcc.nEplGenReqCnt++;
+					lstGens.Add(gen);
 				}
 			}
-			return false;
 		}
 		
 		void BtParseLocalDataClick(object sender, EventArgs e)
@@ -306,7 +314,7 @@ namespace MJTool
 			}
 		}
 		
-		private static string[] strQualityNames = new string[] {"杂兵", "普通", "优秀", "稀有", "完美", };
+		public static string[] strQualityNames = new string[] {"杂兵", "普通", "优秀", "稀有", "完美", };
 		private void RefreshGenSouls()
 		{
 			if (curAcc == null)
@@ -357,7 +365,7 @@ namespace MJTool
 			
 			this.lbTavern.Items.Add("--------------------");
 			this.lbTavern.Items.Add("在线礼包：");
-			this.lbTavern.Items.Add("timeId：" + curAcc.root.userData.userTimeAward.timerId);
+			this.lbTavern.Items.Add("计时器编号：" + curAcc.root.userData.userTimeAward.timerId);
 			
 			DateTime next_dt = QueryManager.SecondsToDateTime(
 				curAcc.root.userData.userTimeAward.lastModify
@@ -375,8 +383,19 @@ namespace MJTool
 				this.lbTavern.Items.Add("领奖时间已到");
 			}
 			
-			this.lbTavern.Items.Add("接下来的奖品：" + curAcc.root.userData.userTimeAward.nowItemId);
-			this.lbTavern.Items.Add("再下次的奖品：" + curAcc.root.userData.userTimeAward.nextItemId);
+			DBTreasureItem ts_item = null;
+			ts_item = QueryManager.gGameDB.GetTreasureItem(curAcc.root.userData.userTimeAward.nowItemId);
+			if (ts_item != null)
+			{
+				this.lbTavern.Items.Add("接下来的奖品：" + QueryManager.gGameDB.ItemDesc(ts_item.itemType, ts_item.itemNum));
+			}
+			
+			ts_item = QueryManager.gGameDB.GetTreasureItem(curAcc.root.userData.userTimeAward.nextItemId);
+			if (ts_item != null)
+			{
+				this.lbTavern.Items.Add("再下次的奖品：" + QueryManager.gGameDB.ItemDesc(ts_item.itemType, ts_item.itemNum));
+			}
+			
 			this.lbTavern.Items.Add("本日已领取次数：" + curAcc.root.userData.userTimeAward.dayReceiveTimes);
 		}
 		
@@ -400,7 +419,7 @@ namespace MJTool
 			DateTime cd_dt = QueryManager.SecondsToDateTime(cd_time);
 			
 			DateTime nomalRefreshTime = QueryManager.SecondsToDateTime(curAcc.root.userData.userTavern.nomalRefreshTime);
-			if (type == 1 && curAcc.root.userData.userTavern.nomalRefreshTimes == 10 
+			if (type == 1 && curAcc.root.userData.userTavern.nomalRefreshTimes == 10
 			    && nomalRefreshTime.Date == svr_time.Date)
 			{
 				this.lbTavern.Items.Add(strRefreshQuality[type - 1] + "刷新：本日刷新次数已耗尽");
@@ -492,8 +511,18 @@ namespace MJTool
 		
 		void BtGetTimeAwardClick(object sender, EventArgs e)
 		{
-			sInsMgr.SendCommand(new GetTimeAwardCmdArg(CmdIDs.USER_GET_TIME_AWARD, curAcc
-			                                           , curAcc.root.userData.userTimeAward.timerId));
+			DateTime next_dt = QueryManager.SecondsToDateTime(
+				curAcc.root.userData.userTimeAward.lastModify
+				+ (double)90 * 60);
+			if (ServerParam.serverTime > next_dt)
+			{
+				sInsMgr.SendCommand(new GetTimeAwardCmdArg(CmdIDs.USER_GET_TIME_AWARD, curAcc
+				                                           , curAcc.root.userData.userTimeAward.timerId));
+			}
+			else
+			{
+				sInsMgr.DebugLog("在线礼包尚未到领取时间！");
+			}
 		}
 	}
 }

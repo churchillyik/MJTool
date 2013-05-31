@@ -53,8 +53,8 @@ namespace MJTool
 			recvGetGift pkg = new recvGetGift();
 			upCall.SetSingleObject(dic_root, null, pkg);
 			
-			// 更新本地和服务器时间差
-			RefreshTimeDiff(pkg.serverTime);
+			// 更新基础信息
+			RefreshBase((recvPkgBase)pkg);
 		}
 		
 		public void ParseGetMessage(byte[] bs_result)
@@ -78,8 +78,8 @@ namespace MJTool
 			upCall.SetArrayObjects(dic_userData, "message", pkg.userData.message);
 			upCall.SetArrayObjects(dic_userData, "announcement", pkg.userData.announcement);
 			
-			// 更新本地和服务器时间差
-			RefreshTimeDiff(pkg.serverTime);
+			// 更新基础信息
+			RefreshBase((recvPkgBase)pkg);
 		}
 		
 		public void ParseMsgBox(byte[] bs_result)
@@ -96,7 +96,7 @@ namespace MJTool
 			
 			upCall.SetArrayObjects(dic_root, "userData", pkg.userData);
 			
-			// 更新本地和服务器时间差
+			// 更新基础信息
 			RefreshTimeDiff(pkg.serverTime);
 		}
 		
@@ -122,8 +122,8 @@ namespace MJTool
 			
 			upCall.SetArrayArrayObjects(dic_userData, "award", pkg.userData.award);
 			
-			// 更新本地和服务器时间差
-			RefreshTimeDiff(pkg.serverTime);
+			// 更新基础信息
+			RefreshBase((recvPkgBase)pkg);
 		}
 		
 		public void ParseGetLuckInfo(byte[] bs_result)
@@ -139,8 +139,8 @@ namespace MJTool
 			
 			upCall.SetSingleObject(dic_root, "userData", pkg.userData);
 			
-			// 更新本地和服务器时间差
-			RefreshTimeDiff(pkg.serverTime);
+			// 更新基础信息
+			RefreshBase((recvPkgBase)pkg);
 		}
 		
 		public void ParseRefreshGeneral(byte[] bs_result, CmdOperation cmdOprt)
@@ -198,7 +198,11 @@ namespace MJTool
 			UpdateDataAfterEmployGeneral(pkg);
 			
 			// 更新UI显示
-			upCall.UIUpdateEmployGeneral();
+			this.nEplGenReqCnt--;
+			if (this.nEplGenReqCnt == 0)
+			{
+				upCall.UIUpdateEmployGeneral();
+			}
 		}
 		
 		public void ParseUserSigin(byte[] bs_result)
@@ -212,6 +216,9 @@ namespace MJTool
 			
 			recvSigin pkg = new recvSigin();
 			upCall.SetSingleObject(dic_root, null, pkg);
+			
+			// 更新基础信息
+			RefreshBase((recvPkgBase)pkg);
 		}
 		
 		public void ParseUserGetTimeAward(byte[] bs_result)
@@ -225,6 +232,23 @@ namespace MJTool
 			
 			recvGetTimeAward pkg = new recvGetTimeAward();
 			upCall.SetSingleObject(dic_root, null, pkg);
+			
+			if (!dic_root.ContainsKey("userData"))
+			{
+				upCall.DebugLog("dic_root不存在userData键值");
+				return;
+			}
+			Dictionary<string, object> dic_userData = (Dictionary<string, object>) dic_root["userData"];
+			upCall.SetSingleObject(dic_userData, "userTimeAward", pkg.userData.userTimeAward);
+			upCall.SetArrayObjects(dic_userData, "userItem", pkg.userData.userItem);
+			upCall.SetArrayObjects(dic_userData, "userSoul", pkg.userData.userSoul);
+			upCall.SetArrayObjects(dic_userData, "userEquip", pkg.userData.userEquip);
+			
+			// 同步在线礼包数据和物品数据
+			UpdateUserDataAfterGetTimeAward(pkg);
+			
+			// 更新UI显示
+			upCall.UIUpdateRefreshGeneral();
 		}
 		
 		// ------------------------------------------------------------------------------------------------
@@ -254,8 +278,8 @@ namespace MJTool
 					break;
 			}
 			
-			// 更新本地和服务器时间差
-			RefreshTimeDiff(pkg.serverTime);
+			// 更新基础信息
+			RefreshBase((recvPkgBase)pkg);
 		}
 		
 		private void UpdateDataAfterEmployGeneral(recvEmployGeneral pkg)
@@ -282,8 +306,8 @@ namespace MJTool
 				root.userData.userSoul.Add(soul);
 			}
 			
-			// 更新本地和服务器时间差
-			RefreshTimeDiff(pkg.serverTime);
+			// 更新基础信息
+			RefreshBase((recvPkgBase)pkg);
 		}
 		
 		private bool DeleteSoul(ref int gen_id, entityUserSoul soul, bool bDone)
@@ -295,6 +319,11 @@ namespace MJTool
 			DBGeneral gen = QueryManager.gGameDB.GetGeneral(gen_id);
 			if (gen != null && gen.type == soul.generalType && gen.soul == soul.number)
 			{
+				DBGeneralType gen_type = QueryManager.gGameDB.GetGeneralType(gen.type);
+				if (gen_type != null)
+				{
+					upCall.DebugLog("获得 " + MainForm.strQualityNames[gen_type.quality] + " - " + gen.name + "将魂" + gen.soul + "个");
+				}
 				gen_id = 0;
 				return true;
 			}
@@ -303,28 +332,46 @@ namespace MJTool
 				return false;
 			}
 		}
+		
+		private void UpdateUserDataAfterGetTimeAward(recvGetTimeAward pkg)
+		{
+			this.root.userData.userTimeAward.timerId = pkg.userData.userTimeAward.timerId;
+			this.root.userData.userTimeAward.nowItemId = pkg.userData.userTimeAward.nowItemId;
+			this.root.userData.userTimeAward.nextItemId = pkg.userData.userTimeAward.nextItemId;
+			this.root.userData.userTimeAward.lastModify = pkg.userData.userTimeAward.lastModify;
+			this.root.userData.userTimeAward.dayReceiveTimes = pkg.userData.userTimeAward.dayReceiveTimes;
+			
+			foreach (entityUserItem item in pkg.userData.userItem)
+			{
+				upCall.DebugLog("在线礼包 - 获得物品：" + QueryManager.gGameDB.ItemDesc(item.typeId, item.number));
+			}
+			
+			// 更新基础信息
+			RefreshBase((recvPkgBase)pkg);
+		}
 	}
 	
-	public class recvGetGift
+	// ---------------------------------------------------------------------------------------------------
+	public class recvPkgBase
 	{
 		public double serverTime;
 		public int onlineX;
+		public int newMailNumber;
+		public int finishGuide;
+		public List<object> message = new List<object>();
+		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
+	}
+	// ---------------------------------------------------------------------------------------------------
+	
+	public class recvGetGift : recvPkgBase
+	{
 		public List<object> userData = new List<object>();
-		public int newMailNumber;
-		public int finishGuide;
-		public List<object> message = new List<object>();
-		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
-	public class recvGetMessage
+	// ---------------------------------------------------------------------------------------------------
+	public class recvGetMessage : recvPkgBase
 	{
-		public double serverTime;
-		public int onlineX;
 		public recvUserDataGetMessage userData = new recvUserDataGetMessage();
-		public int newMailNumber;
-		public int finishGuide;
-		public List<object> message = new List<object>();
-		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
 	public class recvUserDataGetMessage
@@ -347,6 +394,7 @@ namespace MJTool
 		public int conquerorType;
 	}
 	
+	// ---------------------------------------------------------------------------------------------------
 	public class recvMsgBox
 	{
 		public double serverTime;
@@ -371,15 +419,10 @@ namespace MJTool
 		public string msg;
 	}
 	
-	public class recvGetLoginAward
+	// ---------------------------------------------------------------------------------------------------
+	public class recvGetLoginAward : recvPkgBase
 	{
-		public double serverTime;
-		public int onlineX;
 		public recvUserDataGetLoginAward userData = new recvUserDataGetLoginAward();
-		public int newMailNumber;
-		public int finishGuide;
-		public List<object> message = new List<object>();
-		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
 	public class recvUserDataGetLoginAward
@@ -395,15 +438,10 @@ namespace MJTool
 		public int number;
 	}
 	
-	public class recvGetLuckInfo
+	// ---------------------------------------------------------------------------------------------------
+	public class recvGetLuckInfo : recvPkgBase
 	{
-		public double serverTime;
-		public int onlineX;
 		public recvUserDataGetLuckInfo userData = new recvUserDataGetLuckInfo();
-		public int newMailNumber;
-		public int finishGuide;
-		public List<object> message = new List<object>();
-		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
 	public class recvUserDataGetLuckInfo
@@ -416,15 +454,10 @@ namespace MJTool
 		public List<object> userBuff = new List<object>();
 	}
 	
-	public class recvRefreshGeneral
+	// ---------------------------------------------------------------------------------------------------
+	public class recvRefreshGeneral : recvPkgBase
 	{
-		public double serverTime;
-		public int onlineX;
 		public recvUserDataRefreshGeneral userData = new recvUserDataRefreshGeneral();
-		public int newMailNumber;
-		public int finishGuide;
-		public List<object> message = new List<object>();
-		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
 	public class recvUserDataRefreshGeneral
@@ -434,15 +467,10 @@ namespace MJTool
 		public List<entityUserSoul> userSoul = new List<entityUserSoul>();
 	}
 	
-	public class recvEmployGeneral
+	// ---------------------------------------------------------------------------------------------------
+	public class recvEmployGeneral : recvPkgBase
 	{
-		public double serverTime;
-		public int onlineX;
 		public recvUserDataEmployGeneral userData = new recvUserDataEmployGeneral();
-		public int newMailNumber;
-		public int finishGuide;
-		public List<object> message = new List<object>();
-		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
 	public class recvUserDataEmployGeneral
@@ -450,33 +478,29 @@ namespace MJTool
 		public entityUserSoul userSoul = new entityUserSoul();
 	}
 	
-	public class recvSigin
+	// ---------------------------------------------------------------------------------------------------
+	public class recvSigin : recvPkgBase
 	{
-		public double serverTime;
-		public int onlineX;
 		public recvUserDataSigin userData = new recvUserDataSigin();
-		public int newMailNumber;
-		public int finishGuide;
-		public List<object> message = new List<object>();
-		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
 	public class recvUserDataSigin
 	{
 	}
 
-	public class recvGetTimeAward
+	// ---------------------------------------------------------------------------------------------------
+	public class recvGetTimeAward : recvPkgBase
 	{
-		public double serverTime;
-		public int onlineX;
 		public recvUserDataGetTimeAward userData = new recvUserDataGetTimeAward();
-		public int newMailNumber;
-		public int finishGuide;
-		public List<object> message = new List<object>();
-		public List<recvAnnouncement> announcement = new List<recvAnnouncement>();
 	}
 	
 	public class recvUserDataGetTimeAward
 	{
+		public entityUserTimeAward userTimeAward = new entityUserTimeAward();
+		public List<entityUserItem> userItem = new List<entityUserItem>();
+		public List<entityUserSoul> userSoul = new List<entityUserSoul>();
+		public List<entityUserEquip> userEquip = new List<entityUserEquip>();
 	}
+	
+	// ---------------------------------------------------------------------------------------------------
 }

@@ -71,13 +71,13 @@ namespace MJTool
 		public string wyx_expire;
 		public string wyx_signature;
 		
-		// 新手引导完成情况
-		public int finishGuide = 0;
-		
 		public UserRoot root = new UserRoot();
 		
 		// 判断用户是否登录
 		public bool bIsLogined = false;
+		
+		// 当前帐号一次发出获取将魂的请求数
+		public int nEplGenReqCnt = 0;
 		
 		public Account(string name, string pswd)
 		{

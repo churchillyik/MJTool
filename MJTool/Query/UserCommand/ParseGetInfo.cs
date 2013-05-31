@@ -139,7 +139,7 @@ namespace MJTool
 					
 				upCall.UIUpdateRefreshAll();
 				
-				PrintTavern();
+//				PrintTavern();
 			}
 			catch (Exception e)
 			{
@@ -151,8 +151,15 @@ namespace MJTool
 		{
 			root.serverTime = svr_time;
 			ServerParam.secDiff = root.serverTime - (double)(QueryManager.UnixTimeStamp(DateTime.Now) / 1000);
+			
 			upCall.DebugLog("服务器时间更新为：" + QueryManager.SecondsToDateTime(root.serverTime).ToString());
 			upCall.DebugLog("与本地时间差为：" + ServerParam.secDiff + "秒");
+		}
+		
+		private void RefreshBase(recvPkgBase pkg)
+		{
+			RefreshTimeDiff(pkg.serverTime);
+			root.userData.user.finishGuide = pkg.finishGuide;
 		}
 		
 		private void PrintTavern()

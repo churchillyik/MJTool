@@ -122,6 +122,8 @@ namespace MJTool
 		{
 			LoadTable(gGameDB.general, @"Database\general");
 			LoadTable(gGameDB.generalType, @"Database\generalType");
+			LoadTable(gGameDB.goods, @"Database\goods");
+			LoadTable(gGameDB.treasureItem, @"Database\treasureItem");
 		}
 		
 		private void LoadTable<T>(List<T> lst_objs, string file_path) where T : new()
@@ -144,7 +146,7 @@ namespace MJTool
 					DebugLog("数据表" + file_path + "的第" + i + "行与数据结构字段数不匹配！");
 					break;
 				}
-				for (int j = 1; j < field_info.Length; j++)
+				for (int j = 0; j < field_info.Length; j++)
 				{
 					try
 					{
@@ -191,6 +193,8 @@ namespace MJTool
 	{
 		public List<DBGeneral> general = new List<DBGeneral>();
 		public List<DBGeneralType> generalType = new List<DBGeneralType>();
+		public List<DBGood> goods = new List<DBGood>();
+		public List<DBTreasureItem> treasureItem = new List<DBTreasureItem>();
 		
 		public DBGeneral GetGeneral(int id)
 		{
@@ -207,6 +211,7 @@ namespace MJTool
 			}
 			return null;
 		}
+		
 		public DBGeneralType GetGeneralType(int type)
 		{
 			foreach (DBGeneralType gen_type in generalType)
@@ -217,6 +222,48 @@ namespace MJTool
 				}
 			}
 			return null;
+		}
+		
+		public DBTreasureItem GetTreasureItem(int id)
+		{
+			foreach (DBTreasureItem ts_item in treasureItem)
+			{
+				if (ts_item.id == id)
+				{
+					return ts_item;
+				}
+			}
+			return null;
+		}
+		
+		public DBGood GetGood(int item_type)
+		{
+			foreach (DBGood good in goods)
+			{
+				if (good.itemType == item_type)
+				{
+					return good;
+				}
+			}
+			return null;
+		}
+		
+		public string ItemDesc(int item_type, int item_num)
+		{
+			if (item_type == 1)
+			{
+				return "银币 x" + item_num;
+			}
+			else
+			{
+				DBGood good = GetGood(item_type);
+				if (good != null)
+				{
+					return good.name + " x" + item_num;
+				}
+			}
+			
+			return "未知物品 x" + item_num;
 		}
 	}
 	
@@ -276,5 +323,50 @@ namespace MJTool
 		public string tips;
 		public int generalId;
 		public string verse;
+	}
+	
+	public class DBGood
+	{
+		public int hzlvLimit;
+		public string desc;
+		public int listPrice;
+		public int limitNumber;
+		public int buyType;
+		public int id;
+		public int unlockUserLevel;
+		public int status;
+		public int unlockFriendNum;
+		public int maxNumber;
+		public int unlockCashCost;
+		public int isPanicBuying;
+		public int limitTime;
+		public int isBargainPrice;
+		public int hot;
+		public int isResetLimit;
+		public int itemCate;
+		public string name;
+		public int fightLevel;
+		public int itemType;
+		public string discountRate;
+		public int itemNum;
+		public string pic;
+		public int consumeLimit;
+		public int price;
+		public int useSundriesId;
+		public int onLineTime;
+		public string useChangeId;
+		public int viplvLimit;
+		public int category;
+	}
+	
+	public class DBTreasureItem
+	{
+		public int itemType;
+		public int weight;
+		public int treasureId;
+		public int itemNum;
+		public int id;
+		public int status;
+		public int itemCate;
 	}
 }

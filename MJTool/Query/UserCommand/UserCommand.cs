@@ -202,7 +202,7 @@ namespace MJTool
 			// finishGuide => <int>
 			if ((usr_cmd.CmdParam & ((ulong)1<<(int)CmdParam.FINISH_GUIDE)) != (ulong)0)
 			{
-				dic_pck.Add("finishGuide", curAcc.finishGuide);
+				dic_pck.Add("finishGuide", curAcc.root.userData.user.finishGuide);
 			}
 			
 			// soul => <int>
