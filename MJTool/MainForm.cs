@@ -501,6 +501,10 @@ namespace MJTool
 		
 		void Timer1Tick(object sender, EventArgs e)
 		{
+			if (!this.curAcc.bIsLogined)
+			{
+				return;
+			}
 			this.RefreshTavern();
 		}
 		
